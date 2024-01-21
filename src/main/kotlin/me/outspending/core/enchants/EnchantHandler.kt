@@ -8,23 +8,23 @@ import org.bukkit.persistence.PersistentDataContainer
 import kotlin.random.Random
 
 object EnchantHandler {
-    private val PICKAXE_ENCHANTS: List<PickaxeEnchant> = listOf(GoldFinderEnchant())
+    private val PICKAXE_ENCHANTS: List<PickaxeEnchant> =
+        listOf(GoldFinderEnchant(), JackhammerEnchant())
 
     fun executeAllEnchants(
         player: Player,
         playerData: PlayerData,
         blockLocation: Location,
         random: Random
-    ): Pair<Double, Int> {
+    ): EnchantResult {
         val dataContainer: PersistentDataContainer =
             PersistentUtils.getPersistentData(player.inventory.itemInMainHand.itemMeta)
 
-        var money = 0.0
-        var gold = 0
+        val enchantResult: EnchantResult = EnchantResult.EMPTY
         PICKAXE_ENCHANTS.forEach { enchant ->
             val enchantmentLevel: Int = enchant.getEnchantmentLevel(dataContainer)
             if (enchantmentLevel > 0) {
-                val (money1, gold1) =
+                val result: EnchantResult =
                     enchant.execute(
                         player,
                         playerData,
@@ -33,13 +33,11 @@ object EnchantHandler {
                         blockLocation,
                         random
                     )
-                if ((money1 > 0.0) or (gold1 > 0)) {
-                    money += money1
-                    gold += gold1
-                }
+
+                enchantResult.add(result)
             }
         }
 
-        return (money to gold)
+        return enchantResult
     }
 }

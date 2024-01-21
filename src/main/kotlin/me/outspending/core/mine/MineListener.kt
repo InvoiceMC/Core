@@ -1,6 +1,7 @@
 package me.outspending.core.mine
 
 import me.outspending.core.enchants.EnchantHandler
+import me.outspending.core.enchants.EnchantResult
 import me.outspending.core.utils.Utilities.Companion.getData
 import me.outspending.core.utils.Utilities.Companion.toComponent
 import org.bukkit.Material
@@ -33,6 +34,10 @@ class MineListener : Listener {
 
         // Check if the player has data and if it is, keep executing the code
         player.getData()?.let { data ->
+            // Execute all the enchants that the player has on their pickaxe
+            val result: EnchantResult =
+                EnchantHandler.executeAllEnchants(player, data, block.location, RANDOM)
+
             // Some other things
             e.isDropItems = false
             if (player.level >= (100 + (25 * data.prestige))) {
@@ -40,19 +45,15 @@ class MineListener : Listener {
                     "<red>You are at the max level, use <dark_red>/ᴘʀᴇꜱᴛɪɢᴇ".toComponent()
                 )
             } else {
-                player.giveExp(1 + (1 * data.prestige))
+                player.giveExp(result.xp + (1 * data.prestige))
             }
 
             var blockMoney = RANDOM.nextDouble(5.0, 15.0)
             var blockGold = blockMoney / 5
 
-            // Execute all the enchants that the player has on their pickaxe
-            val (money, gold) =
-                EnchantHandler.executeAllEnchants(player, data, block.location, RANDOM)
-
             // Add to the player's data
-            data.gold += ((blockGold + gold) * data.multiplier).toInt()
-            data.balance += ((blockMoney + money) * data.multiplier)
+            data.gold += ((blockGold + result.gold) * data.multiplier).toInt()
+            data.balance += ((blockMoney + result.money) * data.multiplier)
             data.blocksBroken += 1
         }
     }

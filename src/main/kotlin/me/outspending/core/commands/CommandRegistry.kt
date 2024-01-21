@@ -16,6 +16,7 @@ class CommandRegistry {
                 FlyCMD(),
                 DatabaseCMD(),
                 PrestigeCMD(),
+                EnchantCMD()
             )
 
         for (cmd in commandList) {

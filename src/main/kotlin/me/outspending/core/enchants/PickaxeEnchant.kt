@@ -25,5 +25,5 @@ interface PickaxeEnchant {
         enchantmentLevel: Int,
         blockLocation: Location,
         random: Random
-    ): Pair<Double, Int>
+    ): EnchantResult
 }

@@ -3,10 +3,12 @@ package me.outspending.core.utils
 import com.sk89q.worldedit.EditSession
 import com.sk89q.worldedit.WorldEdit
 import com.sk89q.worldedit.bukkit.BukkitAdapter
+import com.sk89q.worldedit.extent.Extent
 import com.sk89q.worldedit.extent.clipboard.Clipboard
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormat
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardFormats
 import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader
+import com.sk89q.worldedit.function.mask.BlockMask
 import com.sk89q.worldedit.function.operation.Operation
 import com.sk89q.worldedit.function.operation.Operations
 import com.sk89q.worldedit.function.pattern.RandomPattern
@@ -14,12 +16,13 @@ import com.sk89q.worldedit.math.BlockVector3
 import com.sk89q.worldedit.regions.CuboidRegion
 import com.sk89q.worldedit.regions.Region
 import com.sk89q.worldedit.session.ClipboardHolder
-import java.io.File
-import java.io.FileInputStream
+import com.sk89q.worldedit.world.block.BaseBlock
 import me.outspending.core.Core
 import me.outspending.core.mine.MineBlock
 import org.bukkit.Location
 import org.bukkit.Material
+import java.io.File
+import java.io.FileInputStream
 
 // TODO: Make sure this class works correctly.
 object FAWEUtils {
@@ -103,6 +106,16 @@ object FAWEUtils {
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+
+    @JvmStatic
+    fun countBlocks(extent: Extent, region: Region, blockMask: BlockMask): Int =
+        extent.countBlocks(region, blockMask)
+
+    @JvmStatic
+    fun countBlocks(extent: Extent, region: Region, vararg blocks: BaseBlock): Int {
+        val blockMask = BlockMask(extent, *blocks)
+        return countBlocks(extent, region, blockMask)
     }
 
     @JvmStatic

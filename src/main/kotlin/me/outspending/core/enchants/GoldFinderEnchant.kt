@@ -38,9 +38,9 @@ class GoldFinderEnchant : PickaxeEnchant {
         enchantmentLevel: Int,
         blockLocation: Location,
         random: Random
-    ): Pair<Double, Int> {
+    ): EnchantResult {
         // Check if enchant should be executed
-        if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return (0.0 to 0)
+        if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult.EMPTY
 
         // Execute enchant
         val goldFinderAmount: Int =
@@ -50,6 +50,6 @@ class GoldFinderEnchant : PickaxeEnchant {
                 .toComponent()
         )
 
-        return (0.0 to goldFinderAmount)
+        return EnchantResult(goldFinderAmount.toDouble(), goldFinderAmount, 0)
     }
 }
