@@ -1,0 +1,5 @@
+name: Core
+version: '${version}'
+main: me.outspending.core.Core
+api-version: '1.20'
+depend: [ "LuckPerms" ]
