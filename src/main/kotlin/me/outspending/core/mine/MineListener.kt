@@ -2,8 +2,10 @@ package me.outspending.core.mine
 
 import me.outspending.core.enchants.EnchantHandler
 import me.outspending.core.enchants.EnchantResult
+import me.outspending.core.utils.Utilities.Companion.format
 import me.outspending.core.utils.Utilities.Companion.getData
 import me.outspending.core.utils.Utilities.Companion.toComponent
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
@@ -38,6 +40,8 @@ class MineListener : Listener {
             val result: EnchantResult =
                 EnchantHandler.executeAllEnchants(player, data, block.location, RANDOM)
 
+            Bukkit.broadcast("Money: ${result.money.format()}, Gold: ${result.gold.format()}, XP: ${result.xp.format()}".toComponent())
+
             // Some other things
             e.isDropItems = false
             if (player.level >= (100 + (25 * data.prestige))) {
@@ -45,7 +49,7 @@ class MineListener : Listener {
                     "<red>You are at the max level, use <dark_red>/ᴘʀᴇꜱᴛɪɢᴇ".toComponent()
                 )
             } else {
-                player.giveExp(result.xp + (1 * data.prestige))
+                player.giveExp(result.xp)
             }
 
             var blockMoney = RANDOM.nextDouble(5.0, 15.0)

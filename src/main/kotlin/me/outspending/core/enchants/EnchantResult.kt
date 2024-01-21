@@ -1,10 +1,6 @@
 package me.outspending.core.enchants
 
-data class EnchantResult(var money: Double, var gold: Int, var xp: Int) {
-    companion object {
-        val EMPTY = EnchantResult(0.0, 0, 0)
-    }
-
+data class EnchantResult(var money: Double= 0.0, var gold: Int = 1, var xp: Int = 0) {
     fun add(enchantResult: EnchantResult) {
         money += enchantResult.money
         gold += enchantResult.gold

@@ -20,7 +20,7 @@ object EnchantHandler {
         val dataContainer: PersistentDataContainer =
             PersistentUtils.getPersistentData(player.inventory.itemInMainHand.itemMeta)
 
-        val enchantResult: EnchantResult = EnchantResult.EMPTY
+        val enchantResult = EnchantResult()
         PICKAXE_ENCHANTS.forEach { enchant ->
             val enchantmentLevel: Int = enchant.getEnchantmentLevel(dataContainer)
             if (enchantmentLevel > 0) {

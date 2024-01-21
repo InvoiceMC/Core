@@ -40,7 +40,7 @@ class GoldFinderEnchant : PickaxeEnchant {
         random: Random
     ): EnchantResult {
         // Check if enchant should be executed
-        if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult.EMPTY
+        if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
 
         // Execute enchant
         val goldFinderAmount: Int =

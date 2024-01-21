@@ -47,7 +47,7 @@ class JackhammerEnchant : PickaxeEnchant {
         blockLocation: Location,
         random: Random
     ): EnchantResult {
-        if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult.EMPTY
+        if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
 
         val vector1 = BukkitAdapter.asBlockVector(blockLocation.clone().add(5.0, 0.0, 5.0))
         val vector2 = BukkitAdapter.asBlockVector(blockLocation.clone().add(-5.0, 0.0, -5.0))
