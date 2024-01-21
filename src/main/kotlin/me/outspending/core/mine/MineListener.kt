@@ -40,8 +40,6 @@ class MineListener : Listener {
             val result: EnchantResult =
                 EnchantHandler.executeAllEnchants(player, data, block.location, RANDOM)
 
-            Bukkit.broadcast("Money: ${result.money.format()}, Gold: ${result.gold.format()}, XP: ${result.xp.format()}".toComponent())
-
             // Some other things
             e.isDropItems = false
             if (player.level >= (100 + (25 * data.prestige))) {
@@ -49,7 +47,7 @@ class MineListener : Listener {
                     "<red>You are at the max level, use <dark_red>/ᴘʀᴇꜱᴛɪɢᴇ".toComponent()
                 )
             } else {
-                player.giveExp(result.xp)
+                player.giveExp(1 + result.xp)
             }
 
             var blockMoney = RANDOM.nextDouble(5.0, 15.0)
