@@ -2,10 +2,8 @@ package me.outspending.core.mine
 
 import me.outspending.core.enchants.EnchantHandler
 import me.outspending.core.enchants.EnchantResult
-import me.outspending.core.utils.Utilities.Companion.format
 import me.outspending.core.utils.Utilities.Companion.getData
 import me.outspending.core.utils.Utilities.Companion.toComponent
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.entity.Player
@@ -50,8 +48,8 @@ class MineListener : Listener {
                 player.giveExp(1 + result.xp)
             }
 
-            var blockMoney = RANDOM.nextDouble(5.0, 15.0)
-            var blockGold = blockMoney / 5
+            val blockMoney = RANDOM.nextDouble(5.0, 15.0)
+            val blockGold = blockMoney / 5
 
             // Add to the player's data
             data.gold += ((blockGold + result.gold) * data.multiplier).toInt()
