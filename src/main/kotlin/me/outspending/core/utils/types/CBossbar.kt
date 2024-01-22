@@ -1,6 +1,6 @@
 package me.outspending.core.utils.types
 
-import me.outspending.core.utils.Utilities.Companion.toComponent
+import me.outspending.core.utils.Utilities.toComponent
 import net.kyori.adventure.bossbar.BossBar
 import net.kyori.adventure.bossbar.BossBar.*
 import net.kyori.adventure.text.Component

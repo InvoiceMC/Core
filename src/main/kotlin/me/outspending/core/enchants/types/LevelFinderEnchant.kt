@@ -1,15 +1,15 @@
 package me.outspending.core.enchants.types
 
-import kotlin.random.Random
 import me.outspending.core.enchants.EnchantResult
 import me.outspending.core.enchants.PickaxeEnchant
 import me.outspending.core.storage.PlayerData
-import me.outspending.core.utils.Utilities.Companion.toComponent
-import me.outspending.core.utils.delay
+import me.outspending.core.utils.Utilities.delay
+import me.outspending.core.utils.Utilities.toComponent
 import net.kyori.adventure.title.Title
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
+import kotlin.random.Random
 
 class LevelFinderEnchant : PickaxeEnchant {
     private val DEFAULT_CHANCE = 0.0002

@@ -1,14 +1,12 @@
 package me.outspending.core.enchants.types
 
-import kotlin.random.Random
 import me.outspending.core.enchants.EnchantResult
 import me.outspending.core.enchants.PickaxeEnchant
 import me.outspending.core.storage.PlayerData
 import org.bukkit.Location
-import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
-import org.bukkit.persistence.PersistentDataType
+import kotlin.random.Random
 
 class MerchantEnchant : PickaxeEnchant {
     override fun getEnchantName(): String = "merchant"

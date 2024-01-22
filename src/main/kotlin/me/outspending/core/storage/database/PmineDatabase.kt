@@ -1,7 +1,7 @@
 package me.outspending.core.storage.database
 
 import me.outspending.core.mine.PrivateMine
-import java.util.UUID
+import java.util.*
 
 class PmineDatabase : Database<UUID, PrivateMine> {
     override fun createTable() {

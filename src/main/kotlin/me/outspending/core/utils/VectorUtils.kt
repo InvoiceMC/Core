@@ -1,10 +1,10 @@
 package me.outspending.core.utils
 
+import org.bukkit.Location
+import org.bukkit.util.Vector
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.sin
-import org.bukkit.Location
-import org.bukkit.util.Vector
 
 object VectorUtils {
     private val EPSILON: Double = Math.ulp(1.0) * 2.0

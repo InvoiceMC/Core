@@ -1,6 +1,6 @@
 package me.outspending.core.broadcaster
 
-import me.outspending.core.utils.Utilities.Companion.toComponent
+import me.outspending.core.utils.Utilities.toComponent
 import org.bukkit.Bukkit
 
 class AutoBroadcast(vararg val messages: String) {

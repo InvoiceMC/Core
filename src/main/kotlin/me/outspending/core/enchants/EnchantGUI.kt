@@ -4,10 +4,10 @@ import me.outspending.core.Core
 import me.outspending.core.enchants.types.GoldFinderEnchant
 import me.outspending.core.storage.PlayerData
 import me.outspending.core.utils.PersistentUtils
-import me.outspending.core.utils.Utilities.Companion.fix
-import me.outspending.core.utils.Utilities.Companion.format
-import me.outspending.core.utils.Utilities.Companion.getData
-import me.outspending.core.utils.Utilities.Companion.toComponent
+import me.outspending.core.utils.Utilities.fix
+import me.outspending.core.utils.Utilities.format
+import me.outspending.core.utils.Utilities.getData
+import me.outspending.core.utils.Utilities.toComponent
 import me.sparky983.vision.Button
 import me.sparky983.vision.Gui
 import me.sparky983.vision.ItemType

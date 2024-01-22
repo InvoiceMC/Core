@@ -1,10 +1,9 @@
 package me.outspending.core.leaderboards
 
-import kotlinx.coroutines.async
 import me.outspending.core.Core
 import me.outspending.core.storage.PlayerData
-import me.outspending.core.utils.orIfNull
-import me.outspending.core.utils.runAsync
+import me.outspending.core.utils.Utilities.orIfNull
+import me.outspending.core.utils.Utilities.runAsync
 
 class LeaderboardManager {
     private fun getAllData(): List<PlayerData>? = Core.playerDatabase.getAllData()

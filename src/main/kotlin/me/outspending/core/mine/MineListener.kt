@@ -3,8 +3,8 @@ package me.outspending.core.mine
 import me.outspending.core.enchants.EnchantGUI
 import me.outspending.core.enchants.EnchantHandler
 import me.outspending.core.enchants.EnchantResult
-import me.outspending.core.utils.Utilities.Companion.getData
-import me.outspending.core.utils.Utilities.Companion.toComponent
+import me.outspending.core.utils.Utilities.getData
+import me.outspending.core.utils.Utilities.toComponent
 import org.bukkit.Material
 import org.bukkit.block.Block
 import org.bukkit.entity.Player

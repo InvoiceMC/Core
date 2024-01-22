@@ -1,11 +1,10 @@
 package me.outspending.core.listeners
 
-import kotlinx.coroutines.async
 import me.outspending.core.Core
 import me.outspending.core.storage.DataHandler
 import me.outspending.core.storage.PlayerData
-import me.outspending.core.utils.Utilities.Companion.toComponent
-import me.outspending.core.utils.runAsync
+import me.outspending.core.utils.Utilities.runAsync
+import me.outspending.core.utils.Utilities.toComponent
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component

@@ -1,12 +1,12 @@
 package me.outspending.core.storage
 
 import me.outspending.core.Core
-import me.outspending.core.utils.Utilities.Companion.toComponent
-import me.outspending.core.utils.runAsync
+import me.outspending.core.utils.Utilities.runAsync
+import me.outspending.core.utils.Utilities.runTaskTimerAsynchronously
+import me.outspending.core.utils.Utilities.toComponent
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
 import org.bukkit.Bukkit
-import org.bukkit.scheduler.BukkitRunnable
 import java.util.*
 import kotlin.time.measureTime
 
@@ -56,13 +56,6 @@ class DataHandler {
             }
         }
 
-        fun startup() {
-            object : BukkitRunnable() {
-                    override fun run() {
-                        updateAllPlayerData()
-                    }
-                }
-                .runTaskTimerAsynchronously(Core.instance, 6000, 6000)
-        }
+        fun startup() = runTaskTimerAsynchronously(6000, 6000) { updateAllPlayerData() }
     }
 }

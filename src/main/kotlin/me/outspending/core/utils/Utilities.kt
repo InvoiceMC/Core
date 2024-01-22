@@ -1,7 +1,5 @@
 package me.outspending.core.utils
 
-import java.lang.Runnable
-import kotlinx.coroutines.*
 import me.outspending.core.Core
 import me.outspending.core.storage.DataHandler
 import me.outspending.core.storage.PlayerData
@@ -13,78 +11,103 @@ import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Bukkit
 import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer
 import org.bukkit.entity.Player
+import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
-class Utilities {
-    companion object {
-        /** Strings */
-        fun String.toComponent(): Component = Core.miniMessage.deserialize(this)
+object Utilities {
+    @PublishedApi
+    internal val THREAD_EXECUTOR: ExecutorService = Executors.newSingleThreadExecutor()
 
-        fun String.toComponent(vararg placeholders: TagResolver): Component =
-            Core.miniMessage.deserialize(this, *placeholders)
+    /** Strings */
+    fun String.toComponent(): Component = Core.miniMessage.deserialize(this)
 
-        fun String.colorize(): String = ColorUtils.colorize(this)
+    fun String.toComponent(vararg placeholders: TagResolver): Component =
+        Core.miniMessage.deserialize(this, *placeholders)
 
-        fun String.colorizeHex(): String = ColorUtils.colorizeHex(this)
+    fun String.colorize(): String = ColorUtils.colorize(this)
 
-        fun String.removeDecimal(): String = this.replace(".0", "")
+    fun String.colorizeHex(): String = ColorUtils.colorizeHex(this)
 
-        fun String.toTinyString(): String = StringUtils.tinyString(this)
+    fun String.removeDecimal(): String = this.replace(".0", "")
 
-        /** Numbers */
-        fun Number.format(): String = NumberUtils.format(this.toDouble())
+    fun String.toTinyString(): String = StringUtils.tinyString(this)
 
-        fun Number.regex(): String = NumberUtils.regex(this.toDouble())
+    /** Numbers */
+    fun Number.format(): String = NumberUtils.format(this.toDouble())
 
-        fun Number.fix(): String = NumberUtils.fix(this.toDouble())
+    fun Number.regex(): String = NumberUtils.regex(this.toDouble())
 
-        fun Number.toTinyNumber(): String = NumberUtils.tinyNumbers(this.toInt())
+    fun Number.fix(): String = NumberUtils.fix(this.toDouble())
 
-        /** Player */
-        fun Player.getData(): PlayerData? = DataHandler.getPlayerData(this.uniqueId)
+    fun Number.toTinyNumber(): String = NumberUtils.tinyNumbers(this.toInt())
 
-        fun Player.toAudience(): Audience = Audience.audience(this)
+    /** Player */
+    fun Player.getData(): PlayerData? = DataHandler.getPlayerData(this.uniqueId)
 
-        fun Player.getConnection(): ServerGamePacketListenerImpl? =
-            (this as? CraftPlayer)?.handle?.connection
+    fun Player.toAudience(): Audience = Audience.audience(this)
 
-        fun Player.sendPacket(packet: Packet<*>) = this.getConnection()?.send(packet)
+    fun Player.getConnection(): ServerGamePacketListenerImpl? =
+        (this as? CraftPlayer)?.handle?.connection
+
+    fun Player.sendPacket(packet: Packet<*>) = this.getConnection()?.send(packet)
+
+    /** Async */
+    inline fun runAsync(crossinline block: () -> Unit) = THREAD_EXECUTOR.execute { block() }
+
+    /** BukkitRunnables */
+    inline fun delay(delay: Long, crossinline block: () -> Unit) =
+        Bukkit.getScheduler().runTaskLater(Core.instance, Runnable { block() }, delay)
+
+    inline fun repeat(delay: Long, period: Long, crossinline block: () -> Unit) =
+        Bukkit.getScheduler().runTaskTimer(Core.instance, Runnable { block() }, delay, period)
+
+    inline fun runTask(crossinline block: () -> Unit) =
+        Bukkit.getScheduler().runTask(Core.instance, Runnable { block() })
+
+    inline fun runTaskAsynchronously(crossinline block: () -> Unit) =
+        Bukkit.getScheduler().runTaskAsynchronously(Core.instance, Runnable { block() })
+
+    inline fun runTaskLater(delay: Long, crossinline block: () -> Unit) =
+        Bukkit.getScheduler().runTaskLater(Core.instance, Runnable { block() }, delay)
+
+    inline fun runTaskLaterAsynchronously(delay: Long, crossinline block: () -> Unit) =
+        Bukkit.getScheduler().runTaskLaterAsynchronously(Core.instance, Runnable { block() }, delay)
+
+    inline fun runTaskTimer(delay: Long, period: Long, crossinline block: () -> Unit) =
+        Bukkit.getScheduler().runTaskTimer(Core.instance, Runnable { block() }, delay, period)
+
+    inline fun runTaskTimerAsynchronously(
+        delay: Long,
+        period: Long,
+        crossinline block: () -> Unit
+    ) =
+        Bukkit.getScheduler()
+            .runTaskTimerAsynchronously(Core.instance, Runnable { block() }, delay, period)
+
+    /** Nullables */
+    fun <T> T?.orIfNull(default: () -> T): T {
+        return this ?: default()
     }
-}
 
-fun <T> T?.orIfNull(default: () -> T): T {
-    return this ?: default()
-}
+    /** Progress Bars */
+    fun progressBar(
+        current: Int,
+        max: Int,
+        length: Int = 20,
+        symbol: String = "|",
+        completedColor: String = "&a",
+        notCompletedColor: String = "&c",
+    ): String =
+        progressBar((current / max).toFloat(), length, symbol, completedColor, notCompletedColor)
 
-inline fun delay(delay: Long, crossinline block: () -> Unit) =
-    Bukkit.getScheduler().runTaskLater(Core.instance, Runnable { block() }, delay)
-
-inline fun repeat(delay: Long, period: Long, crossinline block: () -> Unit) =
-    Bukkit.getScheduler().runTaskTimer(Core.instance, Runnable { block() }, delay, period)
-
-inline fun runAsync(crossinline block: () -> Unit) {
-    object : Thread() {
-        override fun run() = block()
-    }.start()
-}
-
-fun progressBar(
-    current: Int,
-    max: Int,
-    length: Int = 5,
-    symbol: String = "■",
-    completedColor: String = "&a",
-    notCompletedColor: String = "&c",
-): String =
-    progressBar((current / max).toFloat(), length, symbol, completedColor, notCompletedColor)
-
-fun progressBar(
-    percent: Float,
-    length: Int = 20,
-    symbol: String = "|",
-    completedColor: String = "&a",
-    notCompletedColor: String = "&c",
-): String {
-    val progress = (length * percent).toInt()
-    return "$completedColor${symbol.repeat(progress)}$notCompletedColor${symbol.repeat(length - progress)}"
+    fun progressBar(
+        percent: Float,
+        length: Int = 20,
+        symbol: String = "|",
+        completedColor: String = "&a",
+        notCompletedColor: String = "&c",
+    ): String {
+        val progress = (length * percent).toInt()
+        return "$completedColor${symbol.repeat(progress)}$notCompletedColor${symbol.repeat(length - progress)}"
+    }
 }

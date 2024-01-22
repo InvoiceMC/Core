@@ -1,6 +1,6 @@
 package me.outspending.core.packets
 
-import me.outspending.core.utils.Utilities.Companion.sendPacket
+import me.outspending.core.utils.Utilities.sendPacket
 import net.minecraft.core.particles.ParticleOptions
 import net.minecraft.network.protocol.game.ClientboundLevelParticlesPacket
 import org.bukkit.Location

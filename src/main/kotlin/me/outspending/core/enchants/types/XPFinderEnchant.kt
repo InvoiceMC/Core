@@ -3,13 +3,11 @@ package me.outspending.core.enchants.types
 import me.outspending.core.enchants.EnchantResult
 import me.outspending.core.enchants.PickaxeEnchant
 import me.outspending.core.storage.PlayerData
-import me.outspending.core.utils.Utilities.Companion.toComponent
+import me.outspending.core.utils.Utilities.toComponent
 import net.kyori.adventure.title.Title
 import org.bukkit.Location
-import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
-import org.bukkit.persistence.PersistentDataType
 import kotlin.random.Random
 
 class XPFinderEnchant : PickaxeEnchant {

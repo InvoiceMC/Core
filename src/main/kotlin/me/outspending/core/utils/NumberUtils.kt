@@ -1,8 +1,8 @@
 package me.outspending.core.utils
 
+import me.outspending.core.utils.Utilities.removeDecimal
 import kotlin.math.log10
 import kotlin.math.pow
-import me.outspending.core.utils.Utilities.Companion.removeDecimal
 
 object NumberUtils {
     private val FORMAT_SUFFIXES: Array<String> =

@@ -1,11 +1,11 @@
 package me.outspending.core.utils.types
 
-import java.time.Duration
-import me.outspending.core.utils.Utilities.Companion.toComponent
+import me.outspending.core.utils.Utilities.toComponent
 import net.kyori.adventure.title.Title
 import net.kyori.adventure.title.Title.Times
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
+import java.time.Duration
 
 class CTitle(
     title: String,

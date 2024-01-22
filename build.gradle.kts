@@ -29,7 +29,6 @@ dependencies {
 
     // Kotlin
     implementation(kotlin("stdlib-jdk8"))
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0-RC2")
 
     // Other
     implementation("net.kyori:adventure-text-minimessage:4.14.0")

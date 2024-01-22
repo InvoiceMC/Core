@@ -1,6 +1,6 @@
 package me.outspending.core.mine
 
-import me.outspending.core.utils.Utilities.Companion.colorize
+import me.outspending.core.utils.Utilities.colorize
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.util.BoundingBox

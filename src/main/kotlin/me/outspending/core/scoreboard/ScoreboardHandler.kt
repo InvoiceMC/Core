@@ -3,11 +3,11 @@ package me.outspending.core.scoreboard
 import fr.mrmicky.fastboard.FastBoard
 import me.outspending.core.Core
 import me.outspending.core.storage.DataHandler
-import me.outspending.core.utils.Utilities.Companion.colorizeHex
-import me.outspending.core.utils.Utilities.Companion.fix
-import me.outspending.core.utils.Utilities.Companion.format
-import me.outspending.core.utils.Utilities.Companion.getData
-import me.outspending.core.utils.progressBar
+import me.outspending.core.utils.Utilities.colorizeHex
+import me.outspending.core.utils.Utilities.fix
+import me.outspending.core.utils.Utilities.format
+import me.outspending.core.utils.Utilities.getData
+import me.outspending.core.utils.Utilities.progressBar
 import org.bukkit.entity.Player
 import org.bukkit.scheduler.BukkitRunnable
 import java.util.*

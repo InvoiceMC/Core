@@ -1,6 +1,6 @@
 package me.outspending.core.utils
 
-import me.outspending.core.utils.Utilities.Companion.toComponent
+import me.outspending.core.utils.Utilities.toComponent
 import net.kyori.adventure.text.Component
 import org.bukkit.Location
 import org.bukkit.Material

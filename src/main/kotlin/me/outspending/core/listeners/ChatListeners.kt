@@ -3,10 +3,10 @@ package me.outspending.core.listeners
 import io.papermc.paper.event.player.AsyncChatEvent
 import me.outspending.core.Core
 import me.outspending.core.storage.PlayerData
-import me.outspending.core.utils.Utilities.Companion.format
-import me.outspending.core.utils.Utilities.Companion.getData
-import me.outspending.core.utils.Utilities.Companion.toComponent
-import me.outspending.core.utils.Utilities.Companion.toTinyNumber
+import me.outspending.core.utils.Utilities.format
+import me.outspending.core.utils.Utilities.getData
+import me.outspending.core.utils.Utilities.toComponent
+import me.outspending.core.utils.Utilities.toTinyNumber
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

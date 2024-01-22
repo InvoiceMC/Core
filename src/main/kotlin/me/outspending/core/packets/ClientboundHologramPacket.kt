@@ -1,7 +1,7 @@
 package me.outspending.core.packets
 
-import me.outspending.core.utils.Utilities.Companion.colorizeHex
-import me.outspending.core.utils.Utilities.Companion.getConnection
+import me.outspending.core.utils.Utilities.colorizeHex
+import me.outspending.core.utils.Utilities.getConnection
 import net.minecraft.network.chat.Component
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket

@@ -1,6 +1,6 @@
 package me.outspending.core.packets
 
-import me.outspending.core.utils.Utilities.Companion.getConnection
+import me.outspending.core.utils.Utilities.getConnection
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket
 import net.minecraft.server.level.ServerLevel

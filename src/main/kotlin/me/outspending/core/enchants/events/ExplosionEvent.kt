@@ -1,6 +1,6 @@
 package me.outspending.core.enchants.events
 
-import me.outspending.core.utils.Utilities.Companion.getData
+import me.outspending.core.utils.Utilities.getData
 import org.bukkit.Material
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player

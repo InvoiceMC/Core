@@ -1,6 +1,6 @@
 package me.outspending.core.commands
 
-import me.outspending.core.utils.Utilities.Companion.toComponent
+import me.outspending.core.utils.Utilities.toComponent
 import org.bukkit.Material
 import org.bukkit.command.Command
 import org.bukkit.command.CommandSender
