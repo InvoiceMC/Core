@@ -1,6 +1,7 @@
-package me.outspending.core.enchants
+package me.outspending.core.enchants.types
 
-import kotlin.random.Random
+import me.outspending.core.enchants.EnchantResult
+import me.outspending.core.enchants.PickaxeEnchant
 import me.outspending.core.storage.PlayerData
 import me.outspending.core.utils.Utilities.Companion.format
 import me.outspending.core.utils.Utilities.Companion.toComponent
@@ -9,6 +10,7 @@ import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
+import kotlin.random.Random
 
 class GoldFinderEnchant : PickaxeEnchant {
 
@@ -21,15 +23,6 @@ class GoldFinderEnchant : PickaxeEnchant {
     override fun getMaxEnchantmentLevel(): Int = 25000
 
     override fun getEnchantmentChance(enchantLevel: Int): Double = DEFAULT_CHANCE * enchantLevel
-
-    override fun getEnchantmentLevel(itemContainer: PersistentDataContainer): Int {
-        // Get the enchantment level from the NBT of the pickaxe aka itemContainer
-        return itemContainer.getOrDefault(
-            NamespacedKey("enchant", getEnchantName()),
-            PersistentDataType.INTEGER,
-            0
-        )
-    }
 
     override fun execute(
         player: Player,

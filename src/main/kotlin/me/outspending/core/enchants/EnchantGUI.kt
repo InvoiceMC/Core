@@ -1,6 +1,7 @@
 package me.outspending.core.enchants
 
 import me.outspending.core.Core
+import me.outspending.core.enchants.types.GoldFinderEnchant
 import me.outspending.core.storage.PlayerData
 import me.outspending.core.utils.PersistentUtils
 import me.outspending.core.utils.Utilities.Companion.fix

@@ -4,7 +4,12 @@ import java.util.*
 import kotlin.time.measureTime
 import me.outspending.core.broadcaster.BroadcastManager
 import me.outspending.core.commands.CommandRegistry
+import me.outspending.core.enchants.events.ExplosionEvent
 import me.outspending.core.leaderboards.LeaderboardManager
+import me.outspending.core.listeners.ChatListeners
+import me.outspending.core.listeners.CommandListeners
+import me.outspending.core.listeners.MiscListeners
+import me.outspending.core.listeners.PlayerListeners
 import me.outspending.core.mine.MineListener
 import me.outspending.core.scoreboard.ScoreboardHandler
 import me.outspending.core.storage.DataHandler
@@ -15,6 +20,7 @@ import me.outspending.core.storage.database.PlayerDatabase
 import me.sparky983.vision.paper.PaperVision
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.luckperms.api.LuckPerms
+import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.RegisteredServiceProvider
 import org.bukkit.plugin.java.JavaPlugin
 
@@ -55,9 +61,8 @@ class Core : JavaPlugin() {
             DataHandler.startup()
             playerDatabase.createTable()
 
-            // PaperMC Things
-            server.pluginManager.registerEvents(Listeners(), this)
-            server.pluginManager.registerEvents(MineListener(), this)
+            // Register Events
+            registerEvents(server.pluginManager)
         }
 
         logger.info("Finished loading Core in $time!")
@@ -84,6 +89,15 @@ class Core : JavaPlugin() {
 
         broadcastManager.start()
         logger.info("Finished registering broadcasts!")
+    }
+
+    private fun registerEvents(pluginManager: PluginManager) {
+        pluginManager.registerEvents(ChatListeners(), this)
+        pluginManager.registerEvents(CommandListeners(), this)
+        pluginManager.registerEvents(MiscListeners(), this)
+        pluginManager.registerEvents(PlayerListeners(), this)
+        pluginManager.registerEvents(MineListener(), this)
+        pluginManager.registerEvents(ExplosionEvent(), this)
     }
 
     private fun registerAllCommands() {

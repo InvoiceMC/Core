@@ -1,4 +1,4 @@
-package me.outspending.core.enchants
+package me.outspending.core.enchants.types
 
 import com.sk89q.worldedit.EditSession
 import com.sk89q.worldedit.WorldEdit
@@ -8,6 +8,8 @@ import com.sk89q.worldedit.regions.CuboidRegion
 import com.sk89q.worldedit.regions.Region
 import com.sk89q.worldedit.world.block.BaseBlock
 import com.sk89q.worldedit.world.block.BlockTypes
+import me.outspending.core.enchants.EnchantResult
+import me.outspending.core.enchants.PickaxeEnchant
 import me.outspending.core.storage.PlayerData
 import me.outspending.core.utils.Utilities.Companion.regex
 import me.outspending.core.utils.Utilities.Companion.toComponent
@@ -30,14 +32,6 @@ class JackhammerEnchant : PickaxeEnchant {
     override fun getMaxEnchantmentLevel(): Int = 25000
 
     override fun getEnchantmentChance(enchantLevel: Int): Double = DEFAULT_CHANCE * enchantLevel
-
-    override fun getEnchantmentLevel(itemContainer: PersistentDataContainer): Int {
-        return itemContainer.getOrDefault(
-            NamespacedKey("enchant", getEnchantName()),
-            PersistentDataType.INTEGER,
-            0
-        )
-    }
 
     override fun execute(
         player: Player,

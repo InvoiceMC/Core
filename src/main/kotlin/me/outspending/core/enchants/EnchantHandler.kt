@@ -1,5 +1,6 @@
 package me.outspending.core.enchants
 
+import me.outspending.core.enchants.types.*
 import me.outspending.core.storage.PlayerData
 import me.outspending.core.utils.PersistentUtils
 import org.bukkit.Location
@@ -9,7 +10,14 @@ import kotlin.random.Random
 
 object EnchantHandler {
     private val PICKAXE_ENCHANTS: List<PickaxeEnchant> =
-        listOf(GoldFinderEnchant(), JackhammerEnchant())
+        listOf(
+            GoldFinderEnchant(),
+            JackhammerEnchant(),
+            MerchantEnchant(),
+            ExplosionEnchant(),
+            LevelFinderEnchant(),
+            XPFinderEnchant()
+        )
 
     fun executeAllEnchants(
         player: Player,
