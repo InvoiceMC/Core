@@ -5,12 +5,11 @@ import me.outspending.core.enchants.EnchantResult
 import me.outspending.core.enchants.PickaxeEnchant
 import me.outspending.core.storage.PlayerData
 import me.outspending.core.utils.Utilities.Companion.toComponent
+import me.outspending.core.utils.delay
 import net.kyori.adventure.title.Title
 import org.bukkit.Location
-import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
-import org.bukkit.persistence.PersistentDataType
 
 class LevelFinderEnchant : PickaxeEnchant {
     private val DEFAULT_CHANCE = 0.0002
@@ -32,16 +31,19 @@ class LevelFinderEnchant : PickaxeEnchant {
         random: Random
     ): EnchantResult {
         if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
+        if (player.level >= (100 + (25 * playerData.prestige))) return EnchantResult()
 
         val amount = random.nextInt(1, 7)
         player.level += amount
 
-        player.showTitle(
-            Title.title(
-                "<gradient:#e08a19:#e8b36d><b>LEVELFINDER".toComponent(),
-                "<gray>You've found <color:#e8b36d>${amount}</color> <gray>levels!".toComponent()
+        delay(2) {
+            player.showTitle(
+                Title.title(
+                    "<gradient:#e08a19:#e8b36d><b>LEVELFINDER".toComponent(),
+                    "<gray>You've found <color:#e8b36d>${amount}</color> <gray>levels!".toComponent()
+                )
             )
-        )
+        }
 
         return EnchantResult()
     }

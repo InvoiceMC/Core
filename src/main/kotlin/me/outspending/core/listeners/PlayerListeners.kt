@@ -39,8 +39,7 @@ class PlayerListeners : Listener {
         // Load data
         runAsync {
             val time = measureTime {
-                val playerData =
-                    async { Core.playerDatabase.getData(uuid) ?: PlayerData.default() }.await()
+                val playerData = Core.playerDatabase.getData(uuid) ?: PlayerData.default()
                 DataHandler.addPlayer(uuid, playerData)
             }
 
@@ -76,17 +75,14 @@ class PlayerListeners : Listener {
 
         runAsync {
             map[uuid]?.let {
-                async {
-                    val database = Core.playerDatabase
-                    if (database.hasData(uuid)) {
-                        database.updateData(uuid, it)
-                    } else {
-                        database.createData(uuid, it)
-                    }
-
-                    DataHandler.removePlayer(uuid)
+                val database = Core.playerDatabase
+                if (database.hasData(uuid)) {
+                    database.updateData(uuid, it)
+                } else {
+                    database.createData(uuid, it)
                 }
-                    .await()
+
+                DataHandler.removePlayer(uuid)
             }
 
             Core.scoreboardHandler.removeScoreboard(player)

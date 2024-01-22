@@ -34,6 +34,7 @@ class ExplosionEvent : Listener {
 
                     data.balance += money
                     data.gold += gold
+                    source.giveExp(blockCount)
                 }
             }
         }

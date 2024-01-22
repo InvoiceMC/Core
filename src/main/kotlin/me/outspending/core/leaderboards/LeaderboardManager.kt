@@ -31,7 +31,7 @@ class LeaderboardManager {
 
     fun refreshLeaderboards() {
         runAsync {
-            val data = async { getAllData() }.await()
+            val data = getAllData()
 
             val topBalances = getTopBalance(data, 10)
             val topGold = getTopGold(data, 10)

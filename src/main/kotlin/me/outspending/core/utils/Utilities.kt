@@ -1,9 +1,7 @@
 package me.outspending.core.utils
 
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import java.lang.Runnable
+import kotlinx.coroutines.*
 import me.outspending.core.Core
 import me.outspending.core.storage.DataHandler
 import me.outspending.core.storage.PlayerData
@@ -15,6 +13,7 @@ import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Bukkit
 import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer
 import org.bukkit.entity.Player
+import java.util.concurrent.Executors
 
 class Utilities {
     companion object {
@@ -63,8 +62,11 @@ inline fun delay(delay: Long, crossinline block: () -> Unit) =
 inline fun repeat(delay: Long, period: Long, crossinline block: () -> Unit) =
     Bukkit.getScheduler().runTaskTimer(Core.instance, Runnable { block() }, delay, period)
 
-inline fun runAsync(crossinline block: suspend CoroutineScope.() -> Unit): Job =
-    CoroutineScope(Dispatchers.Default).launch { block() }
+inline fun runAsync(crossinline block: () -> Unit) {
+    object : Thread() {
+        override fun run() = block()
+    }.start()
+}
 
 fun progressBar(
     current: Int,

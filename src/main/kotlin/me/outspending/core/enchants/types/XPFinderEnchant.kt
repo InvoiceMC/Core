@@ -32,6 +32,8 @@ class XPFinderEnchant : PickaxeEnchant {
         random: Random
     ): EnchantResult {
         if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
+        if (player.level >= (100 + (25 * playerData.prestige))) return EnchantResult()
+
         val xp = random.nextInt((50 * playerData.prestige), (250 * playerData.prestige))
 
         player.showTitle(
