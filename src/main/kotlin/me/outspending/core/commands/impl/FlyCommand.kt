@@ -1,6 +1,5 @@
 package me.outspending.core.commands.impl
 
-import me.outspending.core.commands.annotations.Catcher
 import me.outspending.core.commands.annotations.Command
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import org.bukkit.entity.Player

@@ -16,7 +16,6 @@ import me.outspending.core.storage.PlayerData
 import me.outspending.core.storage.database.Database
 import me.outspending.core.storage.database.DatabaseHandler
 import me.outspending.core.storage.database.PlayerDatabase
-import me.sparky983.vision.paper.PaperVision
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.luckperms.api.LuckPerms
 import org.bukkit.plugin.PluginManager
@@ -35,7 +34,6 @@ class Core : JavaPlugin() {
         lateinit var scoreboardHandler: ScoreboardHandler
         lateinit var broadcastManager: BroadcastManager
         lateinit var leaderboardManager: LeaderboardManager
-        lateinit var paperVision: PaperVision
         lateinit var luckPermsProvider: LuckPerms
     }
 
@@ -47,7 +45,6 @@ class Core : JavaPlugin() {
             scoreboardHandler = ScoreboardHandler()
             broadcastManager = BroadcastManager()
             leaderboardManager = LeaderboardManager()
-            paperVision = PaperVision.create(this)
 
             // LuckPerms
             setupLuckperms()

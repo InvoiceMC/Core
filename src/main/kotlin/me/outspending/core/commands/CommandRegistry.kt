@@ -1,9 +1,7 @@
 package me.outspending.core.commands
 
-import me.outspending.core.Core
 import me.outspending.core.commands.annotations.Command
 import me.outspending.core.commands.builders.CommandBuilder
-import me.outspending.core.commands.builders.TabCompleteBuilder
 import me.outspending.core.instance
 import me.outspending.core.utils.helpers.TimerHelper
 import org.bukkit.Bukkit
