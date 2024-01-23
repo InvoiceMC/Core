@@ -14,6 +14,7 @@ object CompletionsRegistry {
             val instance = completion.constructors.first().newInstance() as Completion
             val name = completion.simpleName.lowercase().replace("completion", "")
             this.completions[name] = instance
+            println("Registered completion ${completion.simpleName}: $name")
         }
     }
 
