@@ -53,6 +53,9 @@ class Core : JavaPlugin() {
             // LuckPerms
             setupLuckperms()
 
+            // Register completions
+            registerCompletions()
+
             // Register Commands
             registerCommands()
 
@@ -66,9 +69,6 @@ class Core : JavaPlugin() {
 
             // Register Events
             registerEvents(server.pluginManager)
-
-            // Register completions
-            registerCompletions()
         }
 
         logger.info("Finished loading Core in $time!")
