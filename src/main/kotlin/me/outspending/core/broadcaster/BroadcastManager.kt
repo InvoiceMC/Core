@@ -1,6 +1,7 @@
 package me.outspending.core.broadcaster
 
 import me.outspending.core.Core
+import me.outspending.core.instance
 import org.bukkit.scheduler.BukkitRunnable
 
 class BroadcastManager {
@@ -23,6 +24,6 @@ class BroadcastManager {
                     currentIndex += 1
                 }
             }
-            .runTaskTimerAsynchronously(Core.instance, 9000, 9000)
+            .runTaskTimerAsynchronously(instance, 9000, 9000)
     }
 }

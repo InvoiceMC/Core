@@ -2,6 +2,7 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("io.papermc.paperweight.userdev") version "1.5.11"
     id("me.champeau.jmh") version "0.7.2"
+    id("co.uzzu.dotenv.gradle") version "4.0.0" // Dotenv support
     kotlin("jvm") version "2.0.0-Beta2"
     java
 }
@@ -29,6 +30,8 @@ dependencies {
 
     // Kotlin
     implementation(kotlin("stdlib-jdk8"))
+    implementation("org.jetbrains.kotlin:kotlin-reflect") // Kotlin Reflection
+    api("org.reflections:reflections:0.9.12") // Reflections
 
     // Other
     implementation("net.kyori:adventure-text-minimessage:4.14.0")
@@ -62,7 +65,12 @@ tasks {
     }
 
     reobfJar {
-        outputJar.set(file("E:\\Servers\\Testing\\plugins\\Core.jar"))
+        if (!env.DIRECTORY.isPresent) {
+            throw IllegalStateException("env.DIRECTORY is not set")
+        }
+        var dir = env.DIRECTORY.value
+        dir += "Core.jar"
+        outputJar.set(file(dir))
     }
 
     shadowJar {

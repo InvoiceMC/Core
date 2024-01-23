@@ -1,27 +1,65 @@
 package me.outspending.core.commands
 
 import me.outspending.core.Core
+import me.outspending.core.commands.annotations.Command
+import me.outspending.core.commands.builders.CommandBuilder
+import me.outspending.core.commands.builders.TabCompleteBuilder
+import me.outspending.core.instance
+import me.outspending.core.utils.helpers.TimerHelper
 import org.bukkit.Bukkit
-import org.bukkit.command.CommandMap
-import java.util.logging.Logger
+import org.bukkit.command.PluginCommand
+import org.reflections.Reflections
+import org.reflections.scanners.SubTypesScanner
+import org.reflections.scanners.TypeAnnotationsScanner
+import org.reflections.util.ClasspathHelper
+import org.reflections.util.ConfigurationBuilder
+import kotlin.reflect.KClass
 
 class CommandRegistry {
-    private val logger: Logger = Core.instance.logger
-    private val commandMap: CommandMap = Bukkit.getCommandMap()
+    private val logger = instance.logger
+    private val commandMap = Bukkit.getCommandMap()
+    private val builderConstructor = PluginCommand::class.java.declaredConstructors.first()
+
+    init {
+        builderConstructor.isAccessible = true
+    }
 
     fun registerCommands() {
-        val commandList =
-            listOf(
-                PickaxeCMD(),
-                FlyCMD(),
-                DatabaseCMD(),
-                PrestigeCMD(),
-                EnchantCMD()
-            )
 
-        for (cmd in commandList) {
-            commandMap.register(cmd.name, "core", cmd)
-            logger.info("Registered Command: ${cmd.name}")
+        val start = TimerHelper()
+
+        val pkg = Reflections(
+            ConfigurationBuilder()
+            .setUrls(ClasspathHelper.forPackage("me.outspending.core.commands.impl"))
+            .setScanners(SubTypesScanner(), TypeAnnotationsScanner()))
+        val commands = pkg.getTypesAnnotatedWith(Command::class.java)
+
+        for (command in commands) {
+            val builder = registerCommand(command.kotlin)
+            commandMap.register(builder.label, builder)
         }
+
+        val elapsed = start.formattedElapsed()
+
+        logger.info("Registered ${commands.size} commands in $elapsed")
+    }
+
+    private fun registerCommand(clazz: KClass<*>): PluginCommand {
+
+        logger.info("Registering command ${clazz.simpleName}")
+
+        val parsedCommand = CommandBuilder(clazz)
+        val info = parsedCommand.commandInfo
+
+        val builder = builderConstructor.newInstance(info.name, instance) as PluginCommand
+        builder.apply {
+            aliases = info.aliases.toList()
+            description = info.description
+            label = name
+            setExecutor(parsedCommand.executor)
+            tabCompleter = parsedCommand.tabCompleter
+        }
+
+        return builder
     }
 }

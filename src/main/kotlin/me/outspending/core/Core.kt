@@ -2,6 +2,7 @@ package me.outspending.core
 
 import me.outspending.core.broadcaster.BroadcastManager
 import me.outspending.core.commands.CommandRegistry
+import me.outspending.core.commands.completions.CompletionsRegistry.registerCompletions
 import me.outspending.core.enchants.events.ExplosionEvent
 import me.outspending.core.leaderboards.LeaderboardManager
 import me.outspending.core.listeners.ChatListeners
@@ -24,9 +25,11 @@ import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
 import kotlin.time.measureTime
 
+val instance
+    get() = JavaPlugin.getPlugin(Core::class.java)
+
 class Core : JavaPlugin() {
     companion object {
-        lateinit var instance: JavaPlugin
         lateinit var miniMessage: MiniMessage
         lateinit var playerDatabase: Database<UUID, PlayerData>
         lateinit var scoreboardHandler: ScoreboardHandler
@@ -39,7 +42,6 @@ class Core : JavaPlugin() {
     override fun onEnable() {
         val time = measureTime {
             // Initialize variables
-            instance = this
             miniMessage = MiniMessage.miniMessage()
             playerDatabase = PlayerDatabase()
             scoreboardHandler = ScoreboardHandler()
@@ -63,6 +65,9 @@ class Core : JavaPlugin() {
 
             // Register Events
             registerEvents(server.pluginManager)
+
+            // Register completions
+            registerCompletions()
         }
 
         logger.info("Finished loading Core in $time!")

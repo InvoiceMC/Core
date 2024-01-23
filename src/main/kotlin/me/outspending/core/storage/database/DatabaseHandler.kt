@@ -1,6 +1,7 @@
 package me.outspending.core.storage.database
 
 import me.outspending.core.Core
+import me.outspending.core.instance
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import java.sql.Connection
@@ -16,7 +17,7 @@ class DatabaseHandler {
         }
 
         fun setupDatabase() {
-            val plugin: JavaPlugin = Core.instance
+            val plugin: JavaPlugin = instance
 
             val dataFolder: File = plugin.dataFolder
             if (!dataFolder.exists()) {

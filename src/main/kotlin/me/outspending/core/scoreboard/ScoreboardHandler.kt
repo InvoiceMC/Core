@@ -2,6 +2,7 @@ package me.outspending.core.scoreboard
 
 import fr.mrmicky.fastboard.FastBoard
 import me.outspending.core.Core
+import me.outspending.core.instance
 import me.outspending.core.storage.DataHandler
 import me.outspending.core.utils.Utilities.colorizeHex
 import me.outspending.core.utils.Utilities.fix
@@ -27,7 +28,7 @@ class ScoreboardHandler {
                     }
                 }
             }
-            .runTaskTimerAsynchronously(Core.instance, 40, 40)
+            .runTaskTimerAsynchronously(instance, 40, 40)
     }
 
     fun createScoreboard(player: Player) {
