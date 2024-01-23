@@ -1,4 +1,4 @@
-package me.outspending.core.commands.impl
+package me.outspending.core.commands.impl.gameplay
 
 import me.outspending.core.commands.annotations.Command
 import me.outspending.core.utils.Utilities.toComponent

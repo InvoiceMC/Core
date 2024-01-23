@@ -1,5 +1,6 @@
 package me.outspending.core.utils.helpers
 
+import me.outspending.core.instance
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
@@ -70,7 +71,7 @@ class FormatHelper(private val text: String) {
             ) { args: ArgumentQueue, _ ->
                 val uuidString = args.popOr("uuid expected").value()
                 val uuid = UUID.fromString(uuidString)
-                val player = Bukkit.getPlayer(uuid) ?: throw IllegalArgumentException("Player $uuidString not found")
+                val player = instance.server.getPlayer(uuid) ?: throw IllegalArgumentException("Player $uuidString not found")
 
                 val color = NamedTextColor.GRAY // TODO: Get the player's chatcolor for real
                 Tag.styling(TextColor.color(color.red(), color.green(), color.blue()))

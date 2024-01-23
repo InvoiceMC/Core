@@ -2,6 +2,7 @@ package me.outspending.core
 
 import me.outspending.core.broadcaster.BroadcastManager
 import me.outspending.core.commands.CommandRegistry
+import me.outspending.core.commands.CommandRegistry.registerCommands
 import me.outspending.core.commands.completions.CompletionsRegistry.registerCompletions
 import me.outspending.core.enchants.events.ExplosionEvent
 import me.outspending.core.leaderboards.LeaderboardManager
@@ -50,7 +51,7 @@ class Core : JavaPlugin() {
             setupLuckperms()
 
             // Register Commands
-            registerAllCommands()
+            registerCommands()
 
             // Broadcast Manager
             registerBroadcasts()
@@ -100,11 +101,5 @@ class Core : JavaPlugin() {
         pluginManager.registerEvents(PlayerListeners(), this)
         pluginManager.registerEvents(MineListener(), this)
         pluginManager.registerEvents(ExplosionEvent(), this)
-    }
-
-    private fun registerAllCommands() {
-        logger.info("Registering commands...")
-        CommandRegistry().registerCommands()
-        logger.info("Finished registering commands!")
     }
 }

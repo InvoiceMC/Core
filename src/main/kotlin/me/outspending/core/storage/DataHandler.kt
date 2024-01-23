@@ -15,7 +15,7 @@ class DataHandler {
         private val BROADCAST_MESSAGE: String =
             listOf(
                     "",
-                    "<#7ee37b><b>ᴘʟᴀʏᴇʀᴅᴀᴛᴀ",
+                    "<#7ee37b><b>ᴘʟᴀʏᴇʀᴅᴀᴛᴀ</b>",
                     "  <gray>Successfully saved <#7ee37b><u>%s</u><gray> player(s)",
                     "  <gray>data in <#7ee37b><u>%s</u><gray>!",
                     ""

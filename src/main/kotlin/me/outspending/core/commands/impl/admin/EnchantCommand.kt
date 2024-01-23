@@ -1,4 +1,4 @@
-package me.outspending.core.commands.impl
+package me.outspending.core.commands.impl.admin
 
 import me.outspending.core.commands.annotations.Command
 import me.outspending.core.utils.PersistentUtils
