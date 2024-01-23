@@ -87,7 +87,7 @@ class ExecutorBuilder(
         }
 
         val requiredParams = params.filterNot { it.type.isMarkedNullable }
-        val optionalParams = params.filter { it.type.isMarkedNullable }
+//        val optionalParams = params.filter { it.type.isMarkedNullable }
 
         // Make sure all required parameters are present
         if (parsedArgs.filterNotNull().size < requiredParams.size) {

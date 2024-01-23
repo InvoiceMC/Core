@@ -10,7 +10,6 @@ import org.bukkit.entity.Player
     description = "Toggle fly mode",
     aliases = ["flight"],
     permission = "core.fly",
-    permissionMessage = "You do not have permission to use this command",
 )
 class FlyCommand {
 
