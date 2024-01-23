@@ -22,13 +22,14 @@ import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
 import kotlin.math.pow
 
-// val totalCost =
-//            enchant.getInitialCost() *
-//                ((pow(1.2, enchantLevel.toDouble()) - 1) / (1.2 - 1)) *
-//                enchantAmount
+// TODO: 1. Split this into multiple files and clean it up
+// TODO: 2. Add a way to view all enchants on the player's pickaxe
+// TODO: 3. Add a back button to the enchant upgrade GUI
+// TODO: 4. Add a max upgrade button (Maybe)
 
 object EnchantGUI {
-    private val enchantAmounts: Array<Int> = arrayOf(1, 25, 100, 250, 1000)
+    private val enchantAmounts: Array<Int> = arrayOf(1, 25, 50, 100, 500, 1000)
+    private val enchantPow: Double = 1.05
 
     fun openGUI(player: Player) {
         val dataContainer: PersistentDataContainer =
@@ -114,39 +115,56 @@ object EnchantGUI {
                 ) {
                     fill(1, 1, 9, 4) { item = item(Material.GRAY_STAINED_GLASS_PANE) }
 
+                    val newGUI = this
                     val enchantLevel = enchant.getEnchantmentLevel(persistentDataContainer)
                     for ((lineNum, i) in enchantAmounts.withIndex()) {
                         val enchantValue =
                             enchant.getInitialCost() *
-                                ((1.2.pow(enchantLevel.toDouble()) - 1) / (1.2 - 1)) *
-                                1.2
+                                ((enchantPow.pow(enchantLevel.toDouble()) - 1) / (enchantPow - 1)) *
+                                i
 
-                        Bukkit.broadcast("$lineNum".parse(false))
-                        slot((lineNum + 1), 2) {
+                        slot((lineNum + 2), 2) {
                             if (playerData.gold >= enchantValue) {
                                 item =
                                     item(Material.LIME_STAINED_GLASS_PANE) {
-                                        name = "<green>Upgrade <u>+${i}</u>".toComponent()
+                                        name = "<dark_green><u>+$i</u>".toComponent()
+                                        lore =
+                                            listOf(
+                                                    "",
+                                                    "<gray>ᴄᴜʀʀᴇɴᴛ ʟᴇᴠᴇʟ: <white>$enchantLevel",
+                                                    "<gray>ᴄᴏꜱᴛ: <yellow>⛁${enchantValue.format()} <gold>ɢᴏʟᴅ",
+                                                    "",
+                                                    "<green><u><i>Click to upgrade"
+                                                )
+                                                .map { it.parse() }
+                                        onClick {
+                                            upgradeEnchant(
+                                                player,
+                                                persistentDataContainer,
+                                                enchant,
+                                                i
+                                            )
+                                            newGUI.refresh()
+                                        }
                                     }
-                            } else {
-                                item =
-                                    item(Material.RED_STAINED_GLASS_PANE) {
-                                        name = "<red>Upgrade <u>+${i}</u>".toComponent()
-                                        //                            lore = listOf(
-                                        //                                "",
-                                        //                                "<gray>ᴄᴜʀʀᴇɴᴛ ʟᴇᴠᴇʟ:
-                                        // <#e3af7b>$enchantLevel",
-                                        //                                "<gray>ᴄᴏꜱᴛ:
-                                        // <#e3af7b>$${enchantValue.format()}",
-                                        //                                "",
-                                        //                                "<gray>ᴄʜᴀɴᴄᴇ:
-                                        // <#e3af7b>${enchant.getEnchantmentChance(enchantLevel).fix()}%",
-                                        //                                "",
-                                        //                                "<#7de37b><i><u>ᴄʟɪᴄᴋ ᴛᴏ
-                                        // ᴜᴘɢʀᴀᴅᴇ"
-                                        //                            ).map { it.toComponent() }
-                                    }
+
+                                return@slot
                             }
+                            item =
+                                item(Material.RED_STAINED_GLASS_PANE) {
+                                    name = "<dark_red><u>+$i</u>".toComponent()
+                                    lore =
+                                        listOf(
+                                                "",
+                                                "<gray>ᴄᴜʀʀᴇɴᴛ ʟᴇᴠᴇʟ: <white>$enchantLevel",
+                                                "<gray>ᴄᴏꜱᴛ: <yellow>⛁${enchantValue.format()} <gold>ɢᴏʟᴅ",
+                                                "",
+                                                "<red><u>You need more gold to upgrade this enchant!"
+                                            )
+                                            .map { it.parse() }
+                                }
+
+                            return@slot
                         }
                     }
                 }
@@ -155,7 +173,15 @@ object EnchantGUI {
         }
     }
 
-    private fun upgradeEnchant(player: Player) {}
+    // TODO: Make sure this adds the NBT to the pickaxe and updates the pickaxe lore
+    private fun upgradeEnchant(
+        player: Player,
+        persistentDataContainer: PersistentDataContainer,
+        enchant: PickaxeEnchant,
+        amount: Int
+    ) {
+        Bukkit.broadcast("<rainbow>Wow $amount".parse())
+    }
 
     private fun createEnchantButton(
         player: Player,
