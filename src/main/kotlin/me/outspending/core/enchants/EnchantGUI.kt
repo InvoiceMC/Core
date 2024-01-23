@@ -16,7 +16,6 @@ import me.tech.mcchestui.utils.openGUI
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
 import java.lang.Math.pow
@@ -28,7 +27,7 @@ import kotlin.math.pow
 //                enchantAmount
 
 object EnchantGUI {
-    private val enchantAmounts: Array<Int> = arrayOf(1, 25, 50, 100, 250, 500, 1000)
+    private val enchantAmounts: Array<Int> = arrayOf(1, 25, 100, 250, 1000)
 
     fun openGUI(player: Player) {
         val dataContainer: PersistentDataContainer =
@@ -41,8 +40,12 @@ object EnchantGUI {
                 type = GUIType.Chest(rows = 6),
             ) {
 
+                fill(1, 1, 9, 6) {
+                    item = item(Material.GRAY_STAINED_GLASS_PANE)
+                }
+
                 // Prestige Enchants
-                slot(1, 2) {
+                slot(3, 2) {
                     item = item(Material.PURPLE_DYE) {
                         name = "<#c97be3>ᴘʀᴇꜱᴛɪɢᴇ ᴇɴᴄʜᴀɴᴛꜱ".toComponent()
                         lore = listOf(
@@ -56,7 +59,7 @@ object EnchantGUI {
                 }
 
                 // Gold Merchant
-                slot(1, 4) {
+                slot(5, 2) {
                     item = item(Material.SUNFLOWER) {
                         name = "<#e3af7b>ɢᴏʟᴅ ᴍᴇʀᴄʜᴀɴᴛ".toComponent()
                         lore = listOf(
@@ -71,7 +74,7 @@ object EnchantGUI {
                 }
 
                 // Coming Soon
-                slot(1, 6) {
+                slot(7, 2) {
                     item = item(Material.BARRIER) {
                         name = "<#ff3333>ᴄᴏᴍɪɴɢ ꜱᴏᴏɴ".toComponent()
                         lore = listOf(
@@ -91,7 +94,6 @@ object EnchantGUI {
 
     private fun upgradeEnchantGUI(
         player: Player,
-        gui: GUI,
         persistentDataContainer: PersistentDataContainer,
         enchant: PickaxeEnchant
     ) {
@@ -102,10 +104,9 @@ object EnchantGUI {
                 type = GUIType.Chest(rows = 3),
             ) {
                 val enchantLevel = enchant.getEnchantmentLevel(persistentDataContainer)
-                var lineNum = 0
-                for (i in enchantAmounts) {
+                for ((lineNum, i) in enchantAmounts.withIndex()) {
                     val enchantValue = enchant.getInitialCost() * ((pow(1.2, enchantLevel.toDouble()) - 1) / (1.2 - 1)) * 1.2
-                    slot(1, lineNum) {
+                    slot((lineNum + 1), 4) {
                         if (playerData.gold >= enchantValue) {
                             item = item(Material.LIME_STAINED_GLASS_PANE) {
                                 name = "<green>Upgrade <u>+${i}</u>".toComponent()
@@ -127,7 +128,6 @@ object EnchantGUI {
                         }
                         return@slot
                     }
-                    lineNum++
                 }
             }
 
@@ -158,7 +158,7 @@ object EnchantGUI {
                 if (it.isLowerCase()) it.titlecase() else it.toString()
             }
 
-        return gui.slot(0, 0) {
+        return gui.slot(2, 4) {
             item = item(if (playerData.gold >= totalCost) Material.LIME_DYE else Material.RED_DYE) {
                 name = "<#e3af7b>${enchantName} Enchant".toComponent()
                 lore = listOf(
@@ -171,7 +171,7 @@ object EnchantGUI {
                     "",
                     "<#7de37b><i><u>ᴄʟɪᴄᴋ ᴛᴏ ᴜᴘɢʀᴀᴅᴇ"
                 ).map { it.toComponent() }
-                onClick { upgradeEnchantGUI(player, gui, persistentDataContainer, enchant) }
+                onClick { upgradeEnchantGUI(player, persistentDataContainer, enchant) }
             }
         }
     }

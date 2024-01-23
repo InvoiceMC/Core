@@ -2,6 +2,7 @@ package me.outspending.core.commands
 
 import me.outspending.core.commands.annotations.Command
 import me.outspending.core.commands.builders.CommandBuilder
+import me.outspending.core.commands.data.CommandData
 import me.outspending.core.instance
 import org.bukkit.Bukkit
 import org.bukkit.command.PluginCommand

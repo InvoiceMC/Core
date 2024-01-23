@@ -4,6 +4,8 @@ import me.outspending.core.Core
 import me.outspending.core.instance
 import me.outspending.core.storage.DataHandler
 import me.outspending.core.storage.PlayerData
+import me.outspending.core.utils.Utilities.format
+import me.outspending.core.utils.helpers.NumberHelper
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
@@ -34,13 +36,13 @@ object Utilities {
     fun String.toTinyString(): String = StringUtils.tinyString(this)
 
     /** Numbers */
-    fun Number.format(): String = NumberUtils.format(this.toDouble())
+    fun Number.format(): String = NumberHelper(this).toShorten()
 
-    fun Number.regex(): String = NumberUtils.regex(this.toDouble())
+    fun Number.regex(): String = NumberHelper(this).toCommas()
 
-    fun Number.fix(): String = NumberUtils.fix(this.toDouble())
+    fun Number.fix(): String = "%.1f".format(this.toDouble())
 
-    fun Number.toTinyNumber(): String = NumberUtils.tinyNumbers(this.toInt())
+    fun Number.toTinyNumber(): String = NumberHelper(this).toTinyNumbers()
 
     /** Player */
     fun Player.getData(): PlayerData? = DataHandler.getPlayerData(this.uniqueId)

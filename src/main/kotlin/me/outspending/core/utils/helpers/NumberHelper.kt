@@ -56,9 +56,9 @@ class NumberHelper(
         if (value >= 3 && base < FORMAT_SUFFIXES.size) {
             val formattedNumber = numValue / 10.0.pow((base * 3).toDouble())
             return if (formattedNumber % 1 == 0.0) {
-                String.format("%.0f %c", formattedNumber, FORMAT_SUFFIXES[base])
+                String.format("%.0f%s", formattedNumber, FORMAT_SUFFIXES[base])
             } else {
-                String.format("%.1f %c", formattedNumber, FORMAT_SUFFIXES[base])
+                String.format("%.1f%s", formattedNumber, FORMAT_SUFFIXES[base])
             }
         } else {
             return String.format("%.0f", numValue.toDouble())
