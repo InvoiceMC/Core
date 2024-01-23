@@ -1,4 +1,4 @@
-package me.outspending.core.commands.impl
+package me.outspending.core.commands.impl.utility
 
 import me.outspending.core.commands.annotations.Catcher
 import me.outspending.core.commands.annotations.Command

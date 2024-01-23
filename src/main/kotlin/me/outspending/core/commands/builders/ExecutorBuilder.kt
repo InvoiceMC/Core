@@ -82,7 +82,7 @@ class ExecutorBuilder(
 
         // Make sure the sender is proper type
         if (requiredSender != SenderType.BOTH && requiredSender != senderType) {
-            sender.sendMessage("<gray>This command can only be used by <main>${requiredSender.name.lowercase()}<gray>s".parse(true))
+            sender.sendMessage("<gray>This command can only be used by <main>${requiredSender.cleanName}".parse(true))
             return@CommandExecutor true
         }
 

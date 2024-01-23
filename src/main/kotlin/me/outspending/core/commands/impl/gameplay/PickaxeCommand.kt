@@ -1,9 +1,8 @@
-package me.outspending.core.commands.impl
+package me.outspending.core.commands.impl.gameplay
 
 import me.outspending.core.commands.annotations.Command
 import me.outspending.core.utils.Utilities.toComponent
 import org.bukkit.Material
-import org.bukkit.command.CommandSender
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemFlag

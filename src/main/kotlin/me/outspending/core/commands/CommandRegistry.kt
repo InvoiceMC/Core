@@ -1,11 +1,9 @@
 package me.outspending.core.commands
 
-import me.outspending.core.Core
 import me.outspending.core.commands.annotations.Command
 import me.outspending.core.commands.builders.CommandBuilder
-import me.outspending.core.commands.builders.TabCompleteBuilder
+import me.outspending.core.commands.data.CommandData
 import me.outspending.core.instance
-import me.outspending.core.utils.helpers.TimerHelper
 import org.bukkit.Bukkit
 import org.bukkit.command.PluginCommand
 import org.reflections.Reflections
@@ -14,11 +12,13 @@ import org.reflections.scanners.TypeAnnotationsScanner
 import org.reflections.util.ClasspathHelper
 import org.reflections.util.ConfigurationBuilder
 import kotlin.reflect.KClass
+import kotlin.time.measureTime
 
-class CommandRegistry {
+object CommandRegistry {
     private val logger = instance.logger
     private val commandMap = Bukkit.getCommandMap()
     private val builderConstructor = PluginCommand::class.java.declaredConstructors.first()
+    val commands: MutableList<CommandData> = mutableListOf()
 
     init {
         builderConstructor.isAccessible = true
@@ -26,22 +26,19 @@ class CommandRegistry {
 
     fun registerCommands() {
 
-        val start = TimerHelper()
-
         val pkg = Reflections(
             ConfigurationBuilder()
-            .setUrls(ClasspathHelper.forPackage("me.outspending.core.commands.impl"))
-            .setScanners(SubTypesScanner(), TypeAnnotationsScanner()))
+                .setUrls(ClasspathHelper.forPackage("me.outspending.core.commands.impl"))
+                .setScanners(SubTypesScanner(), TypeAnnotationsScanner()))
         val commands = pkg.getTypesAnnotatedWith(Command::class.java)
-
-        for (command in commands) {
-            val builder = registerCommand(command.kotlin)
-            commandMap.register(builder.label, builder)
+        val time = measureTime {
+            for (command in commands) {
+                val builder = registerCommand(command.kotlin)
+                commandMap.register(builder.label, builder)
+            }
         }
 
-        val elapsed = start.formattedElapsed()
-
-        logger.info("Registered ${commands.size} commands in $elapsed")
+        logger.info("Registered commands in $time")
     }
 
     private fun registerCommand(clazz: KClass<*>): PluginCommand {
@@ -59,6 +56,8 @@ class CommandRegistry {
             setExecutor(parsedCommand.executor)
             tabCompleter = parsedCommand.tabCompleter
         }
+
+        commands.add(info)
 
         return builder
     }

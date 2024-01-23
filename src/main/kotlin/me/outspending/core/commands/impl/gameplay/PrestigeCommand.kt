@@ -1,10 +1,8 @@
-package me.outspending.core.commands.impl
+package me.outspending.core.commands.impl.gameplay
 
 import me.outspending.core.storage.PlayerData
 import me.outspending.core.utils.Utilities.getData
-import me.outspending.core.utils.Utilities.toComponent
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 
 class PrestigeCommand {
