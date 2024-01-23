@@ -33,7 +33,7 @@ class TabCompleteBuilder(
                 complete(parameters, args.size)
             } else {
                 // Main function tab complete (main command args)
-                val parameters = mainFunction.valueParameters
+                val parameters = mainFunction.valueParameters.slice(1 until mainFunction.valueParameters.size)
 
                 complete(parameters, args.size)
             }
@@ -60,7 +60,6 @@ class TabCompleteBuilder(
             }
         } else {
             val completion = getCompletion(tabTypeList) ?: return emptyList()
-
             completion.complete()
         }
     }
