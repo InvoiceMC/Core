@@ -18,7 +18,7 @@ class ScoreboardHandler {
         "",
         "<main>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ",
         "<main><b>|</b> <gray>ᴘʀᴇꜱᴛɪɢᴇ: <#c97be3>★%prestige%",
-        "<main><b>|</b> <gray>ʟᴇᴠᴇʟ: <#c97be3>$%level%",
+        "<main><b>|</b> <gray>ʟᴇᴠᴇʟ: <white>%level%",
         "<main><b>|</b> <dark_gray>- %progress%",
         "",
         "<main><b>|</b> <green>$%balance% <dark_green>ᴍᴏɴᴇʏ",
@@ -78,7 +78,7 @@ class ScoreboardHandler {
         player.getData()?.let { playerData ->
             val pmine = playerData.pmineName
 
-            board.updateLines("<color:#e08a19><b>ɪɴᴠᴏɪᴄᴇ".toComponent())
+            board.updateTitle("<color:#e08a19><b>ɪɴᴠᴏɪᴄᴇ".toComponent())
             board.updateLines(scoreboardFormat.map {
                 val message = parseLine(player, it, playerData, pmine)
                 message.toComponent()
