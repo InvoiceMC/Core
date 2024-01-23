@@ -34,59 +34,66 @@ object EnchantGUI {
             PersistentUtils.getPersistentData(player.inventory.itemInMainHand)
 
         player.getData()?.let { data ->
-            val gui: GUI = gui(
-                plugin = instance,
-                title = "Enchantments".toComponent(),
-                type = GUIType.Chest(rows = 6),
-            ) {
+            val gui: GUI =
+                gui(
+                    plugin = instance,
+                    title = "Enchantments".toComponent(),
+                    type = GUIType.Chest(rows = 6),
+                ) {
+                    fill(1, 1, 9, 6) { item = item(Material.GRAY_STAINED_GLASS_PANE) }
 
-                fill(1, 1, 9, 6) {
-                    item = item(Material.GRAY_STAINED_GLASS_PANE)
-                }
-
-                // Prestige Enchants
-                slot(3, 2) {
-                    item = item(Material.PURPLE_DYE) {
-                        name = "<#c97be3>ᴘʀᴇꜱᴛɪɢᴇ ᴇɴᴄʜᴀɴᴛꜱ".toComponent()
-                        lore = listOf(
-                            "",
-                            "<gray>Here you will find the prestige enchants, these enchants are",
-                            "<gray>obtainable by prestiging and are very powerful.",
-                            "",
-                            "<#c97be3><i><u>ᴄʟɪᴄᴋ ᴛᴏ ᴠɪᴇᴡ"
-                        ).map { it.toComponent() }
+                    // Prestige Enchants
+                    slot(3, 2) {
+                        item =
+                            item(Material.PURPLE_DYE) {
+                                name = "<#c97be3>ᴘʀᴇꜱᴛɪɢᴇ ᴇɴᴄʜᴀɴᴛꜱ".toComponent()
+                                lore =
+                                    listOf(
+                                            "",
+                                            "<gray>Here you will find the prestige enchants, these enchants are",
+                                            "<gray>obtainable by prestiging and are very powerful.",
+                                            "",
+                                            "<#c97be3><i><u>ᴄʟɪᴄᴋ ᴛᴏ ᴠɪᴇᴡ"
+                                        )
+                                        .map { it.toComponent() }
+                            }
                     }
-                }
 
-                // Gold Merchant
-                slot(5, 2) {
-                    item = item(Material.SUNFLOWER) {
-                        name = "<#e3af7b>ɢᴏʟᴅ ᴍᴇʀᴄʜᴀɴᴛ".toComponent()
-                        lore = listOf(
-                            "",
-                            "<gray>Here at the gold merchant you can trade money for gold!",
-                            "",
-                            "<gray>You currently have: <#e3af7b>${data.gold.format()} gold",
-                            "",
-                            "<#e3af7b><i><u>ᴄʟɪᴄᴋ ᴛᴏ ᴠɪᴇᴡ"
-                        ).map { it.toComponent() }
+                    // Gold Merchant
+                    slot(5, 2) {
+                        item =
+                            item(Material.SUNFLOWER) {
+                                name = "<#e3af7b>ɢᴏʟᴅ ᴍᴇʀᴄʜᴀɴᴛ".toComponent()
+                                lore =
+                                    listOf(
+                                            "",
+                                            "<gray>Here at the gold merchant you can trade money for gold!",
+                                            "",
+                                            "<gray>You currently have: <#e3af7b>${data.gold.format()} gold",
+                                            "",
+                                            "<#e3af7b><i><u>ᴄʟɪᴄᴋ ᴛᴏ ᴠɪᴇᴡ"
+                                        )
+                                        .map { it.toComponent() }
+                            }
                     }
-                }
 
-                // Coming Soon
-                slot(7, 2) {
-                    item = item(Material.BARRIER) {
-                        name = "<#ff3333>ᴄᴏᴍɪɴɢ ꜱᴏᴏɴ".toComponent()
-                        lore = listOf(
-                            "",
-                            "<gray>This feature is coming soon!",
-                            "",
-                        ).map { it.toComponent() }
+                    // Coming Soon
+                    slot(7, 2) {
+                        item =
+                            item(Material.BARRIER) {
+                                name = "<#ff3333>ᴄᴏᴍɪɴɢ ꜱᴏᴏɴ".toComponent()
+                                lore =
+                                    listOf(
+                                            "",
+                                            "<gray>This feature is coming soon!",
+                                            "",
+                                        )
+                                        .map { it.toComponent() }
+                            }
                     }
-                }
 
-                createEnchantButton(player, data, this, dataContainer, MerchantEnchant())
-            }
+                    createEnchantButton(player, data, this, dataContainer, MerchantEnchant())
+                }
 
             player.openGUI(gui)
         }
@@ -98,38 +105,53 @@ object EnchantGUI {
         enchant: PickaxeEnchant
     ) {
         player.getData()?.let { playerData ->
-            val upgradeGUI: GUI = gui(
-                plugin = instance,
-                title = "Upgrade ${enchant.getEnchantName()} Enchant".toComponent(),
-                type = GUIType.Chest(rows = 3),
-            ) {
-                val enchantLevel = enchant.getEnchantmentLevel(persistentDataContainer)
-                for ((lineNum, i) in enchantAmounts.withIndex()) {
-                    val enchantValue = enchant.getInitialCost() * ((pow(1.2, enchantLevel.toDouble()) - 1) / (1.2 - 1)) * 1.2
-                    slot((lineNum + 1), 4) {
-                        if (playerData.gold >= enchantValue) {
-                            item = item(Material.LIME_STAINED_GLASS_PANE) {
-                                name = "<green>Upgrade <u>+${i}</u>".toComponent()
+            val upgradeGUI: GUI =
+                gui(
+                    plugin = instance,
+                    title = "Upgrade ${enchant.getEnchantName()} Enchant".toComponent(),
+                    type = GUIType.Chest(rows = 3),
+                ) {
+
+                    fill(1, 1, 9 ,4) {
+                        item = item(Material.GRAY_STAINED_GLASS_PANE)
+                    }
+
+                    val enchantLevel = enchant.getEnchantmentLevel(persistentDataContainer)
+                    for ((lineNum, i) in enchantAmounts.withIndex()) {
+                        val enchantValue =
+                            enchant.getInitialCost() *
+                                ((1.2.pow(enchantLevel.toDouble()) - 1) / (1.2 - 1)) *
+                                1.2
+                        slot((lineNum + 1), 4) {
+                            if (playerData.gold >= enchantValue) {
+                                item =
+                                    item(Material.LIME_STAINED_GLASS_PANE) {
+                                        name = "<green>Upgrade <u>+${i}</u>".toComponent()
+                                    }
+                                return@slot
                             }
+
+                            item =
+                                item(Material.RED_STAINED_GLASS_PANE) {
+                                    name = "<red>Upgrade <u>+${i}</u>".toComponent()
+                                    //                            lore = listOf(
+                                    //                                "",
+                                    //                                "<gray>ᴄᴜʀʀᴇɴᴛ ʟᴇᴠᴇʟ:
+                                    // <#e3af7b>$enchantLevel",
+                                    //                                "<gray>ᴄᴏꜱᴛ:
+                                    // <#e3af7b>$${enchantValue.format()}",
+                                    //                                "",
+                                    //                                "<gray>ᴄʜᴀɴᴄᴇ:
+                                    // <#e3af7b>${enchant.getEnchantmentChance(enchantLevel).fix()}%",
+                                    //                                "",
+                                    //                                "<#7de37b><i><u>ᴄʟɪᴄᴋ ᴛᴏ
+                                    // ᴜᴘɢʀᴀᴅᴇ"
+                                    //                            ).map { it.toComponent() }
+                                }
                             return@slot
                         }
-
-                        item = item(Material.RED_STAINED_GLASS_PANE) {
-                            name = "<red>Upgrade <u>+${i}</u>".toComponent()
-//                            lore = listOf(
-//                                "",
-//                                "<gray>ᴄᴜʀʀᴇɴᴛ ʟᴇᴠᴇʟ: <#e3af7b>$enchantLevel",
-//                                "<gray>ᴄᴏꜱᴛ: <#e3af7b>$${enchantValue.format()}",
-//                                "",
-//                                "<gray>ᴄʜᴀɴᴄᴇ: <#e3af7b>${enchant.getEnchantmentChance(enchantLevel).fix()}%",
-//                                "",
-//                                "<#7de37b><i><u>ᴄʟɪᴄᴋ ᴛᴏ ᴜᴘɢʀᴀᴅᴇ"
-//                            ).map { it.toComponent() }
-                        }
-                        return@slot
                     }
                 }
-            }
 
             player.openGUI(upgradeGUI)
         }
@@ -159,20 +181,23 @@ object EnchantGUI {
             }
 
         return gui.slot(2, 4) {
-            item = item(if (playerData.gold >= totalCost) Material.LIME_DYE else Material.RED_DYE) {
-                name = "<#e3af7b>${enchantName} Enchant".toComponent()
-                lore = listOf(
-                    *description,
-                    "",
-                    "<gray>ᴄᴜʀʀᴇɴᴛ ʟᴇᴠᴇʟ: <#e3af7b>$enchantLevel",
-                    "<gray>ᴄᴏꜱᴛ: <#e3af7b>$${totalCost.format()}",
-                    "",
-                    "<gray>ᴄʜᴀɴᴄᴇ: <#e3af7b>${enchant.getEnchantmentChance(enchantLevel).fix()}%",
-                    "",
-                    "<#7de37b><i><u>ᴄʟɪᴄᴋ ᴛᴏ ᴜᴘɢʀᴀᴅᴇ"
-                ).map { it.toComponent() }
-                onClick { upgradeEnchantGUI(player, persistentDataContainer, enchant) }
-            }
+            item =
+                item(if (playerData.gold >= totalCost) Material.LIME_DYE else Material.RED_DYE) {
+                    name = "<#e3af7b>${enchantName} Enchant".toComponent()
+                    lore =
+                        listOf(
+                                *description,
+                                "",
+                                "<gray>ᴄᴜʀʀᴇɴᴛ ʟᴇᴠᴇʟ: <#e3af7b>$enchantLevel",
+                                "<gray>ᴄᴏꜱᴛ: <#e3af7b>$${totalCost.format()}",
+                                "",
+                                "<gray>ᴄʜᴀɴᴄᴇ: <#e3af7b>${enchant.getEnchantmentChance(enchantLevel).fix()}%",
+                                "",
+                                "<#7de37b><i><u>ᴄʟɪᴄᴋ ᴛᴏ ᴜᴘɢʀᴀᴅᴇ"
+                            )
+                            .map { it.toComponent() }
+                    onClick { upgradeEnchantGUI(player, persistentDataContainer, enchant) }
+                }
         }
     }
 }
