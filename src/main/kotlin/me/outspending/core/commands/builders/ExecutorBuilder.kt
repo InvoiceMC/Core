@@ -6,7 +6,6 @@ import me.outspending.core.commands.data.CommandData
 import me.outspending.core.commands.enums.SenderType
 import me.outspending.core.instance
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
-import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender

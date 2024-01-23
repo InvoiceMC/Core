@@ -1,12 +1,10 @@
 package me.outspending.core.enchants
 
-data class EnchantResult(var money: Double= 0.0, var gold: Int = 1, var xp: Int = 0) {
-    operator fun plus(enchantResult: EnchantResult): EnchantResult {
-        return EnchantResult(
-            money + enchantResult.money,
-            gold + enchantResult.gold,
-            xp + enchantResult.xp
-        )
+data class EnchantResult(var money: Double = 0.0, var gold: Int = 1, var xp: Int = 0) {
+    operator fun plusAssign(enchantResult: EnchantResult) {
+        money += enchantResult.money
+        gold += enchantResult.gold
+        xp += enchantResult.xp
     }
 
     fun add(enchantResult: EnchantResult) {

@@ -21,7 +21,7 @@ repositories {
 
     maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
 
-    maven { url = uri("https://repo.sparky983.me/releases") }
+    maven { url = uri("https://jitpack.io") }
 }
 
 dependencies {
@@ -35,7 +35,7 @@ dependencies {
 
     // Other
     implementation("net.kyori:adventure-text-minimessage:4.14.0")
-    implementation("me.sparky983:vision-paper:1.0.1")
+    implementation("com.github.DebitCardz:mc-chestui-plus:1.4.5")
     implementation("fr.mrmicky:fastboard:2.0.2")
     compileOnly("net.luckperms:api:5.4")
 

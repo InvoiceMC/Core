@@ -1,6 +1,5 @@
 package me.outspending.core.broadcaster
 
-import me.outspending.core.Core
 import me.outspending.core.instance
 import org.bukkit.scheduler.BukkitRunnable
 

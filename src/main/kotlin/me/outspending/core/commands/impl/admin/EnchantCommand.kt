@@ -4,7 +4,6 @@ import me.outspending.core.commands.annotations.Command
 import me.outspending.core.utils.PersistentUtils
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
-import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
 import org.bukkit.inventory.PlayerInventory
 import org.bukkit.inventory.meta.ItemMeta

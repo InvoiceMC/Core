@@ -1,6 +1,7 @@
 package me.outspending.core.commands.builders
 
 import me.outspending.core.commands.annotations.Tab
+import me.outspending.core.commands.completions.CompletionsRegistry.getCompletion
 import me.outspending.core.commands.data.CommandData
 import me.outspending.core.instance
 import org.bukkit.OfflinePlayer
@@ -10,7 +11,6 @@ import kotlin.reflect.KFunction
 import kotlin.reflect.KParameter
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.valueParameters
-import me.outspending.core.commands.completions.CompletionsRegistry.getCompletion
 
 class TabCompleteBuilder(
     private val command: CommandData,

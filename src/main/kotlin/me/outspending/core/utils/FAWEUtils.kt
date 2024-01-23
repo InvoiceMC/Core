@@ -17,7 +17,6 @@ import com.sk89q.worldedit.regions.CuboidRegion
 import com.sk89q.worldedit.regions.Region
 import com.sk89q.worldedit.session.ClipboardHolder
 import com.sk89q.worldedit.world.block.BaseBlock
-import me.outspending.core.Core
 import me.outspending.core.instance
 import me.outspending.core.mine.MineBlock
 import org.bukkit.Location

@@ -96,8 +96,8 @@ object Utilities {
         max: Int,
         length: Int = 20,
         symbol: String = "|",
-        completedColor: String = "&a",
-        notCompletedColor: String = "&c",
+        completedColor: String = "<green>",
+        notCompletedColor: String = "<red>",
     ): String =
         progressBar((current / max).toFloat(), length, symbol, completedColor, notCompletedColor)
 
@@ -105,8 +105,8 @@ object Utilities {
         percent: Float,
         length: Int = 20,
         symbol: String = "|",
-        completedColor: String = "&a",
-        notCompletedColor: String = "&c",
+        completedColor: String = "<green>",
+        notCompletedColor: String = "<red>",
     ): String {
         val progress = (length * percent).toInt()
         return "$completedColor${symbol.repeat(progress)}$notCompletedColor${symbol.repeat(length - progress)}"
