@@ -8,17 +8,18 @@ import me.outspending.core.utils.Utilities.fix
 import me.outspending.core.utils.Utilities.format
 import me.outspending.core.utils.Utilities.getData
 import me.outspending.core.utils.Utilities.toComponent
+import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import me.tech.mcchestui.GUI
 import me.tech.mcchestui.GUIType
 import me.tech.mcchestui.item.item
 import me.tech.mcchestui.utils.gui
 import me.tech.mcchestui.utils.openGUI
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
-import java.lang.Math.pow
 import kotlin.math.pow
 
 // val totalCost =
@@ -111,9 +112,7 @@ object EnchantGUI {
                     title = "Upgrade ${enchant.getEnchantName()} Enchant".toComponent(),
                     type = GUIType.Chest(rows = 3),
                 ) {
-                    fill(1, 1, 9 ,4) {
-                        item = item(Material.GRAY_STAINED_GLASS_PANE)
-                    }
+                    fill(1, 1, 9, 4) { item = item(Material.GRAY_STAINED_GLASS_PANE) }
 
                     val enchantLevel = enchant.getEnchantmentLevel(persistentDataContainer)
                     for ((lineNum, i) in enchantAmounts.withIndex()) {
@@ -121,33 +120,33 @@ object EnchantGUI {
                             enchant.getInitialCost() *
                                 ((1.2.pow(enchantLevel.toDouble()) - 1) / (1.2 - 1)) *
                                 1.2
-                        slot((lineNum + 1), 4) {
+
+                        Bukkit.broadcast("$lineNum".parse(false))
+                        slot((lineNum + 1), 2) {
                             if (playerData.gold >= enchantValue) {
                                 item =
                                     item(Material.LIME_STAINED_GLASS_PANE) {
                                         name = "<green>Upgrade <u>+${i}</u>".toComponent()
                                     }
-                                return@slot
+                            } else {
+                                item =
+                                    item(Material.RED_STAINED_GLASS_PANE) {
+                                        name = "<red>Upgrade <u>+${i}</u>".toComponent()
+                                        //                            lore = listOf(
+                                        //                                "",
+                                        //                                "<gray>ᴄᴜʀʀᴇɴᴛ ʟᴇᴠᴇʟ:
+                                        // <#e3af7b>$enchantLevel",
+                                        //                                "<gray>ᴄᴏꜱᴛ:
+                                        // <#e3af7b>$${enchantValue.format()}",
+                                        //                                "",
+                                        //                                "<gray>ᴄʜᴀɴᴄᴇ:
+                                        // <#e3af7b>${enchant.getEnchantmentChance(enchantLevel).fix()}%",
+                                        //                                "",
+                                        //                                "<#7de37b><i><u>ᴄʟɪᴄᴋ ᴛᴏ
+                                        // ᴜᴘɢʀᴀᴅᴇ"
+                                        //                            ).map { it.toComponent() }
+                                    }
                             }
-
-                            item =
-                                item(Material.RED_STAINED_GLASS_PANE) {
-                                    name = "<red>Upgrade <u>+${i}</u>".toComponent()
-                                    //                            lore = listOf(
-                                    //                                "",
-                                    //                                "<gray>ᴄᴜʀʀᴇɴᴛ ʟᴇᴠᴇʟ:
-                                    // <#e3af7b>$enchantLevel",
-                                    //                                "<gray>ᴄᴏꜱᴛ:
-                                    // <#e3af7b>$${enchantValue.format()}",
-                                    //                                "",
-                                    //                                "<gray>ᴄʜᴀɴᴄᴇ:
-                                    // <#e3af7b>${enchant.getEnchantmentChance(enchantLevel).fix()}%",
-                                    //                                "",
-                                    //                                "<#7de37b><i><u>ᴄʟɪᴄᴋ ᴛᴏ
-                                    // ᴜᴘɢʀᴀᴅᴇ"
-                                    //                            ).map { it.toComponent() }
-                                }
-                            return@slot
                         }
                     }
                 }
