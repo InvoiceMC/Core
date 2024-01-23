@@ -9,6 +9,7 @@ import me.outspending.core.utils.Utilities.getData
 import me.outspending.core.utils.Utilities.progressBar
 import me.outspending.core.utils.Utilities.runTaskTimerAsynchronously
 import me.outspending.core.utils.Utilities.toComponent
+import me.outspending.core.utils.helpers.FormatHelper
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import org.bukkit.entity.Player
 import java.util.*
@@ -18,19 +19,20 @@ class ScoreboardHandler {
     private val scoreboardFormat: Array<String> =
         arrayOf(
             "",
-            "<main>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ",
-            "<main><b>|</b> <gray>ᴘʀᴇꜱᴛɪɢᴇ: <#c97be3>★%prestige%",
-            "<main><b>|</b> <gray>ʟᴇᴠᴇʟ: <white>%level%",
-            "<main><b>|</b> <dark_gray>- %progress%",
+            "<main><bold>%player%",
+            "<main>▐ <gray>Prestige: <#c97be3>★%prestige%",
+            "<main>▐ <gray>Level: <white>%level%",
+            "<main>▐ <dark_gray>- %progress%",
             "",
-            "<main><b>|</b> <green>$%balance% <dark_green>ᴍᴏɴᴇʏ",
-            "<main><b>|</b> <yellow>⛁%gold% <gold>ɢᴏʟᴅ",
-            "<main><b>|</b> <gray>⛏%blocks% <dark_gray>ʙʟᴏᴄᴋꜱ",
+            "<main>▐ <gray>Balance: <green>$%balance%",
+            "<main>▐ <gray>Gold: <yellow>⛁%gold%",
+            "<main>▐ <gray>Mined: ⛏%blocks%",
             "",
-            "<main><b>|</b> <gray>ᴘᴍɪɴᴇ: <white>%pmine%",
-            "<main><b>|</b> <gray>ᴘᴍɪɴᴇ ʟᴇᴠᴇʟ: <white>N/A",
+            "<main><bold>SERVER",
+            "<main>▐ <gray>Players: <white>%player_count%<white>/<white>%max_players%",
+            "<main>▐ <gray>Ping: <white>%ping%",
             "",
-            "<white><u>Invoice</u>.Minehut.gg"
+            "<white><u>Invoice</u>.minehut.gg"
         )
 
     init {
@@ -80,6 +82,9 @@ class ScoreboardHandler {
             .replace("%gold%", playerData.gold.format())
             .replace("%blocks%", playerData.blocksBroken.format())
             .replace("%prestige%", playerData.prestige.toString())
+            .replace("%player_count%", player.server.onlinePlayers.size.toString())
+            .replace("%max_players%", player.server.maxPlayers.toString())
+            .replace("%ping%", player.ping.toString() + "ms")
     }
 
     private fun updateScoreboard(board: FastBoard) {
@@ -88,10 +93,19 @@ class ScoreboardHandler {
         player.getData()?.let { playerData ->
             val pmine = playerData.pmineName
 
-            board.updateTitle("<color:#e08a19><b>ɪɴᴠᴏɪᴄᴇ".toComponent())
+            board.updateTitle("<main><b>INVOICE</b> <gray>S1".parse())
             board.updateLines(
-                scoreboardFormat.map { parseLine(player, it, playerData, pmine).parse(false) }
+                scoreboardFormat.map { toSmallCaps(parseLine(player, it, playerData, pmine)).parse(false) }
             )
+        }
+    }
+
+    // Replace all text with small caps (except if they are in a tag)
+    private fun toSmallCaps(string: String): String {
+        val regex = Regex("(?s)(?<=^|>)(?!@)[^<>]*(?=<|$)")
+        val regex2 = Regex("@\\w+")
+        return string.replace(regex) { matchResult -> FormatHelper(matchResult.value).toSmallCaps() }.replace(regex2) {
+            matchResult -> matchResult.value.replace("@", "")
         }
     }
 }

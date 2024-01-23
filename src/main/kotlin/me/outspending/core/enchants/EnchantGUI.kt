@@ -111,7 +111,6 @@ object EnchantGUI {
                     title = "Upgrade ${enchant.getEnchantName()} Enchant".toComponent(),
                     type = GUIType.Chest(rows = 3),
                 ) {
-
                     fill(1, 1, 9 ,4) {
                         item = item(Material.GRAY_STAINED_GLASS_PANE)
                     }

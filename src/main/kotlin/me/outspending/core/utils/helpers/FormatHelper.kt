@@ -46,7 +46,7 @@ val prefixComponent = "<main><bold>INVOICE<reset> <dark_gray>» <gray>".parse()
 class FormatHelper(private val text: String) {
 
     // Convert text to small letters (small caps)
-    fun toSmallCaps() = text.map { small_caps[it.toString()] ?: it }.joinToString("")
+    fun toSmallCaps() = text.map { small_caps[it.toString().lowercase()] ?: it }.joinToString("")
 
     // Parse text to MiniMessage component
     fun parse(prefix: Boolean = false): Component {
