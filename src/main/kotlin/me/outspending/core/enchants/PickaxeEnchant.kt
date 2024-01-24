@@ -12,9 +12,11 @@ interface PickaxeEnchant {
 
     fun getEnchantName(): String
 
-    fun getInitialCost(): Double
+    fun getInitialCost(): Double = 100.0
 
-    fun getMaxEnchantmentLevel(): Int
+    fun getIncreaseProgression(): Double = 0.5
+
+    fun getMaxEnchantmentLevel(): Int = 25000
 
     fun getEnchantmentChance(enchantLevel: Int): Double
 
