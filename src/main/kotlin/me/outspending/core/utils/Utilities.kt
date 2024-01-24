@@ -33,6 +33,8 @@ object Utilities {
 
     fun String.removeDecimal(): String = this.replace(".0", "")
 
+    fun String.toUpperCase(): String = this.replaceFirstChar { if (it.isLowerCase()) it.titlecase() else it.toString() }
+
     fun String.toTinyString(): String = StringUtils.tinyString(this)
 
     /** Numbers */

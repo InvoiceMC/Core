@@ -2,6 +2,7 @@ package me.outspending.core.commands.impl.gameplay
 
 import me.outspending.core.commands.annotations.Command
 import me.outspending.core.utils.Utilities.toComponent
+import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
@@ -24,13 +25,15 @@ class PickaxeCommand {
                 listOf(
                     "<dark_gray>Owned by ${player.name}",
                     "",
-                    "<#ff3333>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ<r>",
-                    "<#ff3333><b>|</b> N/A",
-                    "<#ff3333><b>|</b> N/A",
-                    "<#ff3333><b>|</b> N/A",
+                    "<main>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ</main>",
+                    "<main><b>|</b> <white>N/A",
+                    "<main><b>|</b> <white>N/A",
+                    "<main><b>|</b> <white>N/A",
+                    "",
+                    "<main>ᴇɴᴄʜᴀɴᴛꜱ</main>",
                     "",
                 )
-                    .map { it.toComponent() }
+                    .map { it.parse(false) }
             )
 
             meta.addEnchant(Enchantment.DIG_SPEED, 1000, true)

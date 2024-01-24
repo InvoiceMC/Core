@@ -1,6 +1,6 @@
 package me.outspending.core.mine
 
-import me.outspending.core.enchants.EnchantGUI
+import me.outspending.core.enchants.gui.EnchantGUI
 import me.outspending.core.enchants.EnchantHandler
 import me.outspending.core.enchants.EnchantResult
 import me.outspending.core.utils.Utilities.getData
@@ -74,7 +74,7 @@ class MineListener : Listener {
 
         // Then check if the player is holding a pickaxe and open the GUI
         if (player.inventory.itemInMainHand.type == Material.DIAMOND_PICKAXE) {
-            EnchantGUI.openGUI(player)
+            EnchantGUI(player).openGUI()
         }
     }
 }
