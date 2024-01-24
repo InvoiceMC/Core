@@ -1,6 +1,6 @@
 package me.outspending.core.commands.impl.gameplay
 
-import me.outspending.core.commands.annotations.Command
+import com.azuyamat.maestro.bukkit.annotations.Command
 import me.outspending.core.utils.Utilities.toComponent
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment

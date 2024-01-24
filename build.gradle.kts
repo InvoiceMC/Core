@@ -44,6 +44,8 @@ dependencies {
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit") { isTransitive = false }
 
+    implementation("com.github.Azuyamat.Maestro:bukkit:3.0.2") // Maestro command manager
+
     // JMH
     jmh("commons-io:commons-io:2.7")
     jmh("org.openjdk.jmh:jmh-core:1.37")

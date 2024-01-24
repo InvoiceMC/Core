@@ -1,9 +1,8 @@
 package me.outspending.core
 
+import com.azuyamat.maestro.bukkit.Maestro
+import com.azuyamat.maestro.bukkit.data.CommandData
 import me.outspending.core.broadcaster.BroadcastManager
-import me.outspending.core.commands.CommandRegistry
-import me.outspending.core.commands.CommandRegistry.registerCommands
-import me.outspending.core.commands.completions.CompletionsRegistry.registerCompletions
 import me.outspending.core.enchants.events.ExplosionEvent
 import me.outspending.core.leaderboards.LeaderboardManager
 import me.outspending.core.listeners.ChatListeners
@@ -27,6 +26,7 @@ import kotlin.time.measureTime
 
 val instance
     get() = JavaPlugin.getPlugin(Core::class.java)
+var commands: MutableList<CommandData> = mutableListOf()
 
 class Core : JavaPlugin() {
     companion object {
@@ -47,14 +47,14 @@ class Core : JavaPlugin() {
             broadcastManager = BroadcastManager()
             leaderboardManager = LeaderboardManager()
 
+            // Register Commands
+            val maestro = Maestro(this).apply {
+                registerCommands("me.outspending.core.commands.impl")
+            }
+            commands = maestro.commands
+
             // LuckPerms
             setupLuckperms()
-
-            // Register completions
-            registerCompletions()
-
-            // Register Commands
-            registerCommands()
 
             // Broadcast Manager
             registerBroadcasts()

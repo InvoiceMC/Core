@@ -1,6 +1,6 @@
 package me.outspending.core.commands.impl.utility
 
-import me.outspending.core.commands.annotations.Command
+import com.azuyamat.maestro.bukkit.annotations.Command
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import org.bukkit.entity.Player
 
