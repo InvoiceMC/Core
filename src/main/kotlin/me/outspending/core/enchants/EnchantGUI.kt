@@ -20,6 +20,7 @@ import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
+import java.awt.Component
 import kotlin.math.pow
 
 // TODO: 1. Split this into multiple files and clean it up
@@ -180,7 +181,26 @@ object EnchantGUI {
         enchant: PickaxeEnchant,
         amount: Int
     ) {
-        Bukkit.broadcast("<rainbow>Wow $amount".parse())
+        val enchantName = enchant.getEnchantName()
+
+        val key = NamespacedKey("enchant", enchantName)
+        val enchantAmount = persistentDataContainer.getOrDefault(key, PersistentDataType.INTEGER, 0)
+        persistentDataContainer.set(key, PersistentDataType.INTEGER, enchantAmount + amount)
+
+        val enchantLore = persistentDataContainer.get(NamespacedKey("lore", enchantName), PersistentDataType.INTEGER)
+        val playerItem = player.inventory.itemInMainHand
+        playerItem.lore()?.let { lore ->
+            if (enchantLore == null) {
+                val enchantLine = lore.size - 2 // Since there will be a space at the last line
+                lore.add(enchantLine, "<main>▐ <gray>${enchantName}: <white>${enchantAmount + amount}".parse())
+                persistentDataContainer.set(NamespacedKey("lore", enchantName), PersistentDataType.INTEGER, enchantLine)
+            } else {
+                lore.set(enchantLore, "<main>▐ <gray>${enchantName}: <white>${enchantAmount + amount}".parse())
+            }
+        }
+
+        playerItem.setItemMeta(playerItem.itemMeta)
+        player.inventory.setItemInMainHand(playerItem)
     }
 
     private fun createEnchantButton(
