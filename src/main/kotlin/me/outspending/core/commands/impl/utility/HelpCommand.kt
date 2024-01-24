@@ -1,8 +1,8 @@
 package me.outspending.core.commands.impl.utility
 
-import me.outspending.core.commands.CommandRegistry.commands
-import me.outspending.core.commands.annotations.Command
-import me.outspending.core.commands.annotations.Tab
+import com.azuyamat.maestro.bukkit.annotations.Command
+import com.azuyamat.maestro.bukkit.annotations.Tab
+import me.outspending.core.commands
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import org.bukkit.command.CommandSender
 import kotlin.math.min

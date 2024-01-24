@@ -1,8 +1,8 @@
 package me.outspending.core.commands.impl.admin
 
-import me.outspending.core.commands.annotations.Catcher
-import me.outspending.core.commands.annotations.Command
-import me.outspending.core.commands.annotations.SubCommand
+import com.azuyamat.maestro.bukkit.annotations.Catcher
+import com.azuyamat.maestro.bukkit.annotations.Command
+import com.azuyamat.maestro.bukkit.annotations.SubCommand
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import net.kyori.adventure.text.event.ClickEvent
 import net.kyori.adventure.text.event.HoverEvent
