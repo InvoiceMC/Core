@@ -15,9 +15,11 @@ import me.tech.mcchestui.GUIType
 import me.tech.mcchestui.item.item
 import me.tech.mcchestui.utils.gui
 import me.tech.mcchestui.utils.openGUI
+import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
 
@@ -25,8 +27,10 @@ class UpgradeGUI(private val enchantType: EnchantType) {
     private val enchantAmounts: Array<Int> = arrayOf(1, 25, 50, 100, 500, 1000)
 
     fun showGUI(player: Player) {
-        val dataContainer = PersistentUtils.getPersistentData(player.inventory.itemInMainHand)
+        val heldItem = player.inventory.itemInMainHand
+        val dataContainer = PersistentUtils.getPersistentData(heldItem)
         val enchant = enchantType.enchant
+
         player.getData()?.let { data ->
             val upgradeGUI: GUI =
                 gui(
@@ -74,7 +78,7 @@ class UpgradeGUI(private val enchantType: EnchantType) {
                                         onClick {
                                             data.gold -= enchantValue.toInt()
 
-                                            upgradeEnchant(player, dataContainer, enchant, i)
+                                            upgradeEnchant(player, heldItem, dataContainer, enchant, i)
                                             newGUI.refresh()
                                         }
                                     }
@@ -103,6 +107,7 @@ class UpgradeGUI(private val enchantType: EnchantType) {
 
     private fun upgradeEnchant(
         player: Player,
+        item: ItemStack,
         persistentDataContainer: PersistentDataContainer,
         enchant: PickaxeEnchant,
         amount: Int
@@ -120,16 +125,16 @@ class UpgradeGUI(private val enchantType: EnchantType) {
                 NamespacedKey("lore", enchantName),
                 PersistentDataType.INTEGER
             )
-        val playerItem = player.inventory.itemInMainHand
 
         // Edit Meta
-        playerItem.editMeta { meta ->
+        item.editMeta { meta ->
             val itemLore = meta.lore()
 
             // Edit Meta Lore
             itemLore?.let { lore ->
                 val string =
-                    "<main><b>|</b> <gray>${enchantName.toUpperCase()}: <white>${enchantAmount + amount}".parse(false)
+                    "<main><b>|</b> <gray>${enchantName.toUpperCase()}: <white>${enchantAmount + amount}"
+                        .parse(false)
                 // Check if the lore has the enchant already in it if not it will create it.
                 if (enchantLore == null) {
                     val enchantLine = lore.size - 1 // Since there will be a space at the last line
@@ -148,7 +153,9 @@ class UpgradeGUI(private val enchantType: EnchantType) {
             meta.lore(itemLore)
         }
 
+        Bukkit.broadcast("${persistentDataContainer.keys}".toComponent())
+
         // Set the item in the player's hand
-        player.inventory.setItemInMainHand(playerItem)
+        player.inventory.setItemInMainHand(item)
     }
 }
