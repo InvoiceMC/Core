@@ -10,7 +10,7 @@ data class CellData(
     val members: MutableList<UUID>,
     val bound: CellBoundData,
     var spawnLocation: Location
-) {
+): Data {
 
     fun getTotalBlocksMined() = members.map { uuid ->
         val player = instance.server.getPlayer(uuid) ?: return@map 0L // TODO: Add different impl for getting data from offline player

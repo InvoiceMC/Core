@@ -9,7 +9,7 @@ data class PlayerData(
     var pmineName: String,
     var tag: String,
     var cellId: String? = null,
-) {
+): Data {
     companion object {
 
         fun default(): PlayerData {

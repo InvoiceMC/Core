@@ -5,4 +5,4 @@ import org.bukkit.Location
 data class CellBoundData(
     val center: Location,
     var size: Int
-)
+): Data
