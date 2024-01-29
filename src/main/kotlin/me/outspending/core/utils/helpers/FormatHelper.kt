@@ -1,7 +1,10 @@
 package me.outspending.core.utils.helpers
 
 import me.outspending.core.instance
+import me.outspending.core.utils.helpers.FormatHelper.Companion.chatcolorResolver
+import me.outspending.core.utils.helpers.FormatHelper.Companion.mainColorResolver
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
+import me.outspending.core.utils.helpers.FormatHelper.Companion.secondColorResolver
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
@@ -11,8 +14,21 @@ import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.Bukkit
 import java.util.*
+import kotlin.math.max
 
-val miniMessage = MiniMessage.miniMessage()
+private val MAIN_COLOR: TextColor = TextColor.color(140, 140, 255) // #8c8cff
+private val SECOND_COLOR: TextColor = listOf(MAIN_COLOR.red(), MAIN_COLOR.green(), MAIN_COLOR.blue())
+    .map { max(it * 2, 255) }
+    .let { TextColor.color(it[0], it[1], it[2]) }
+
+private val miniMessage = MiniMessage.builder()
+    .tags(TagResolver.builder()
+        .resolver(mainColorResolver())
+        .resolver(secondColorResolver())
+        .resolver(chatcolorResolver())
+        .build())
+    .build()
+
 val small_caps = mapOf(
     "a" to "ᴀ",
     "b" to "ʙ",
@@ -43,11 +59,6 @@ val small_caps = mapOf(
 )
 val prefixComponent = "<main><bold>INVOICE<reset> <dark_gray>» <gray>".parse()
 
-private val MAIN_COLOR: TextColor = TextColor.color(140, 140, 255) // #8c8cff
-private val SECOND_COLOR: TextColor = listOf(MAIN_COLOR.red(), MAIN_COLOR.green(), MAIN_COLOR.blue())
-    .map { it / 2 }
-    .let { TextColor.color(it[0], it[1], it[2]) }
-
 class FormatHelper(private val text: String) {
 
     // Convert text to small letters (small caps)
@@ -55,7 +66,7 @@ class FormatHelper(private val text: String) {
 
     // Parse text to MiniMessage component
     fun parse(prefix: Boolean = false): Component {
-        val message = miniMessage.deserialize(text, chatcolorResolver(), mainColorResolver(), secondColorResolver())
+        val message = miniMessage.deserialize(text)
         return if (prefix) prefixComponent.append(message)
         else message
     }
@@ -87,7 +98,7 @@ class FormatHelper(private val text: String) {
         fun mainColorResolver(): TagResolver {
             return TagResolver.resolver(
                 "main"
-            ) { args: ArgumentQueue, _ ->
+            ) { _: ArgumentQueue, _ ->
                 Tag.styling(MAIN_COLOR) // #8c8cff
             }
         }
@@ -95,7 +106,7 @@ class FormatHelper(private val text: String) {
         fun secondColorResolver(): TagResolver {
             return TagResolver.resolver(
                 "second"
-            ) { args: ArgumentQueue, _ ->
+            ) { _: ArgumentQueue, _ ->
                 Tag.styling(SECOND_COLOR)
             }
         }

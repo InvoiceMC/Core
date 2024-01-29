@@ -1,6 +1,7 @@
 package me.outspending.core.commands.impl.admin
 
 import com.azuyamat.maestro.bukkit.annotations.Command
+import com.azuyamat.maestro.bukkit.annotations.SubCommand
 import me.outspending.core.utils.MineUtils
 import me.outspending.core.utils.Utilities.getConnection
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
