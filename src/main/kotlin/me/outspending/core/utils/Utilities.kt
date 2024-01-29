@@ -3,8 +3,7 @@ package me.outspending.core.utils
 import me.outspending.core.Core
 import me.outspending.core.instance
 import me.outspending.core.storage.DataHandler
-import me.outspending.core.storage.PlayerData
-import me.outspending.core.utils.Utilities.format
+import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.helpers.NumberHelper
 import net.kyori.adventure.audience.Audience
 import net.kyori.adventure.text.Component

@@ -1,13 +1,14 @@
-package me.outspending.core.storage
+package me.outspending.core.storage.data
 
 data class PlayerData(
     var balance: Double,
     var gold: Int,
-    var blocksBroken: Int,
+    var blocksBroken: Long,
     var prestige: Int,
     var multiplier: Float,
     var pmineName: String,
-    var tag: String
+    var tag: String,
+    var cellId: String? = null,
 ) {
     companion object {
 

@@ -1,7 +1,9 @@
-package me.outspending.core.storage.database
+package me.outspending.core.storage.database.impl
 
 import me.outspending.core.storage.DataHandler
-import me.outspending.core.storage.PlayerData
+import me.outspending.core.storage.data.PlayerData
+import me.outspending.core.storage.database.Database
+import me.outspending.core.storage.database.DatabaseHandler
 import java.sql.SQLException
 import java.util.*
 
@@ -18,8 +20,7 @@ class PlayerDatabase : Database<UUID, PlayerData> {
             pmine_name TEXT NOT NULL,
             tag TEXT NOT NULL
         );
-        """
-            .trimIndent()
+        """.trimIndent()
 
     private var sqlUpdate: String =
         "UPDATE player_data SET balance = ?, gold = ?, blocks_broken = ?, prestige = ?, multiplier = ?, pmine_name = ?, tag = ? WHERE uuid = ?;"
@@ -52,7 +53,7 @@ class PlayerDatabase : Database<UUID, PlayerData> {
             DataHandler.playerData.forEach { (uuid, playerData) ->
                 statement.setDouble(1, playerData.balance)
                 statement.setInt(2, playerData.gold)
-                statement.setInt(3, playerData.blocksBroken)
+                statement.setLong(3, playerData.blocksBroken)
                 statement.setInt(4, playerData.prestige)
                 statement.setFloat(5, playerData.multiplier)
                 statement.setString(6, playerData.pmineName)
@@ -100,7 +101,7 @@ class PlayerDatabase : Database<UUID, PlayerData> {
             if (resultSet.next()) {
                 val balance = resultSet.getDouble("balance")
                 val gold = resultSet.getInt("gold")
-                val blocksBroken = resultSet.getInt("blocks_broken")
+                val blocksBroken = resultSet.getLong("blocks_broken")
                 val prestige = resultSet.getInt("prestige")
                 val multiplier = resultSet.getFloat("multiplier")
                 val pmineName = resultSet.getString("pmine_name")
@@ -127,7 +128,7 @@ class PlayerDatabase : Database<UUID, PlayerData> {
             while (resultSet.next()) {
                 val balance = resultSet.getDouble("balance")
                 val gold = resultSet.getInt("gold")
-                val blocksBroken = resultSet.getInt("blocks_broken")
+                val blocksBroken = resultSet.getLong("blocks_broken")
                 val prestige = resultSet.getInt("prestige")
                 val multiplier = resultSet.getFloat("multiplier")
                 val pmineName = resultSet.getString("pmine_name")
@@ -173,7 +174,7 @@ class PlayerDatabase : Database<UUID, PlayerData> {
 
             statement.setDouble(1, value.balance)
             statement.setInt(2, value.gold)
-            statement.setInt(3, value.blocksBroken)
+            statement.setLong(3, value.blocksBroken)
             statement.setInt(4, value.prestige)
             statement.setFloat(5, value.multiplier)
             statement.setString(6, value.pmineName)
@@ -199,7 +200,7 @@ class PlayerDatabase : Database<UUID, PlayerData> {
             statement.setString(1, key.toString())
             statement.setDouble(2, value.balance)
             statement.setInt(3, value.gold)
-            statement.setInt(4, value.blocksBroken)
+            statement.setLong(4, value.blocksBroken)
             statement.setInt(5, value.prestige)
             statement.setFloat(6, value.multiplier)
             statement.setString(7, value.pmineName)

@@ -1,7 +1,7 @@
 package me.outspending.core.enchants
 
 import me.outspending.core.enchants.types.*
-import me.outspending.core.storage.PlayerData
+import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.PersistentUtils
 import me.outspending.core.utils.Utilities.getConnection
 import org.bukkit.Location

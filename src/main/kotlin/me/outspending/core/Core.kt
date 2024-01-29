@@ -12,10 +12,10 @@ import me.outspending.core.listeners.PlayerListeners
 import me.outspending.core.mine.MineListener
 import me.outspending.core.scoreboard.ScoreboardHandler
 import me.outspending.core.storage.DataHandler
-import me.outspending.core.storage.PlayerData
+import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.storage.database.Database
 import me.outspending.core.storage.database.DatabaseHandler
-import me.outspending.core.storage.database.PlayerDatabase
+import me.outspending.core.storage.database.impl.PlayerDatabase
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.luckperms.api.LuckPerms
 import org.bukkit.plugin.PluginManager

@@ -3,7 +3,7 @@ package me.outspending.core.listeners
 import me.outspending.core.Core
 import me.outspending.core.packets.listener.PacketListeners
 import me.outspending.core.storage.DataHandler
-import me.outspending.core.storage.PlayerData
+import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.Utilities.runAsync
 import me.outspending.core.utils.Utilities.toComponent
 import net.kyori.adventure.key.Key

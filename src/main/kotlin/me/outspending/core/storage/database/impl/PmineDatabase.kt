@@ -1,6 +1,7 @@
-package me.outspending.core.storage.database
+package me.outspending.core.storage.database.impl
 
 import me.outspending.core.mine.PrivateMine
+import me.outspending.core.storage.database.Database
 import java.util.*
 
 class PmineDatabase : Database<UUID, PrivateMine> {
