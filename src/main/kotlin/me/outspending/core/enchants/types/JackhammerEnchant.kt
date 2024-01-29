@@ -53,7 +53,7 @@ class JackhammerEnchant : PickaxeEnchant {
         val vec1 = Vector(5, 0, 5)
         val vec2 = Vector(-5, 0, -5)
 
-        val blockCount = MineUtils.setBlocksXZ(playerConnection, blockLocation, vec1, vec2)
+        val blockCount = MineUtils.setBlocksXZ(player, blockLocation, vec1, vec2)
         val moneyAmount: Double = random.nextDouble(10.0, 25.0) * blockCount
         val coinsAmount: Int = (moneyAmount / 5).toInt()
 

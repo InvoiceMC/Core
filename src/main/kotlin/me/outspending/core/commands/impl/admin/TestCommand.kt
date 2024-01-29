@@ -1,12 +1,16 @@
 package me.outspending.core.commands.impl.admin
 
 import com.azuyamat.maestro.bukkit.annotations.Command
+import me.outspending.core.utils.MineUtils
 import me.outspending.core.utils.Utilities.getConnection
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import net.minecraft.core.BlockPos
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket
 import net.minecraft.world.level.block.Blocks
+import org.bukkit.Material
+import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
+import org.bukkit.util.Vector
 import kotlin.time.measureTime
 
 @Command(
@@ -20,18 +24,11 @@ class TestCommand {
         object : Thread() {
             override fun run() {
                 val time = measureTime {
-                    val location = player.location
-                    val connection = player.getConnection()!!
-                    for (x in -size..size) {
-                        for (y in -size..size) {
-                            for (z in -size..size) {
-                                val blockPos = BlockPos((location.x + x).toInt(), (location.y + y).toInt(), (location.z + z).toInt())
-                                val packet = ClientboundBlockUpdatePacket(blockPos, Blocks.COBBLESTONE.defaultBlockState())
+                    val vec1 = Vector(-size, -size, -size)
+                    val vec2 = Vector(size, size, size)
+                    val blockData: BlockData = Material.COBBLESTONE.createBlockData()
 
-                                connection.send(packet)
-                            }
-                        }
-                    }
+                    MineUtils.setBlocksXYZ(player, player.location, vec1, vec2, blockData, true)
                 }
 
                 player.sendMessage("Done: <yellow>$time".parse(true))

@@ -11,6 +11,8 @@ import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import net.minecraft.network.protocol.Packet
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Bukkit
+import org.bukkit.Location
+import org.bukkit.World
 import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer
 import org.bukkit.entity.Player
 import java.util.concurrent.ExecutorService
@@ -114,4 +116,8 @@ object Utilities {
         val progress = (length * percent).toInt()
         return "$completedColor${symbol.repeat(progress)}$notCompletedColor${symbol.repeat(length - progress)}"
     }
+
+    /** Location */
+    fun toLocation(world: World, x: Int, y: Int, z: Int) =
+        Location(world, x.toDouble(), y.toDouble(), z.toDouble())
 }

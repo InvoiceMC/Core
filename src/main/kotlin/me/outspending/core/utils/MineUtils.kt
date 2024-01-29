@@ -1,12 +1,17 @@
 package me.outspending.core.utils
 
+import me.outspending.core.packets.sync.PacketSync
 import me.outspending.core.utils.Utilities.getConnection
+import me.outspending.core.utils.Utilities.toLocation
 import net.minecraft.core.BlockPos
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import net.minecraft.world.level.block.Blocks
 import net.minecraft.world.level.block.state.BlockState
 import org.bukkit.Location
+import org.bukkit.Material
+import org.bukkit.World
+import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
 import kotlin.math.max
@@ -14,102 +19,105 @@ import kotlin.math.min
 
 object MineUtils {
 
-    private val NULLBLOCK: BlockState = Blocks.AIR.defaultBlockState()
-
-    private fun setBlock(
-        playerConnection: ServerGamePacketListenerImpl,
-        position: BlockPos,
-        blockState: BlockState
-    ) = playerConnection.send(ClientboundBlockUpdatePacket(position, blockState))
+    private val NULLBLOCK: BlockData = Material.AIR.createBlockData()
 
     fun setBlocksXYZ(
         player: Player,
         blockLocation: Location,
         vec1: Vector,
         vec2: Vector,
-        blockState: BlockState = NULLBLOCK
-    ): Int = setBlocksXYZ(player.getConnection()!!, blockLocation, vec1, vec2, blockState)
+        blockData: BlockData = NULLBLOCK,
+        syncPackets: Boolean = false
+    ): Int {
+        if (syncPackets) {
+            return PacketSync.syncBlocksXYZ(blockLocation, vec1, vec2, blockData)
+        } else {
+            val (minX, minY, minZ, maxX, maxY, maxZ) = BlockVector3D(blockLocation, vec1, vec2)
+            val world = blockLocation.world
+            val updateBlocks: MutableMap<Location, BlockData> = mutableMapOf()
 
-    fun setBlocksXYZ(
-        playerConnection: ServerGamePacketListenerImpl,
+            var num = 0
+            for (x in minX..maxX) {
+                for (y in minY..maxY) {
+                    for (z in minZ..maxZ) {
+                        val location = toLocation(world, x, y, z)
+                        updateBlocks[location] = blockData
+
+                        num++
+                    }
+                }
+            }
+
+            player.sendMultiBlockChange(updateBlocks)
+            return num
+        }
+    }
+
+    fun setBlocksXZ(
+        player: Player,
         blockLocation: Location,
         vec1: Vector,
         vec2: Vector,
-        blockState: BlockState = NULLBLOCK
+        blockData: BlockData = NULLBLOCK,
+        syncPackets: Boolean = false,
     ): Int {
-        val (minX, minY, minZ, maxX, maxY, maxZ) = BlockVector3D(blockLocation, vec1, vec2)
+        if (syncPackets) {
+            return PacketSync.syncBlocksXZ(blockLocation, vec1, vec2, blockData)
+        } else {
+            val (minX, minY, minZ, maxX, _, maxZ) = BlockVector3D(blockLocation, vec1, vec2)
+            val world = blockLocation.world
+            val updateBlocks: MutableMap<Location, BlockData> = mutableMapOf()
 
-        var num = 0
-        for (x in minX..maxX) {
-            for (y in minY..maxY) {
+            var num = 0
+            for (x in minX..maxX) {
                 for (z in minZ..maxZ) {
-                    setBlock(playerConnection, BlockPos(x, y, z), blockState)
+                    val location = toLocation(world, x, minY, z)
+                    updateBlocks[location] = blockData
+
                     num++
                 }
             }
+
+            player.sendMultiBlockChange(updateBlocks)
+            return num
         }
-        return num
-    }
-
-    fun setBlocksXZ(
-        player: Player,
-        blockLocation: Location,
-        vec1: Vector,
-        vec2: Vector,
-        blockState: BlockState = NULLBLOCK
-    ): Int = setBlocksXZ(player.getConnection()!!, blockLocation, vec1, vec2, blockState)
-
-    fun setBlocksXZ(
-        playerConnection: ServerGamePacketListenerImpl,
-        blockLocation: Location,
-        vec1: Vector,
-        vec2: Vector,
-        blockState: BlockState = NULLBLOCK
-    ): Int {
-        val (minX, minY, minZ, maxX, _, maxZ) = BlockVector3D(blockLocation, vec1, vec2)
-
-        var num = 0
-        for (x in minX..maxX) {
-            for (z in minZ..maxZ) {
-                setBlock(playerConnection, BlockPos(x, minY, z), blockState)
-                num++
-            }
-        }
-        return num
     }
 
     fun setBlocksSphere(
         player: Player,
         blockLocation: Location,
         radius: Int,
-        blockState: BlockState = NULLBLOCK
-    ): Int = setBlocksSphere(player.getConnection()!!, blockLocation, radius, blockState)
-
-    fun setBlocksSphere(
-        playerConnection: ServerGamePacketListenerImpl,
-        blockLocation: Location,
-        radius: Int,
-        blockState: BlockState = NULLBLOCK
+        blockData: BlockData = NULLBLOCK,
+        syncPackets: Boolean = false
     ): Int {
-        val vec1 = Vector(radius, radius, radius)
-        val vec2 = Vector(-radius, -radius, -radius)
+        if (syncPackets) {
+            return PacketSync.syncBlocksSphere(blockLocation, radius, blockData)
+        } else {
+            val vec1 = Vector(radius, radius, radius)
+            val vec2 = Vector(-radius, -radius, -radius)
 
-        val (minX, minY, minZ, maxX, maxY, maxZ) = BlockVector3D(blockLocation, vec1, vec2)
+            val (minX, minY, minZ, maxX, maxY, maxZ) = BlockVector3D(blockLocation, vec1, vec2)
+            val world = blockLocation.world
+            val updateBlocks: MutableMap<Location, BlockData> = mutableMapOf()
 
-        var num = 0
-        for (x in minX..maxX) {
-            for (y in minY..maxY) {
-                for (z in minZ..maxZ) {
-                    val distance = blockLocation.distance(Location(blockLocation.world, x.toDouble(), y.toDouble(), z.toDouble()))
-                    if (distance <= radius) {
-                        setBlock(playerConnection, BlockPos(x, y, z), blockState)
-                        num++
+            var num = 0
+            for (x in minX..maxX) {
+                for (y in minY..maxY) {
+                    for (z in minZ..maxZ) {
+                        val location = toLocation(world, x, y, z)
+                        val distance = blockLocation.distance(location)
+
+                        if (distance <= radius) {
+                            updateBlocks[location] = blockData
+                            num++
+                        }
                     }
                 }
             }
-        }
 
-        return num
+            player.sendMultiBlockChange(updateBlocks)
+            return num
+        }
     }
 
     fun setBlocksCylinder(
@@ -117,35 +125,38 @@ object MineUtils {
         blockLocation: Location,
         radius: Int,
         height: Int,
-        blockState: BlockState = NULLBLOCK
-    ): Int = setBlocksCylinder(player.getConnection()!!, blockLocation, radius, height, blockState)
-
-    fun setBlocksCylinder(
-        playerConnection: ServerGamePacketListenerImpl,
-        blockLocation: Location,
-        radius: Int,
-        height: Int,
-        blockState: BlockState = NULLBLOCK
+        blockData: BlockData = NULLBLOCK,
+        syncPackets: Boolean = false
     ): Int {
-        val vec1 = Vector(radius, height, radius)
-        val vec2 = Vector(-radius, -height, -radius)
+        if (syncPackets) {
+            return PacketSync.syncBlocksCylinder(blockLocation, radius, height, blockData)
+        } else {
+            val vec1 = Vector(radius, height, radius)
+            val vec2 = Vector(-radius, -height, -radius)
 
-        val (minX, minY, minZ, maxX, maxY, maxZ) = BlockVector3D(blockLocation, vec1, vec2)
+            val (minX, minY, minZ, maxX, maxY, maxZ) = BlockVector3D(blockLocation, vec1, vec2)
+            val world = blockLocation.world
+            val updateBlocks: MutableMap<Location, BlockData> = mutableMapOf()
 
-        var num = 0
-        for (x in minX..maxX) {
-            for (y in minY..maxY) {
-                for (z in minZ..maxZ) {
-                    val distance = blockLocation.distance(Location(blockLocation.world, x.toDouble(), y.toDouble(), z.toDouble()))
-                    if (distance <= radius) {
-                        setBlock(playerConnection, BlockPos(x, y, z), blockState)
-                        num++
+            var num = 0
+            for (x in minX..maxX) {
+                for (y in minY..maxY) {
+                    for (z in minZ..maxZ) {
+                        val location = toLocation(world, x, y, z)
+                        val distance = blockLocation.distance(location)
+
+                        if (distance <= radius) {
+                            updateBlocks[location] = blockData
+
+                            num++
+                        }
                     }
                 }
             }
-        }
 
-        return num
+            player.sendMultiBlockChange(updateBlocks)
+            return num
+        }
     }
 
     data class BlockVector3D(
