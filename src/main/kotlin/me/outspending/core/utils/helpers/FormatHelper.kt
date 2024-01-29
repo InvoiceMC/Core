@@ -19,11 +19,9 @@ import java.util.*
 import kotlin.math.max
 
 private val MAIN_COLOR: TextColor = TextColor.color(140, 140, 255) // #8c8cff
-private val SECOND_COLOR: (intensity: Int) -> TextColor = {
-    val parsedIntensity = max(1.0f, it / 10.0f)
+private val SECOND_COLOR: (Float) -> TextColor = {
     listOf(MAIN_COLOR.red(), MAIN_COLOR.green())
-        .map { n -> n * parsedIntensity }
-        .map { n -> max(n, 255.0f).toInt() }
+        .map { n -> max((n * it), 255.0f).toInt() }
         .let { n -> TextColor.color(n[0], n[1], 255) }
 }
 
@@ -114,7 +112,7 @@ class FormatHelper(private val text: String) {
             return TagResolver.resolver(
                 "second"
             ) { args: ArgumentQueue, _ ->
-                val intensity = (args.pop() ?: "2").toString().toInt()
+                val intensity = (args.pop() ?: "2").toString().toFloat()
                 Tag.styling(SECOND_COLOR(intensity))
             }
         }
