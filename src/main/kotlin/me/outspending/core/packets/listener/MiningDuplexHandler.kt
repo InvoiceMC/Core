@@ -21,9 +21,7 @@ class MiningDuplexHandler(
     private val player: Player,
     private val connection: ServerGamePacketListenerImpl
 ) : ChannelDuplexHandler() {
-    companion object {
-        private val RANDOM: Random = Random.Default
-    }
+    private val RANDOM: Random = Random.Default
 
     override fun channelRead(channelHandlerContext: ChannelHandlerContext, packet: Any?) {
         if (packet is ServerboundPlayerActionPacket) {
@@ -37,10 +35,9 @@ class MiningDuplexHandler(
             }
 
             val pos: BlockPos = packet.pos
-            val location =
-                Location(player.world, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble())
-            sendBreakPacket(connection, ClientboundBlockDestructionPacket(player.entityId, pos, -1))
+            val location = toLocation(pos)
 
+            connection.send(ClientboundBlockDestructionPacket(player.entityId, pos, -1))
             player.sendBlockChange(location, Material.AIR.createBlockData())
 
             prisonBreak(player, location, mainHand)
@@ -52,22 +49,11 @@ class MiningDuplexHandler(
         super.channelRead(channelHandlerContext, packet)
     }
 
-    private fun sendBreakPacket(
-        connection: ServerGamePacketListenerImpl,
-        packet: ClientboundBlockDestructionPacket
-    ) {
-        try {
-            val field = packet.javaClass.getDeclaredField("a")
-            field.isAccessible = true
-            field.setInt(packet, 123)
-            field.isAccessible = false
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
+    /** Converts a BlockPos to a Location */
+    private fun toLocation(pos: BlockPos): Location =
+        Location(player.world, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble())
 
-        connection.send(packet)
-    }
-
+    /** Used for all the enchants in Invoice */
     private fun prisonBreak(player: Player, location: Location, mainHand: ItemStack) {
         // TODO: Add a list per block material and check, right now it doesn't check therefore all
         // blocks are "mineable"
