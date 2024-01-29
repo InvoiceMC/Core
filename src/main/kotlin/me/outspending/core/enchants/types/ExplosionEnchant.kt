@@ -3,12 +3,11 @@ package me.outspending.core.enchants.types
 import me.outspending.core.enchants.EnchantResult
 import me.outspending.core.enchants.PickaxeEnchant
 import me.outspending.core.storage.data.PlayerData
-import me.outspending.core.utils.Utilities.runTask
+import me.outspending.core.utils.MineUtils
+import me.outspending.core.utils.shapes.SphereShape
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
-import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
-import org.bukkit.entity.TNTPrimed
 import org.bukkit.persistence.PersistentDataContainer
 import kotlin.random.Random
 
@@ -34,17 +33,17 @@ class ExplosionEnchant : PickaxeEnchant {
     ): EnchantResult {
         if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
 
-        runTask {
-            val entity: TNTPrimed =
-                player.world.spawnEntity(
-                    blockLocation.clone().add(0.0, 1.5, 0.0),
-                    EntityType.PRIMED_TNT
-                ) as TNTPrimed
+        val blockCount = MineUtils.setBlocks(
+            player,
+            blockLocation,
 
-            entity.fuseTicks = 25
-            entity.source = player
-        }
+            shape = SphereShape(4),
+            syncPackets = true
+        )
 
-        return EnchantResult()
+        val moneyAmount: Double = random.nextDouble(10.0, 25.0) * blockCount
+        val coinsAmount: Int = (moneyAmount / 5).toInt()
+
+        return EnchantResult(moneyAmount, coinsAmount, blockCount)
     }
 }

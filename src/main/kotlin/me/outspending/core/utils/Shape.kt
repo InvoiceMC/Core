@@ -1,7 +1,6 @@
 package me.outspending.core.utils
 
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.block.data.BlockData
 import org.bukkit.util.Vector
 import kotlin.math.max
@@ -9,7 +8,10 @@ import kotlin.math.min
 
 fun interface Shape {
 
-    fun run(blockLocation: Location, blockData: BlockData): Pair<Int, MutableMap<Location, BlockData>>
+    fun run(
+        blockLocation: Location,
+        blockData: BlockData
+    ): Pair<Int, MutableMap<Location, BlockData>>
 
     data class BlockVector3D(
         val minX: Int,
