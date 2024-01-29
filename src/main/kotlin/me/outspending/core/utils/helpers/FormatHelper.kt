@@ -43,6 +43,11 @@ val small_caps = mapOf(
 )
 val prefixComponent = "<main><bold>INVOICE<reset> <dark_gray>» <gray>".parse()
 
+private val MAIN_COLOR: TextColor = TextColor.color(140, 140, 255) // #8c8cff
+private val SECOND_COLOR: TextColor = listOf(MAIN_COLOR.red(), MAIN_COLOR.green(), MAIN_COLOR.blue())
+    .map { it / 2 }
+    .let { TextColor.color(it[0], it[1], it[2]) }
+
 class FormatHelper(private val text: String) {
 
     // Convert text to small letters (small caps)
@@ -50,7 +55,7 @@ class FormatHelper(private val text: String) {
 
     // Parse text to MiniMessage component
     fun parse(prefix: Boolean = false): Component {
-        val message = miniMessage.deserialize(text, chatcolorResolver(), mainColorResolver())
+        val message = miniMessage.deserialize(text, chatcolorResolver(), mainColorResolver(), secondColorResolver())
         return if (prefix) prefixComponent.append(message)
         else message
     }
@@ -83,7 +88,15 @@ class FormatHelper(private val text: String) {
             return TagResolver.resolver(
                 "main"
             ) { args: ArgumentQueue, _ ->
-                Tag.styling(TextColor.color(140, 140, 255)) // #8c8cff
+                Tag.styling(MAIN_COLOR) // #8c8cff
+            }
+        }
+
+        fun secondColorResolver(): TagResolver {
+            return TagResolver.resolver(
+                "second"
+            ) { args: ArgumentQueue, _ ->
+                Tag.styling(SECOND_COLOR)
             }
         }
     }

@@ -74,4 +74,13 @@ class NumberHelper(
 
     // Convert number to tiny numbers
     fun toTinyNumbers() = number.toString().map { TINY_NUMBERS[it] ?: it }.joinToString("")
+
+    // Clamp a value between a minimum and maximum
+    fun clamp(min: Number, max: Number): Number {
+        return when {
+            number.toDouble() < min.toDouble() -> min
+            number.toDouble() > max.toDouble() -> max
+            else -> number
+        }
+    }
 }
