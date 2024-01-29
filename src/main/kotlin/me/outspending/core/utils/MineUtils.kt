@@ -25,13 +25,13 @@ object MineUtils {
         blockData: BlockData = NULLBLOCK,
         syncPackets: Boolean = false
     ): Int {
+        val (num, blocks) = shape.run(blockLocation, blockData)
         if (syncPackets) {
-            return PacketSync.syncBlocks(blockLocation, shape, blockData)
+            PacketSync.syncBlocks(blockLocation, blocks)
         } else {
-            val (num, blocks) = shape.run(blockLocation, blockData)
             player.sendMultiBlockChange(blocks)
-
-            return num
         }
+
+        return num
     }
 }

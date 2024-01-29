@@ -46,10 +46,6 @@ object PacketSync {
      *
      * @return the number of blocks changed
      */
-    fun syncBlocks(blockLocation: Location, shape: Shape, blockData: BlockData): Int {
-        val (num, blocks) = shape.run(blockLocation, blockData)
+    fun syncBlocks(blockLocation: Location, blocks: MutableMap<Location, BlockData>) =
         sendChanges(getSeeablePlayers(blockLocation), blocks)
-
-        return num
-    }
 }
