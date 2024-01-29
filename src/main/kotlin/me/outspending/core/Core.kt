@@ -66,8 +66,6 @@ class Core : JavaPlugin() {
 
             // Register Events
             registerEvents(server.pluginManager)
-
-            println(Serializers.serializers)
         }
 
         logger.info("Finished loading Core in $time!")

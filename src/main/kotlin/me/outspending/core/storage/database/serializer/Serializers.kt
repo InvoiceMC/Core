@@ -4,22 +4,24 @@ import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
+import org.bukkit.util.BoundingBox
 import org.reflections.Reflections
 
 object Serializers {
-    val serializers: Map<Class<*>, DatabaseSerializer<*>> = Reflections(Serializers::class.java)
-        .getTypesAnnotatedWith(SerializerType::class.java)
-        .associate { clazz ->
-            val constructor = clazz.constructors.firstOrNull()
-            if (constructor != null) {
-                val serializerInstance = constructor.newInstance() as DatabaseSerializer<*>
-                val type = serializerInstance.getSerializerType()
+    val serializers: Map<Class<*>, DatabaseSerializer<*>> =
+        Reflections(Serializers::class.java)
+            .getTypesAnnotatedWith(SerializerType::class.java)
+            .associate { clazz ->
+                val constructor = clazz.constructors.firstOrNull()
+                if (constructor != null) {
+                    val serializerInstance = constructor.newInstance() as DatabaseSerializer<*>
+                    val type = serializerInstance.getSerializerType()
 
-                type to serializerInstance
-            } else {
-                throw Exception("No constructor found for ${clazz.simpleName}")
+                    type to serializerInstance
+                } else {
+                    throw Exception("No constructor found for ${clazz.simpleName}")
+                }
             }
-        }
 
     @Suppress("UNCHECKED_CAST")
     fun <T : Any> serialize(obj: T): String {
@@ -44,9 +46,9 @@ object Serializers {
 
         @Suppress("UNCHECKED_CAST")
         override fun deserialize(str: String): List<T> {
-            return str.substring(1, str.length - 1)
-                .split(",")
-                .map { serializers[it::class.java]?.deserialize(it) as T }
+            return str.substring(1, str.length - 1).split(",").map {
+                serializers[it::class.java]?.deserialize(it) as T
+            }
         }
     }
 
@@ -78,14 +80,42 @@ object Serializers {
 
         override fun deserialize(str: String): Location? {
             val split = str.split(",")
-            return Location(
-                Bukkit.getWorld(split[0]),
-                split[1].toDouble(),
-                split[2].toDouble(),
-                split[3].toDouble(),
-                split[4].toFloat(),
-                split[5].toFloat()
-            )
+            return if (split.size == 6) {
+                val world = Bukkit.getWorld(split[0])
+                require(world != null) { "World ${split[0]} cannot be null!" }
+
+                Location(
+                    world,
+                    split[1].toDouble(),
+                    split[2].toDouble(),
+                    split[3].toDouble(),
+                    split[4].toFloat(),
+                    split[5].toFloat()
+                )
+            } else null
+        }
+    }
+
+    @SerializerType
+    class BoundingBoxSerializer : DatabaseSerializer<BoundingBox> {
+        override fun getSerializerType(): Class<BoundingBox> = BoundingBox::class.java
+
+        override fun deserialize(str: String): BoundingBox? {
+            val split = str.split(",").map { it.toDouble() }
+            return if (split.size == 6) {
+                BoundingBox(
+                    split[0],
+                    split[1],
+                    split[2],
+                    split[3],
+                    split[4],
+                    split[5]
+                )
+            } else null
+        }
+
+        override fun serialize(obj: BoundingBox): String {
+            return "${obj.minX},${obj.minY},${obj.minZ},${obj.maxX},${obj.maxY},${obj.maxZ}"
         }
 
     }
