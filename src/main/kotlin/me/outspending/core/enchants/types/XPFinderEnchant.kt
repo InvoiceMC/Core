@@ -4,6 +4,7 @@ import me.outspending.core.enchants.EnchantResult
 import me.outspending.core.enchants.PickaxeEnchant
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.Utilities.toComponent
+import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import net.kyori.adventure.title.Title
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
@@ -38,8 +39,8 @@ class XPFinderEnchant : PickaxeEnchant {
 
         player.showTitle(
             Title.title(
-                "<gradient:#e08a19:#e8b36d><b>XPFINDER".toComponent(),
-                "<gray>You've found <color:#e8b36d>${xp}</color> <gray>xp!".toComponent()
+                "<main><b>XPFINDER".parse(),
+                "<gray>You've found <main>${xp}</main> <gray>xp!".parse()
             )
         )
 

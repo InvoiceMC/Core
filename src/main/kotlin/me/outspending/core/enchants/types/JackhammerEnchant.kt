@@ -11,8 +11,10 @@ import com.sk89q.worldedit.world.block.BlockTypes
 import me.outspending.core.enchants.EnchantResult
 import me.outspending.core.enchants.PickaxeEnchant
 import me.outspending.core.storage.data.PlayerData
+import me.outspending.core.utils.MineUtils
 import me.outspending.core.utils.Utilities.regex
 import me.outspending.core.utils.Utilities.toComponent
+import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import net.kyori.adventure.title.Title
 import net.minecraft.core.BlockPos
 import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket
@@ -21,6 +23,7 @@ import net.minecraft.world.level.block.Blocks
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
+import org.bukkit.util.Vector
 import kotlin.random.Random
 import kotlin.time.measureTime
 
@@ -47,30 +50,17 @@ class JackhammerEnchant : PickaxeEnchant {
     ): EnchantResult {
         if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
 
-        val loc1 = blockLocation.clone().add(5.0, 5.0, 5.0)
-        val loc2 = blockLocation.clone().add(-5.0, -5.0, -5.0)
-        val blockCount = getBlockCount(loc1, loc2).blockCount
+        val vec1 = Vector(5, 0, 5)
+        val vec2 = Vector(-5, 0, -5)
 
-        val time = measureTime {
-            for (x in -5..5) {
-                for (z in -5..5) {
-                    val blockPos = BlockPos((blockLocation.blockX + x), blockLocation.blockY, (blockLocation.blockZ + z))
-                    val packet = ClientboundBlockUpdatePacket(blockPos, Blocks.AIR.defaultBlockState())
-
-                    playerConnection.send(packet)
-                }
-            }
-        }
-
-        player.sendMessage("<yellow>$time".toComponent())
-
+        val blockCount = MineUtils.setBlocksXZ(playerConnection, blockLocation, vec1, vec2)
         val moneyAmount: Double = random.nextDouble(10.0, 25.0) * blockCount
         val coinsAmount: Int = (moneyAmount / 5).toInt()
 
         player.showTitle(
             Title.title(
-                "<gradient:#e08a19:#e8b36d><b>JACKHAMMER".toComponent(),
-                "<gray>Blocks Broken: <#e8b36d>${blockCount.regex()}".toComponent()
+                "<main><b>JACKHAMMER".parse(),
+                "<gray>Blocks Broken: <main>${blockCount.regex()}".parse()
             )
         )
 

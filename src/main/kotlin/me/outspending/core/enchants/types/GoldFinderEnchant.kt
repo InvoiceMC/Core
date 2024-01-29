@@ -5,6 +5,7 @@ import me.outspending.core.enchants.PickaxeEnchant
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.Utilities.format
 import me.outspending.core.utils.Utilities.toComponent
+import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
 import org.bukkit.entity.Player
@@ -39,8 +40,8 @@ class GoldFinderEnchant : PickaxeEnchant {
         val goldFinderAmount: Int =
             random.nextInt((500 * enchantmentLevel), (2500 * enchantmentLevel))
         player.sendMessage(
-            "<gold><bold>ɢᴏʟᴅꜰɪɴᴅᴇʀ <dark_gray>➜</bold> <white>you've found <yellow>${goldFinderAmount.format()} <gold>ɢᴏʟᴅ <white>whilst mining!"
-                .toComponent()
+            "<main><b>ɢᴏʟᴅꜰɪɴᴅᴇʀ <dark_gray>➜</bold> <white>you've found <main>${goldFinderAmount.format()} ɢᴏʟᴅ <white>whilst mining!"
+                .parse()
         )
 
         return EnchantResult(goldFinderAmount.toDouble(), goldFinderAmount, 0)
