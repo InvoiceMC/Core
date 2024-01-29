@@ -5,6 +5,7 @@ import me.outspending.core.enchants.PickaxeEnchant
 import me.outspending.core.storage.PlayerData
 import me.outspending.core.utils.Utilities.toComponent
 import net.kyori.adventure.title.Title
+import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
@@ -24,6 +25,7 @@ class XPFinderEnchant : PickaxeEnchant {
     override fun execute(
         player: Player,
         playerData: PlayerData,
+        playerConnection: ServerGamePacketListenerImpl,
         dataContainer: PersistentDataContainer,
         enchantmentLevel: Int,
         blockLocation: Location,

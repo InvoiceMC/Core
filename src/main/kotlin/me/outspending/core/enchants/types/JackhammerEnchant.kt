@@ -14,10 +14,15 @@ import me.outspending.core.storage.PlayerData
 import me.outspending.core.utils.Utilities.regex
 import me.outspending.core.utils.Utilities.toComponent
 import net.kyori.adventure.title.Title
+import net.minecraft.core.BlockPos
+import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket
+import net.minecraft.server.network.ServerGamePacketListenerImpl
+import net.minecraft.world.level.block.Blocks
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
 import kotlin.random.Random
+import kotlin.time.measureTime
 
 class JackhammerEnchant : PickaxeEnchant {
 
@@ -34,6 +39,7 @@ class JackhammerEnchant : PickaxeEnchant {
     override fun execute(
         player: Player,
         playerData: PlayerData,
+        playerConnection: ServerGamePacketListenerImpl,
         dataContainer: PersistentDataContainer,
         enchantmentLevel: Int,
         blockLocation: Location,
@@ -41,24 +47,22 @@ class JackhammerEnchant : PickaxeEnchant {
     ): EnchantResult {
         if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
 
-        val vector1 = BukkitAdapter.asBlockVector(blockLocation.clone().add(5.0, 0.0, 5.0))
-        val vector2 = BukkitAdapter.asBlockVector(blockLocation.clone().add(-5.0, 0.0, -5.0))
+        val loc1 = blockLocation.clone().add(5.0, 5.0, 5.0)
+        val loc2 = blockLocation.clone().add(-5.0, -5.0, -5.0)
+        val blockCount = getBlockCount(loc1, loc2).blockCount
 
-        val editSession: EditSession =
-            WorldEdit.getInstance().newEditSession(BukkitAdapter.adapt(player.world))
-        val mask =
-            BlockMask(
-                editSession,
-                BaseBlock(BlockTypes.COBBLESTONE?.defaultState),
-                BaseBlock(BlockTypes.STONE?.defaultState)
-            )
-        val region: Region = CuboidRegion(vector1, vector2)
+        val time = measureTime {
+            for (x in -5..5) {
+                for (z in -5..5) {
+                    val blockPos = BlockPos((blockLocation.blockX + x), blockLocation.blockY, (blockLocation.blockZ + z))
+                    val packet = ClientboundBlockUpdatePacket(blockPos, Blocks.AIR.defaultBlockState())
 
-        editSession.mask = mask
+                    playerConnection.send(packet)
+                }
+            }
+        }
 
-        val blockCount = editSession.countBlocks(region, mask)
-        editSession.setBlocks(region, BlockTypes.AIR)
-        editSession.flushQueue()
+        player.sendMessage("<yellow>$time".toComponent())
 
         val moneyAmount: Double = random.nextDouble(10.0, 25.0) * blockCount
         val coinsAmount: Int = (moneyAmount / 5).toInt()

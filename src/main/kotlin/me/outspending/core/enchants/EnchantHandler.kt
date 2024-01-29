@@ -3,6 +3,7 @@ package me.outspending.core.enchants
 import me.outspending.core.enchants.types.*
 import me.outspending.core.storage.PlayerData
 import me.outspending.core.utils.PersistentUtils
+import me.outspending.core.utils.Utilities.getConnection
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
@@ -28,7 +29,8 @@ object EnchantHandler {
         val dataContainer: PersistentDataContainer =
             PersistentUtils.getPersistentData(player.inventory.itemInMainHand.itemMeta)
 
-        var enchantResult = EnchantResult()
+        val connection = player.getConnection()!!
+        val enchantResult = EnchantResult()
         PICKAXE_ENCHANTS.forEach { enchant ->
             val enchantmentLevel: Int = enchant.getEnchantmentLevel(dataContainer)
             if (enchantmentLevel > 0) {
@@ -36,6 +38,7 @@ object EnchantHandler {
                     enchant.execute(
                         player,
                         playerData,
+                        connection,
                         dataContainer,
                         enchantmentLevel,
                         blockLocation,

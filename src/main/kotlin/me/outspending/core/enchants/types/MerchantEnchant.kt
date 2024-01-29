@@ -3,6 +3,7 @@ package me.outspending.core.enchants.types
 import me.outspending.core.enchants.EnchantResult
 import me.outspending.core.enchants.PickaxeEnchant
 import me.outspending.core.storage.PlayerData
+import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
@@ -21,6 +22,7 @@ class MerchantEnchant : PickaxeEnchant {
     override fun execute(
         player: Player,
         playerData: PlayerData,
+        playerConnection: ServerGamePacketListenerImpl,
         dataContainer: PersistentDataContainer,
         enchantmentLevel: Int,
         blockLocation: Location,
