@@ -78,6 +78,76 @@ object MineUtils {
         return num
     }
 
+    fun setBlocksSphere(
+        player: Player,
+        blockLocation: Location,
+        radius: Int,
+        blockState: BlockState = NULLBLOCK
+    ): Int = setBlocksSphere(player.getConnection()!!, blockLocation, radius, blockState)
+
+    fun setBlocksSphere(
+        playerConnection: ServerGamePacketListenerImpl,
+        blockLocation: Location,
+        radius: Int,
+        blockState: BlockState = NULLBLOCK
+    ): Int {
+        val vec1 = Vector(radius, radius, radius)
+        val vec2 = Vector(-radius, -radius, -radius)
+
+        val (minX, minY, minZ, maxX, maxY, maxZ) = BlockVector3D(blockLocation, vec1, vec2)
+
+        var num = 0
+        for (x in minX..maxX) {
+            for (y in minY..maxY) {
+                for (z in minZ..maxZ) {
+                    val distance = blockLocation.distance(Location(blockLocation.world, x.toDouble(), y.toDouble(), z.toDouble()))
+                    if (distance <= radius) {
+                        setBlock(playerConnection, BlockPos(x, y, z), blockState)
+                        num++
+                    }
+                }
+            }
+        }
+
+        return num
+    }
+
+    fun setBlocksCylinder(
+        player: Player,
+        blockLocation: Location,
+        radius: Int,
+        height: Int,
+        blockState: BlockState = NULLBLOCK
+    ): Int = setBlocksCylinder(player.getConnection()!!, blockLocation, radius, height, blockState)
+
+    fun setBlocksCylinder(
+        playerConnection: ServerGamePacketListenerImpl,
+        blockLocation: Location,
+        radius: Int,
+        height: Int,
+        blockState: BlockState = NULLBLOCK
+    ): Int {
+        val vec1 = Vector(radius, height, radius)
+        val vec2 = Vector(-radius, -height, -radius)
+
+        val (minX, minY, minZ, maxX, maxY, maxZ) = BlockVector3D(blockLocation, vec1, vec2)
+
+        var num = 0
+        for (x in minX..maxX) {
+            for (y in minY..maxY) {
+                for (z in minZ..maxZ) {
+                    val distance = blockLocation.distance(Location(blockLocation.world, x.toDouble(), y.toDouble(), z.toDouble()))
+                    if (distance <= radius) {
+                        setBlock(playerConnection, BlockPos(x, y, z), blockState)
+                        num++
+                    }
+                }
+            }
+        }
+
+        return num
+    }
+
     data class BlockVector3D(
         val minX: Int,
         val minY: Int,
