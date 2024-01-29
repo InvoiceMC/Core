@@ -1,3 +1,4 @@
 package me.outspending.core.storage.database.serializer
 
-annotation class SerializerType()
+@Target(AnnotationTarget.CLASS)
+annotation class SerializerType
