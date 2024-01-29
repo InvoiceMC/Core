@@ -3,7 +3,6 @@ package me.outspending.core
 import com.azuyamat.maestro.bukkit.Maestro
 import com.azuyamat.maestro.bukkit.data.CommandData
 import me.outspending.core.broadcaster.BroadcastManager
-import me.outspending.core.enchants.events.ExplosionEvent
 import me.outspending.core.leaderboards.LeaderboardManager
 import me.outspending.core.listeners.ChatListeners
 import me.outspending.core.listeners.CommandListeners
@@ -100,6 +99,5 @@ class Core : JavaPlugin() {
         pluginManager.registerEvents(MiscListeners(), this)
         pluginManager.registerEvents(PlayerListeners(), this)
         pluginManager.registerEvents(MineListener(), this)
-        pluginManager.registerEvents(ExplosionEvent(), this)
     }
 }
