@@ -22,11 +22,7 @@ import kotlin.math.max
 private val MAIN_COLOR: TextColor = TextColor.color(140, 140, 255) // #8c8cff
 private val SECOND_COLOR: (Float) -> TextColor = {
     listOf(MAIN_COLOR.red(), MAIN_COLOR.green())
-<<<<<<< HEAD
         .map { n -> max(n * it, 255.0f).toInt() }
-=======
-        .map { n -> max((n * it), 255.0f).toInt() }
->>>>>>> ef3f805ac731bee06af4fc6fa06a47012a4c90e1
         .let { n -> TextColor.color(n[0], n[1], 255) }
 }
 
