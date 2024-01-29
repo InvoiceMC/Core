@@ -12,6 +12,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.Tag
 import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
+import net.kyori.adventure.text.minimessage.tag.standard.StandardTags
 import org.bukkit.Bukkit
 import java.util.*
 import kotlin.math.max
@@ -23,6 +24,7 @@ private val SECOND_COLOR: TextColor = listOf(MAIN_COLOR.red(), MAIN_COLOR.green(
 
 private val miniMessage = MiniMessage.builder()
     .tags(TagResolver.builder()
+        .resolver(StandardTags.defaults())
         .resolver(mainColorResolver())
         .resolver(secondColorResolver())
         .resolver(chatcolorResolver())
