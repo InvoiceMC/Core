@@ -1,6 +1,8 @@
 package me.outspending.core.utils.helpers
 
 import me.outspending.core.instance
+import me.outspending.core.utils.Utilities.getData
+import me.outspending.core.utils.Utilities.toComponent
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor

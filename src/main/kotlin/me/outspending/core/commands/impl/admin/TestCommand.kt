@@ -1,6 +1,7 @@
 package me.outspending.core.commands.impl.admin
 
 import com.azuyamat.maestro.bukkit.annotations.Command
+import com.azuyamat.maestro.bukkit.annotations.SubCommand
 import me.outspending.core.utils.MineUtils
 import me.outspending.core.utils.Utilities.getConnection
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
@@ -21,7 +22,15 @@ import kotlin.time.measureTime
 )
 class TestCommand {
 
-    fun onCommand(player: Player, size: Int) {
+    fun onCommand(player: Player) {
+        player.sendMessage("You need parameters!".parse(true))
+    }
+
+    @SubCommand(
+        name = "setmine",
+        description = "Set a mine",
+    )
+    fun setMine(player: Player, size: Int) {
         object : Thread() {
             override fun run() {
                 val time = measureTime {
@@ -37,5 +46,13 @@ class TestCommand {
                 player.sendMessage("Done: <yellow>$time".parse(true))
             }
         }.start()
+    }
+
+    @SubCommand(
+        name = "format",
+        description = "Format a string with minimessage",
+    )
+    fun format(player: Player, string: String, prefix: Boolean? = false) {
+        player.sendMessage(string.parse(prefix ?: false))
     }
 }

@@ -4,6 +4,8 @@ import io.netty.channel.ChannelDuplexHandler
 import io.netty.channel.ChannelHandlerContext
 import me.outspending.core.enchants.EnchantHandler
 import me.outspending.core.enchants.EnchantResult
+import me.outspending.core.packets.sync.PacketSync
+import me.outspending.core.utils.MineUtils
 import me.outspending.core.utils.Utilities.getData
 import me.outspending.core.utils.Utilities.toComponent
 import net.minecraft.core.BlockPos
@@ -22,6 +24,7 @@ class MiningDuplexHandler(
     private val connection: ServerGamePacketListenerImpl
 ) : ChannelDuplexHandler() {
     private val RANDOM: Random = Random.Default
+    private val NULLBLOCK = Material.AIR.createBlockData()
 
     override fun channelRead(channelHandlerContext: ChannelHandlerContext, packet: Any?) {
         if (packet is ServerboundPlayerActionPacket) {
@@ -38,7 +41,7 @@ class MiningDuplexHandler(
             val location = toLocation(pos)
 
             connection.send(ClientboundBlockDestructionPacket(player.entityId, pos, -1))
-            player.sendBlockChange(location, Material.AIR.createBlockData())
+            PacketSync.syncBlock(location, NULLBLOCK)
 
             prisonBreak(player, location, mainHand)
             return
@@ -48,6 +51,7 @@ class MiningDuplexHandler(
 
         super.channelRead(channelHandlerContext, packet)
     }
+
 
     /** Converts a BlockPos to a Location */
     private fun toLocation(pos: BlockPos): Location =

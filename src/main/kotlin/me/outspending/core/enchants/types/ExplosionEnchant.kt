@@ -3,6 +3,7 @@ package me.outspending.core.enchants.types
 import me.outspending.core.enchants.EnchantResult
 import me.outspending.core.enchants.PickaxeEnchant
 import me.outspending.core.storage.data.PlayerData
+import me.outspending.core.utils.Utilities.runTask
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
 import org.bukkit.entity.EntityType
@@ -33,14 +34,16 @@ class ExplosionEnchant : PickaxeEnchant {
     ): EnchantResult {
         if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
 
-        val entity: TNTPrimed =
-            player.world.spawnEntity(
-                blockLocation.clone().add(0.0, 1.5, 0.0),
-                EntityType.PRIMED_TNT
-            ) as TNTPrimed
+        runTask {
+            val entity: TNTPrimed =
+                player.world.spawnEntity(
+                    blockLocation.clone().add(0.0, 1.5, 0.0),
+                    EntityType.PRIMED_TNT
+                ) as TNTPrimed
 
-        entity.fuseTicks = 25
-        entity.source = player
+            entity.fuseTicks = 25
+            entity.source = player
+        }
 
         return EnchantResult()
     }

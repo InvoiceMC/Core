@@ -6,6 +6,7 @@ import me.outspending.core.storage.DataHandler
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.Utilities.runAsync
 import me.outspending.core.utils.Utilities.toComponent
+import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
@@ -45,10 +46,10 @@ class PlayerListeners : Listener {
 
             player.showTitle(
                 Title.title(
-                    "<gradient:gold:white>★★★</gradient> <#e08a19><b>DATABASE</b> <gradient:white:gold>★★★</gradient>"
-                        .toComponent(),
-                    "<gray><i>Finished loading your data in <#e8b36d><u>$time</u><gray>!"
-                        .toComponent(),
+                    "<gradient:main:second>★★★</gradient> <main><b>DATABASE</b> <gradient:second:main>★★★</gradient>"
+                        .parse(),
+                    "<gray><i>Finished loading your data in <main><u>$time</u><gray>!"
+                        .parse(),
                 ),
             )
 
@@ -102,9 +103,9 @@ class PlayerListeners : Listener {
         if (newLevel > oldLevel) {
             val title: Title =
                 Title.title(
-                    "<bold><gradient:gold:white>★★★</gradient> <#e8b36d>LEVELUP <gradient:white:gold>★★★</gradient>"
-                        .toComponent(),
-                    "<#e08a19>$oldLevel <gray>➲ <#e8b36d>$newLevel".toComponent(),
+                    "<bold><gradient:main:second>★★★</gradient> <main>LEVELUP <gradient:second:main>★★★</gradient>"
+                        .parse(),
+                    "<main>$oldLevel <gray>➲ <second>$newLevel".parse(),
                 )
 
             player.showTitle(title)
