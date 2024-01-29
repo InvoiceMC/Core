@@ -2,13 +2,12 @@ package me.outspending.core.scoreboard
 
 import fr.mrmicky.fastboard.adventure.FastBoard
 import me.outspending.core.storage.DataHandler
-import me.outspending.core.storage.PlayerData
+import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.Utilities.fix
 import me.outspending.core.utils.Utilities.format
 import me.outspending.core.utils.Utilities.getData
 import me.outspending.core.utils.Utilities.progressBar
 import me.outspending.core.utils.Utilities.runTaskTimerAsynchronously
-import me.outspending.core.utils.Utilities.toComponent
 import me.outspending.core.utils.helpers.FormatHelper
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import org.bukkit.entity.Player

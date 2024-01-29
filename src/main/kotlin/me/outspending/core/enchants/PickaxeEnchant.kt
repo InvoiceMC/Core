@@ -1,6 +1,6 @@
 package me.outspending.core.enchants
 
-import me.outspending.core.storage.PlayerData
+import me.outspending.core.storage.data.PlayerData
 import org.bukkit.Location
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player

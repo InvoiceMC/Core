@@ -83,7 +83,7 @@ class FormatHelper(private val text: String) {
             return TagResolver.resolver(
                 "main"
             ) { args: ArgumentQueue, _ ->
-                Tag.styling(TextColor.color(140, 140, 255))
+                Tag.styling(TextColor.color(140, 140, 255)) // #8c8cff
             }
         }
     }

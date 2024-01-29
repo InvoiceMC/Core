@@ -10,7 +10,7 @@ import com.sk89q.worldedit.world.block.BaseBlock
 import com.sk89q.worldedit.world.block.BlockTypes
 import me.outspending.core.enchants.EnchantResult
 import me.outspending.core.enchants.PickaxeEnchant
-import me.outspending.core.storage.PlayerData
+import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.Utilities.regex
 import me.outspending.core.utils.Utilities.toComponent
 import net.kyori.adventure.title.Title

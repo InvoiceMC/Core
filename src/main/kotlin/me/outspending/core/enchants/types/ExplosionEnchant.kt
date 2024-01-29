@@ -2,7 +2,7 @@ package me.outspending.core.enchants.types
 
 import me.outspending.core.enchants.EnchantResult
 import me.outspending.core.enchants.PickaxeEnchant
-import me.outspending.core.storage.PlayerData
+import me.outspending.core.storage.data.PlayerData
 import org.bukkit.Location
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player

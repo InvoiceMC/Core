@@ -14,5 +14,4 @@ open class FormattingBenchmarks {
     fun epicness() {
         val string: String = "this is something".toTinyString()
     }
-
 }

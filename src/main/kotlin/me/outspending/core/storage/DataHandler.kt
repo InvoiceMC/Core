@@ -1,6 +1,7 @@
 package me.outspending.core.storage
 
 import me.outspending.core.Core
+import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.Utilities.runAsync
 import me.outspending.core.utils.Utilities.runTaskTimerAsynchronously
 import me.outspending.core.utils.Utilities.toComponent
