@@ -1,27 +1,43 @@
 package me.outspending.core.storage.database.serializer
 
-import me.outspending.core.storage.database.Database
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import org.reflections.Reflections
-import java.lang.reflect.ParameterizedType
 
-class Serializers {
-    companion object {
-        val serializers: Map<Class<*>, DatabaseSerializer<*>> = Reflections(Serializers::class.java)
-            .getTypesAnnotatedWith(SerializerType::class.java)
-            .associate { clazz ->
-                val serializerInstance = clazz.getDeclaredConstructor().newInstance() as DatabaseSerializer<*>
-                val genericType = (clazz.genericInterfaces[0] as ParameterizedType).actualTypeArguments[0] as Class<*>
+object Serializers {
+    val serializers: Map<Class<*>, DatabaseSerializer<*>> = Reflections(Serializers::class.java)
+        .getTypesAnnotatedWith(SerializerType::class.java)
+        .associate { clazz ->
+            val constructor = clazz.constructors.firstOrNull()
+            if (constructor != null) {
+                val serializerInstance = constructor.newInstance() as DatabaseSerializer<*>
+                val type = serializerInstance.getSerializerType()
 
-                genericType to serializerInstance
+                type to serializerInstance
+            } else {
+                throw Exception("No constructor found for ${clazz.simpleName}")
             }
+        }
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T : Any> serialize(obj: T): String {
+        val serializer = serializers[obj::class.java] as DatabaseSerializer<T>
+        return serializer.serialize(obj)
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T : Any> deserialize(clazz: Class<T>, str: String): T? {
+        val serializer = serializers[clazz] as DatabaseSerializer<T>
+        return serializer.deserialize(str)
     }
 
     @SerializerType
-    inner class ListSerializer<T : Any> : DatabaseSerializer<List<T>> {
+    class ListSerializer<T : Any> : DatabaseSerializer<List<T>> {
+        @Suppress("UNCHECKED_CAST")
+        override fun getSerializerType(): Class<List<T>> = List::class.java as Class<List<T>>
+
         override fun serialize(obj: List<T>): String {
             return obj.joinToString(prefix = "[", postfix = "]", separator = ",") { it.toString() }
         }
@@ -35,21 +51,27 @@ class Serializers {
     }
 
     @SerializerType
-    inner class PlayerSerializer : DatabaseSerializer<Player> {
+    class PlayerSerializer : DatabaseSerializer<Player> {
+        override fun getSerializerType(): Class<Player> = Player::class.java
+
         override fun serialize(obj: Player): String = obj.uniqueId.toString()
 
         override fun deserialize(str: String): Player? = Bukkit.getPlayer(str)
     }
 
     @SerializerType
-    inner class OfflinePlayerSerializer : DatabaseSerializer<OfflinePlayer> {
+    class OfflinePlayerSerializer : DatabaseSerializer<OfflinePlayer> {
+        override fun getSerializerType(): Class<OfflinePlayer> = OfflinePlayer::class.java
+
         override fun serialize(obj: OfflinePlayer): String = obj.uniqueId.toString()
 
         override fun deserialize(str: String): OfflinePlayer = Bukkit.getOfflinePlayer(str)
     }
 
     @SerializerType
-    inner class LocationSerializer : DatabaseSerializer<Location> {
+    class LocationSerializer : DatabaseSerializer<Location> {
+        override fun getSerializerType(): Class<Location> = Location::class.java
+
         override fun serialize(obj: Location): String {
             return "${obj.world.name},${obj.x},${obj.y},${obj.z},${obj.yaw},${obj.pitch}"
         }
