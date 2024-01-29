@@ -15,6 +15,7 @@ import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.storage.database.Database
 import me.outspending.core.storage.database.DatabaseHandler
 import me.outspending.core.storage.database.impl.PlayerDatabase
+import me.outspending.core.storage.database.serializer.Serializers
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.luckperms.api.LuckPerms
 import org.bukkit.plugin.PluginManager
@@ -65,6 +66,8 @@ class Core : JavaPlugin() {
 
             // Register Events
             registerEvents(server.pluginManager)
+
+            println(Serializers.serializers)
         }
 
         logger.info("Finished loading Core in $time!")
