@@ -1,31 +1,19 @@
 package me.outspending.core.enchants.types
 
-import com.sk89q.worldedit.EditSession
-import com.sk89q.worldedit.WorldEdit
-import com.sk89q.worldedit.bukkit.BukkitAdapter
-import com.sk89q.worldedit.function.mask.BlockMask
-import com.sk89q.worldedit.regions.CuboidRegion
-import com.sk89q.worldedit.regions.Region
-import com.sk89q.worldedit.world.block.BaseBlock
-import com.sk89q.worldedit.world.block.BlockTypes
 import me.outspending.core.enchants.EnchantResult
 import me.outspending.core.enchants.PickaxeEnchant
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.MineUtils
 import me.outspending.core.utils.Utilities.regex
-import me.outspending.core.utils.Utilities.toComponent
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
+import me.outspending.core.utils.shapes.CuboidShape
 import net.kyori.adventure.title.Title
-import net.minecraft.core.BlockPos
-import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket
 import net.minecraft.server.network.ServerGamePacketListenerImpl
-import net.minecraft.world.level.block.Blocks
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.util.Vector
 import kotlin.random.Random
-import kotlin.time.measureTime
 
 class JackhammerEnchant : PickaxeEnchant {
 
@@ -53,7 +41,15 @@ class JackhammerEnchant : PickaxeEnchant {
         val vec1 = Vector(5, 0, 5)
         val vec2 = Vector(-5, 0, -5)
 
-        val blockCount = MineUtils.setBlocksXZ(player, blockLocation, vec1, vec2)
+        val blockCount =
+            MineUtils.setBlocks(
+                player,
+                blockLocation,
+
+                shape = CuboidShape(vec1, vec2),
+                syncPackets = true
+            )
+
         val moneyAmount: Double = random.nextDouble(10.0, 25.0) * blockCount
         val coinsAmount: Int = (moneyAmount / 5).toInt()
 
