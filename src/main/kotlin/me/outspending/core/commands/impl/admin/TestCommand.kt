@@ -1,11 +1,10 @@
 package me.outspending.core.commands.impl.admin
 
-import com.azuyamat.maestro.bukkit.annotations.Catcher
 import com.azuyamat.maestro.bukkit.annotations.Command
-import com.azuyamat.maestro.bukkit.annotations.SubCommand
-import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
-import net.kyori.adventure.text.event.ClickEvent
-import net.kyori.adventure.text.event.HoverEvent
+import me.outspending.core.utils.Utilities.getConnection
+import net.minecraft.core.BlockPos
+import net.minecraft.network.protocol.game.ClientboundBlockUpdatePacket
+import net.minecraft.world.level.block.Blocks
 import org.bukkit.entity.Player
 
 @Command(
@@ -16,15 +15,16 @@ import org.bukkit.entity.Player
 class TestCommand {
 
     fun onCommand(player: Player) {
-        player.sendMessage("Welcome to the test command".parse(true))
-    }
+        val connection = player.getConnection()!!
+        for (x in -10..10) {
+            for (y in -10..10) {
+                for (z in -10..10) {
+                    val blockPos = BlockPos(x, y, z)
+                    val packet = ClientboundBlockUpdatePacket(blockPos, Blocks.COBBLESTONE.defaultBlockState())
 
-    @SubCommand("format")
-    fun format(player: Player, @Catcher message: String) {
-        player.sendMessage(
-            message.parse(true)
-                .clickEvent(ClickEvent.copyToClipboard(message))
-                .hoverEvent(HoverEvent.showText("<gray>Click to copy".parse()))
-        )
+                    connection.send(packet)
+                }
+            }
+        }
     }
 }
