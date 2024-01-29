@@ -1,6 +1,7 @@
 package me.outspending.core.utils.helpers
 
 import me.outspending.core.instance
+import me.outspending.core.utils.Utilities.orIfNull
 import me.outspending.core.utils.helpers.FormatHelper.Companion.chatcolorResolver
 import me.outspending.core.utils.helpers.FormatHelper.Companion.mainColorResolver
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
@@ -18,9 +19,13 @@ import java.util.*
 import kotlin.math.max
 
 private val MAIN_COLOR: TextColor = TextColor.color(140, 140, 255) // #8c8cff
-private val SECOND_COLOR: TextColor = listOf(MAIN_COLOR.red(), MAIN_COLOR.green(), MAIN_COLOR.blue())
-    .map { max(it * 2, 255) }
-    .let { TextColor.color(it[0], it[1], it[2]) }
+private val SECOND_COLOR: (intensity: Int) -> TextColor = {
+    val parsedIntensity = max(1.0f, it / 10.0f)
+    listOf(MAIN_COLOR.red(), MAIN_COLOR.green())
+        .map { n -> n * parsedIntensity }
+        .map { n -> max(n, 255.0f).toInt() }
+        .let { n -> TextColor.color(n[0], n[1], 255) }
+}
 
 private val miniMessage = MiniMessage.builder()
     .tags(TagResolver.builder()
@@ -108,8 +113,9 @@ class FormatHelper(private val text: String) {
         fun secondColorResolver(): TagResolver {
             return TagResolver.resolver(
                 "second"
-            ) { _: ArgumentQueue, _ ->
-                Tag.styling(SECOND_COLOR)
+            ) { args: ArgumentQueue, _ ->
+                val intensity = (args.pop() ?: "2").toString().toInt()
+                Tag.styling(SECOND_COLOR(intensity))
             }
         }
     }
