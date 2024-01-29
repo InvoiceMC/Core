@@ -9,6 +9,7 @@ import me.outspending.core.utils.helpers.FormatHelper.Companion.secondColorResol
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
+import net.kyori.adventure.text.minimessage.Context
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.Tag
 import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue
@@ -21,7 +22,7 @@ import kotlin.math.max
 private val MAIN_COLOR: TextColor = TextColor.color(140, 140, 255) // #8c8cff
 private val SECOND_COLOR: (Float) -> TextColor = {
     listOf(MAIN_COLOR.red(), MAIN_COLOR.green())
-        .map { n -> max((n * it), 255.0f).toInt() }
+        .map { n -> max(n * it, 255.0f).toInt() }
         .let { n -> TextColor.color(n[0], n[1], 255) }
 }
 
@@ -112,9 +113,11 @@ class FormatHelper(private val text: String) {
             return TagResolver.resolver(
                 "second"
             ) { args: ArgumentQueue, _ ->
-                val intensity = (args.pop() ?: "2").toString().toFloat()
+                val intensity = (args.nextOrNull() ?: "2").toString().toFloat()
                 Tag.styling(SECOND_COLOR(intensity))
             }
         }
+
+        private fun ArgumentQueue.nextOrNull() = if (hasNext()) pop().value() else null
     }
 }
