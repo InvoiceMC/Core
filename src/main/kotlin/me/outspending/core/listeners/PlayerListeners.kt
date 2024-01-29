@@ -1,6 +1,7 @@
 package me.outspending.core.listeners
 
 import me.outspending.core.Core
+import me.outspending.core.packets.listener.PacketListeners
 import me.outspending.core.storage.DataHandler
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.Utilities.runAsync
@@ -61,6 +62,8 @@ class PlayerListeners : Listener {
             )
 
             Core.scoreboardHandler.createScoreboard(player)
+
+            PacketListeners.addPlayer(player)
         }
     }
 
@@ -85,6 +88,8 @@ class PlayerListeners : Listener {
             }
 
             Core.scoreboardHandler.removeScoreboard(player)
+
+            PacketListeners.removePlayer(player)
         }
     }
 
