@@ -4,6 +4,7 @@ import me.outspending.core.storage.DataHandler
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.storage.database.Database
 import me.outspending.core.storage.database.DatabaseHandler
+import me.outspending.core.storage.database.serializer.SerializerManager
 import java.sql.SQLException
 import java.util.*
 
@@ -18,14 +19,16 @@ class PlayerDatabase : Database<UUID, PlayerData> {
             prestige INTEGER NOT NULL,
             multiplier REAL NOT NULL,
             pmine_name TEXT NOT NULL,
-            tag TEXT NOT NULL
+            tag TEXT NOT NULL,
+            cell_id TEXT
         );
-        """.trimIndent()
+        """
+            .trimIndent()
 
     private var sqlUpdate: String =
-        "UPDATE player_data SET balance = ?, gold = ?, blocks_broken = ?, prestige = ?, multiplier = ?, pmine_name = ?, tag = ? WHERE uuid = ?;"
+        "UPDATE player_data SET balance = ?, gold = ?, blocks_broken = ?, prestige = ?, multiplier = ?, pmine_name = ?, tag = ?, cell_id = ? WHERE uuid = ?;"
     private var sqlInsert: String =
-        "INSERT INTO player_data (uuid, balance, gold, blocks_broken, prestige, multiplier, pmine_name, tag) VALUES (?, ?, ?, ?, ?, ?, ?, ?);"
+        "INSERT INTO player_data (uuid, balance, gold, blocks_broken, prestige, multiplier, pmine_name, tag, cell_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"
     private var sqlDelete: String = "DELETE FROM player_data WHERE uuid = ?;"
     private var sqlSelect: String = "SELECT * FROM player_data WHERE uuid = ?;"
     private var sqlSelectAll: String = "SELECT * FROM player_data;"
@@ -51,14 +54,9 @@ class PlayerDatabase : Database<UUID, PlayerData> {
             val statement = connection.prepareStatement(sqlUpdate)
 
             DataHandler.playerData.forEach { (uuid, playerData) ->
-                statement.setDouble(1, playerData.balance)
-                statement.setInt(2, playerData.gold)
-                statement.setLong(3, playerData.blocksBroken)
-                statement.setInt(4, playerData.prestige)
-                statement.setFloat(5, playerData.multiplier)
-                statement.setString(6, playerData.pmineName)
-                statement.setString(7, playerData.tag)
-                statement.setString(8, uuid.toString())
+                SerializerManager(playerData).serialize(statement) { index, _ ->
+                    statement.setString(index, uuid.toString())
+                }
 
                 statement.addBatch()
             }
@@ -77,7 +75,6 @@ class PlayerDatabase : Database<UUID, PlayerData> {
             val statement = connection.prepareStatement(sqlSelect)
 
             statement.setString(1, key.toString())
-
             val resultSet = statement.executeQuery()
 
             return resultSet.next()
@@ -96,19 +93,7 @@ class PlayerDatabase : Database<UUID, PlayerData> {
             val statement = connection.prepareStatement(sqlSelect)
             statement.setString(1, key.toString())
 
-            val resultSet = statement.executeQuery()
-
-            if (resultSet.next()) {
-                val balance = resultSet.getDouble("balance")
-                val gold = resultSet.getInt("gold")
-                val blocksBroken = resultSet.getLong("blocks_broken")
-                val prestige = resultSet.getInt("prestige")
-                val multiplier = resultSet.getFloat("multiplier")
-                val pmineName = resultSet.getString("pmine_name")
-                val tag = resultSet.getString("tag")
-
-                return PlayerData(balance, gold, blocksBroken, prestige, multiplier, pmineName, tag)
-            }
+            return SerializerManager.deserializeWithoutData(PlayerData::class, statement)
         } catch (e: SQLException) {
             e.printStackTrace()
         }
@@ -133,9 +118,10 @@ class PlayerDatabase : Database<UUID, PlayerData> {
                 val multiplier = resultSet.getFloat("multiplier")
                 val pmineName = resultSet.getString("pmine_name")
                 val tag = resultSet.getString("tag")
+                val cellId = resultSet.getString("cell_id")
 
                 list.add(
-                    PlayerData(balance, gold, blocksBroken, prestige, multiplier, pmineName, tag)
+                    PlayerData(balance, gold, blocksBroken, prestige, multiplier, pmineName, tag, cellId)
                 )
             }
 
@@ -171,15 +157,9 @@ class PlayerDatabase : Database<UUID, PlayerData> {
         val connection = DatabaseHandler.databaseConnection
         try {
             val statement = connection.prepareStatement(sqlUpdate)
-
-            statement.setDouble(1, value.balance)
-            statement.setInt(2, value.gold)
-            statement.setLong(3, value.blocksBroken)
-            statement.setInt(4, value.prestige)
-            statement.setFloat(5, value.multiplier)
-            statement.setString(6, value.pmineName)
-            statement.setString(7, value.tag)
-            statement.setString(8, key.toString())
+            SerializerManager(value).serialize(statement) { index, _ ->
+                statement.setString(index, key.toString())
+            }
 
             statement.execute()
         } catch (e: SQLException) {
@@ -205,6 +185,7 @@ class PlayerDatabase : Database<UUID, PlayerData> {
             statement.setFloat(6, value.multiplier)
             statement.setString(7, value.pmineName)
             statement.setString(8, value.tag)
+            statement.setString(9, value.cellId)
 
             statement.execute()
         } catch (e: SQLException) {

@@ -8,6 +8,7 @@ import me.outspending.core.utils.Utilities.getData
 import me.outspending.core.utils.Utilities.toComponent
 import me.outspending.core.utils.Utilities.toTinyNumber
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
+import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 
@@ -29,7 +30,7 @@ class ChatListeners : Listener {
         e.renderer { player, sourceDisplayName, message, _ ->
             val displayName = Placeholder.component("displayname", sourceDisplayName)
             val msg = Placeholder.component("message", message)
-            val playerData: PlayerData = player.getData() ?: PlayerData.default()
+            val playerData: PlayerData = player.getData() ?: PlayerData()
             val playersPrefix: String = Core.luckPermsProvider.userManager.getUser(player.uniqueId)?.cachedData?.metaData?.prefix ?: "<gray>"
 
             val hoverText: String =

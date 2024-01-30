@@ -13,11 +13,14 @@ import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket
 import net.minecraft.network.protocol.game.ServerboundUseItemOnPacket
 import net.minecraft.server.network.ServerGamePacketListenerImpl
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import kotlin.random.Random
+import kotlin.reflect.full.declaredMemberProperties
+import kotlin.reflect.full.declaredMembers
 
 class MiningDuplexHandler(
     private val player: Player,

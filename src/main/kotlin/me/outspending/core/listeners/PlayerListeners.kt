@@ -40,8 +40,9 @@ class PlayerListeners : Listener {
         // Load data
         runAsync {
             val time = measureTime {
-                val playerData = Core.playerDatabase.getData(uuid) ?: PlayerData.default()
-                DataHandler.addPlayer(uuid, playerData)
+                val database = Core.playerDatabase
+                val playerData = if (database.hasData(uuid)) database.getData(uuid) else PlayerData()
+                DataHandler.addPlayer(uuid, playerData!!)
             }
 
             player.showTitle(
@@ -80,8 +81,10 @@ class PlayerListeners : Listener {
             map[uuid]?.let {
                 val database = Core.playerDatabase
                 if (database.hasData(uuid)) {
+                    println(1)
                     database.updateData(uuid, it)
                 } else {
+                    println(2)
                     database.createData(uuid, it)
                 }
 
