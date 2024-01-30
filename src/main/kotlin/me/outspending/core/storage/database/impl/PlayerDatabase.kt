@@ -15,20 +15,20 @@ class PlayerDatabase : Database<UUID, PlayerData> {
             uuid TEXT PRIMARY KEY NOT NULL,
             balance REAL NOT NULL,
             gold INTEGER NOT NULL,
-            blocks_broken INTEGER NOT NULL,
+            blocksBroken INTEGER NOT NULL,
             prestige INTEGER NOT NULL,
             multiplier REAL NOT NULL,
-            pmine_name TEXT NOT NULL,
+            pmineName TEXT NOT NULL,
             tag TEXT NOT NULL,
-            cell_id TEXT
+            cellId TEXT
         );
         """
             .trimIndent()
 
     private var sqlUpdate: String =
-        "UPDATE player_data SET balance = ?, gold = ?, blocks_broken = ?, prestige = ?, multiplier = ?, pmine_name = ?, tag = ?, cell_id = ? WHERE uuid = ?;"
+        "UPDATE player_data SET balance = ?, gold = ?, blocksBroken = ?, prestige = ?, multiplier = ?, pmineName = ?, tag = ?, cellId = ? WHERE uuid = ?;"
     private var sqlInsert: String =
-        "INSERT INTO player_data (uuid, balance, gold, blocks_broken, prestige, multiplier, pmine_name, tag, cell_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"
+        "INSERT INTO player_data (uuid, balance, gold, blocksBroken, prestige, multiplier, pmineName, tag, cellId) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"
     private var sqlDelete: String = "DELETE FROM player_data WHERE uuid = ?;"
     private var sqlSelect: String = "SELECT * FROM player_data WHERE uuid = ?;"
     private var sqlSelectAll: String = "SELECT * FROM player_data;"
@@ -113,12 +113,12 @@ class PlayerDatabase : Database<UUID, PlayerData> {
             while (resultSet.next()) {
                 val balance = resultSet.getDouble("balance")
                 val gold = resultSet.getInt("gold")
-                val blocksBroken = resultSet.getLong("blocks_broken")
+                val blocksBroken = resultSet.getLong("blocksBroken")
                 val prestige = resultSet.getInt("prestige")
                 val multiplier = resultSet.getFloat("multiplier")
-                val pmineName = resultSet.getString("pmine_name")
+                val pmineName = resultSet.getString("pmineName")
                 val tag = resultSet.getString("tag")
-                val cellId = resultSet.getString("cell_id")
+                val cellId = resultSet.getString("cellId")
 
                 list.add(
                     PlayerData(balance, gold, blocksBroken, prestige, multiplier, pmineName, tag, cellId)

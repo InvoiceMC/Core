@@ -93,23 +93,25 @@ class SerializerManager<T : Data>(private var data: T) {
                     it.findAnnotation<PropertyOrder>()?.order ?: Int.MAX_VALUE
                 }
 
-            for ((index, property) in properties.withIndex()) {
+            println(properties.map { it.name })
+            for (property in properties) {
                 val type = property.returnType
 
                 val mutableProperty = (property as? KMutableProperty<*>) ?: continue
+                val propertyName = mutableProperty.name
+
                 val setValue: (Any) -> Unit = {
                     mutableProperty.setter.call(instance, it)
-                    println("${mutableProperty.name} // $it // ${index}")
                 }
 
                 when (type.classifier) {
-                    String::class -> setValue(resultSet.getString(index + 1))
-                    Int::class -> setValue(resultSet.getInt(index + 1))
-                    Long::class -> setValue(resultSet.getLong(index + 1))
-                    Double::class -> setValue(resultSet.getDouble(index + 1))
-                    Float::class -> setValue(resultSet.getFloat(index + 1))
+                    String::class -> setValue(resultSet.getString(propertyName))
+                    Int::class -> setValue(resultSet.getInt(propertyName))
+                    Long::class -> setValue(resultSet.getLong(propertyName))
+                    Double::class -> setValue(resultSet.getDouble(propertyName))
+                    Float::class -> setValue(resultSet.getFloat(propertyName))
                     else -> {
-                        val value: String = resultSet.getString(index + 1)
+                        val value: String = resultSet.getString(propertyName)
                         val clazz: Class<*> = type.classifier!!::class.java
 
                         val deserialized = Serializers.deserialize(clazz, value)
@@ -117,6 +119,8 @@ class SerializerManager<T : Data>(private var data: T) {
                         mutableProperty.setter.call(instance, deserialized)
                     }
                 }
+
+                resultSet.next()
             }
 
             return instance
