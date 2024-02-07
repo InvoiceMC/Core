@@ -13,6 +13,8 @@ import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import org.bukkit.entity.Player
 import java.util.*
 
+const val REFRESH_RATE = 2 * 20L // Every 2 seconds
+
 class ScoreboardHandler {
     private val scoreboardMap: MutableMap<UUID, FastBoard> = mutableMapOf()
     private val scoreboardFormat: Array<String> =
@@ -35,13 +37,11 @@ class ScoreboardHandler {
         )
 
     init {
-        runTaskTimerAsynchronously(40, 40) {
+        runTaskTimerAsynchronously(REFRESH_RATE, REFRESH_RATE) {
             DataHandler.playerData.keys.forEach { uuid ->
-                val scoreboard: FastBoard? = scoreboardMap[uuid]
+                val scoreboard: FastBoard = scoreboardMap[uuid] ?: return@forEach
 
-                if (scoreboard != null) {
-                    updateScoreboard(scoreboard)
-                }
+                updateScoreboard(scoreboard)
             }
         }
     }

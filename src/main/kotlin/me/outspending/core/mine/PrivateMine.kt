@@ -1,6 +1,8 @@
 package me.outspending.core.mine
 
-import me.outspending.core.utils.Utilities.colorize
+import me.outspending.core.utils.Utilities.toAudience
+import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
+import net.kyori.adventure.title.Title
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.util.BoundingBox
@@ -54,10 +56,10 @@ class PrivateMine(
             xp = 0
             maxXP *= 2
             members.forEach {
-                it.sendTitle(
-                    "&6&lPRIVATE MINE".colorize(),
-                    "&fYour private mine has leveled up!".colorize()
-                )
+                it.toAudience().showTitle(Title.title(
+                    "<main><bold>LEVEL UP".parse(),
+                    "<gray>Your private mine has leveled up".parse()
+                ))
             }
         }
     }

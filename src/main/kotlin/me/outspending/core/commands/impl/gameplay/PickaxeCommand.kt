@@ -1,7 +1,7 @@
 package me.outspending.core.commands.impl.gameplay
 
 import com.azuyamat.maestro.bukkit.annotations.Command
-import me.outspending.core.messageConfig
+import me.outspending.core.Core
 import me.outspending.core.utils.Utilities.toComponent
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import org.bukkit.Material
@@ -44,6 +44,6 @@ class PickaxeCommand {
         }
 
         player.inventory.addItem(itemStack)
-        player.sendMessage(messageConfig.getValue("commands.gameplay.pickaxe_success").asFormattedMessage(true))
+        player.sendMessage(Core.messageConfig.getMessage("commands.gameplay.pickaxe_success"))
     }
 }

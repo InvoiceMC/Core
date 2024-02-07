@@ -3,7 +3,6 @@ package me.outspending.core
 import com.azuyamat.maestro.bukkit.Maestro
 import com.azuyamat.maestro.bukkit.data.CommandData
 import me.outspending.core.broadcaster.BroadcastManager
-import me.outspending.core.config.ConfigManager
 import me.outspending.core.config.impl.MessagesConfig
 import me.outspending.core.leaderboards.LeaderboardManager
 import me.outspending.core.listeners.ChatListeners
@@ -18,7 +17,6 @@ import me.outspending.core.storage.serializers.UUIDSerializer
 import me.outspending.munch.Munch
 import me.outspending.munch.connection.MunchConnection
 import me.outspending.munch.serializer.SerializerFactory
-import net.kyori.adventure.text.minimessage.MiniMessage
 import net.luckperms.api.LuckPerms
 import org.bukkit.plugin.PluginManager
 import org.bukkit.plugin.RegisteredServiceProvider
@@ -26,56 +24,44 @@ import org.bukkit.plugin.java.JavaPlugin
 import java.util.*
 import kotlin.time.measureTime
 
-val instance
-    get() = JavaPlugin.getPlugin(Core::class.java)
-var commands: MutableList<CommandData> = mutableListOf()
-
-// Data Stuff
-val database = MunchConnection.create()
-val munchPlayerData = Munch.create(PlayerData::class).process<UUID>()
-
-// Config stuff
-val messageConfig = MessagesConfig();
+const val COMMANDS_PACKAGE = "me.outspending.core.commands.impl"
+const val DATABASE_NAME = "database.db"
 
 class Core : JavaPlugin() {
     companion object {
-        lateinit var miniMessage: MiniMessage
-        lateinit var scoreboardHandler: ScoreboardHandler
-        lateinit var broadcastManager: BroadcastManager
-        lateinit var leaderboardManager: LeaderboardManager
+        val instance
+            get() = getPlugin(Core::class.java)
+        var commandsList: MutableList<CommandData> = mutableListOf()
+
+        // Data Stuff
+        val database = MunchConnection.create()
+        val munchPlayerData = Munch.create(PlayerData::class).process<UUID>()
+
+        // Config stuff
+        val messageConfig = MessagesConfig();
+
+        // Handlers and managers
+        val scoreboardHandler = ScoreboardHandler()
+        val broadcastManager = BroadcastManager()
+        val leaderboardManager = LeaderboardManager()
         lateinit var luckPermsProvider: LuckPerms
     }
 
     override fun onEnable() {
         val time = measureTime {
-            // Initialize variables
-            miniMessage = MiniMessage.miniMessage()
-            scoreboardHandler = ScoreboardHandler()
-            broadcastManager = BroadcastManager()
-            leaderboardManager = LeaderboardManager()
-
             // Register Commands
-            val maestro = Maestro(this).apply {
-                registerCommands("me.outspending.core.commands.impl")
+            Maestro(this).apply {
+                registerCommands(COMMANDS_PACKAGE)
+                commandsList = this.commands
             }
-            commands = maestro.commands
 
-            // Setup Databases
             setupDatabases()
-
-            // LuckPerms
-            setupLuckperms()
-
-            // Broadcast Manager
+            setupLuckPerms()
             registerBroadcasts()
-
-            // Check database file
-            DataHandler.startup()
-
-            // Register Events
             registerEvents(server.pluginManager)
 
-            // Setup config
+            DataHandler.startup()
+
             messageConfig.load()
         }
 
@@ -89,7 +75,7 @@ class Core : JavaPlugin() {
         database.disconnect()
     }
 
-    private fun setupLuckperms() {
+    private fun setupLuckPerms() {
         val service: RegisteredServiceProvider<LuckPerms>? =
             server.servicesManager.getRegistration(LuckPerms::class.java)
         service?.let { luckPermsProvider = it.provider }
@@ -99,7 +85,7 @@ class Core : JavaPlugin() {
         val folder = dataFolder
         if (!folder.exists()) folder.mkdirs()
 
-        database.connect(folder, "database.db")
+        database.connect(folder, DATABASE_NAME)
         database.createTable(munchPlayerData)
 
         SerializerFactory.registerSerializer(UUIDSerializer())
@@ -117,10 +103,12 @@ class Core : JavaPlugin() {
     }
 
     private fun registerEvents(pluginManager: PluginManager) {
-        pluginManager.registerEvents(ChatListeners(), this)
-        pluginManager.registerEvents(CommandListeners(), this)
-        pluginManager.registerEvents(MiscListeners(), this)
-        pluginManager.registerEvents(PlayerListeners(), this)
-        pluginManager.registerEvents(MineListener(), this)
+        listOf(
+            ChatListeners(),
+            CommandListeners(),
+            MiscListeners(),
+            PlayerListeners(),
+            MineListener()
+        ).map { pluginManager.registerEvents(it, this) }
     }
 }

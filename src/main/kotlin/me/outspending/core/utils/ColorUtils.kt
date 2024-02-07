@@ -6,9 +6,6 @@ object ColorUtils {
     private val HEX_REGEX: Regex = Regex("&(#[a-fA-F0-9]{6})")
 
     @JvmStatic
-    fun colorize(string: String): String = ChatColor.translateAlternateColorCodes('&', string)
-
-    @JvmStatic
     fun colorizeHex(string: String): String {
         return ChatColor.translateAlternateColorCodes(
             '&',

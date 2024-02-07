@@ -1,14 +1,12 @@
 package me.outspending.core.leaderboards
 
 import me.outspending.core.Core
-import me.outspending.core.database
-import me.outspending.core.munchPlayerData
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.Utilities.orIfNull
 import me.outspending.core.utils.Utilities.runAsync
 
 class LeaderboardManager {
-    private fun getAllData(): List<PlayerData>? = database.getAllData(munchPlayerData)
+    private fun getAllData(): List<PlayerData>? = Core.database.getAllData(Core.munchPlayerData)
 
     private inline fun <T : Comparable<T>> getTop(
         data: List<PlayerData>?,

@@ -1,8 +1,7 @@
 package me.outspending.core.commands.impl.admin.utilities
 
 import com.azuyamat.maestro.bukkit.annotations.Command
-import me.outspending.core.messageConfig
-import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
+import me.outspending.core.Core
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
 
@@ -55,19 +54,26 @@ fun setGameMode(executor: Player, gamemode: GameMode, target: Player? = null) {
     target.gameMode = gamemode
 
     if (executor == target) {
-        val message = messageConfig.getValue("commands.admin.utilities.gamemode.success")
-            .parseArgs(gamemode.name.lowercase())
-        executor.sendMessage(message.parse(true))
+        val message = Core.messageConfig.getMessageWithArgs(
+            "commands.admin.utilities.gamemode.success",
+            true,
+            gamemode.name.lowercase()
+        )
+        executor.sendMessage(message)
     } else {
-        val message = messageConfig.getValue("commands.utilities.gamemode.success_other").parseArgs(
+        val message = Core.messageConfig.getMessageWithArgs(
+            "commands.utilities.gamemode.success_other",
+            true,
             target.name.lowercase(),
             gamemode.name.lowercase()
         )
-        executor.sendMessage(message.parse(true))
-        val receiverMessage = messageConfig.getValue("commands.utilities.gamemode.success_other_receiver").parseArgs(
+        executor.sendMessage(message)
+        val receiverMessage = Core.messageConfig.getMessageWithArgs(
+            "commands.utilities.gamemode.success_other_receiver",
+            true,
             executor.name.lowercase(),
             gamemode.name.lowercase()
         )
-        target.sendMessage(receiverMessage.parse(true))
+        target.sendMessage(receiverMessage)
     }
 }

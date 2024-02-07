@@ -1,11 +1,11 @@
 package me.outspending.core.config
 
-import me.outspending.core.instance
+import me.outspending.core.Core
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
 
 abstract class ConfigManager(name: String) {
-    private val dataFolder = instance.dataFolder
+    private val dataFolder = Core.instance.dataFolder
     private val configFile = File(dataFolder, "config/$name.yml")
     private var config = YamlConfiguration()
 
@@ -28,6 +28,16 @@ abstract class ConfigManager(name: String) {
 
     fun getValue(key: String): ConfigValue {
         return ConfigValue(config.get(key))
+    }
+
+    fun getValueOr(key: String, or: () -> Any): ConfigValue {
+        return getValue(key).takeIf { !it.isNull() }
+            ?: ConfigValue(or())
+    }
+
+    fun getValueOr(key: String, or: String): ConfigValue {
+        return getValue(key).takeIf { !it.isNull() }
+            ?: ConfigValue(or)
     }
 
     fun getAllValues(): Map<String, Any> {

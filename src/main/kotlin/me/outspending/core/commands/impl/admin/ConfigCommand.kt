@@ -2,7 +2,7 @@ package me.outspending.core.commands.impl.admin
 
 import com.azuyamat.maestro.bukkit.annotations.Command
 import com.azuyamat.maestro.bukkit.annotations.SubCommand
-import me.outspending.core.messageConfig
+import me.outspending.core.Core
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import org.bukkit.command.CommandSender
 
@@ -14,7 +14,7 @@ import org.bukkit.command.CommandSender
 class ConfigCommand {
 
     fun onCommand(sender: CommandSender) {
-        sender.sendMessage(messageConfig.getValue("commands.admin.config.main").asString().parse(true))
+        sender.sendMessage(Core.messageConfig.getMessage("commands.admin.config.main"))
     }
 
     @SubCommand(
@@ -23,8 +23,8 @@ class ConfigCommand {
         permission = "core.admin.config.reload"
     )
     fun reload(sender: CommandSender) {
-        messageConfig.reload()
-        sender.sendMessage(messageConfig.getValue("commands.admin.config.reload_success").asString().parse(true))
+        Core.messageConfig.reload()
+        sender.sendMessage(Core.messageConfig.getMessage("commands.admin.config.reload_success"))
     }
 
     @SubCommand(
@@ -33,7 +33,7 @@ class ConfigCommand {
         permission = "core.admin.config.info"
     )
     fun info(sender: CommandSender) {
-        val message = messageConfig.getAllValues().entries.joinToString("\n") { "<main>${it.key}: <gray>${it.value}" }
+        val message = Core.messageConfig.getAllValues().entries.joinToString("\n") { "<main>${it.key}: <gray>${it.value}" }
         sender.sendMessage(message.parse(true))
     }
 }

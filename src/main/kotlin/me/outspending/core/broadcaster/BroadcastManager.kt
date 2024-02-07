@@ -1,7 +1,10 @@
 package me.outspending.core.broadcaster
 
-import me.outspending.core.instance
+import me.outspending.core.Core
 import org.bukkit.scheduler.BukkitRunnable
+
+const val DELAY = 9000L
+const val PERIOD = 9000L
 
 class BroadcastManager {
     private val broadcasts: MutableList<AutoBroadcast> = mutableListOf()
@@ -23,6 +26,6 @@ class BroadcastManager {
                     currentIndex += 1
                 }
             }
-            .runTaskTimerAsynchronously(instance, 9000, 9000)
+            .runTaskTimerAsynchronously(Core.instance, DELAY, PERIOD)
     }
 }

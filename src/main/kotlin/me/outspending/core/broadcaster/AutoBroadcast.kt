@@ -1,8 +1,8 @@
 package me.outspending.core.broadcaster
 
-import me.outspending.core.utils.Utilities.toComponent
+import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import org.bukkit.Bukkit
 
-class AutoBroadcast(vararg val messages: String) {
-    fun send() = messages.forEach { Bukkit.broadcast(it.toComponent()) }
+class AutoBroadcast(private vararg val messages: String) {
+    fun send() = messages.forEach { Bukkit.broadcast(it.parse()) }
 }

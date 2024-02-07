@@ -1,8 +1,6 @@
 package me.outspending.core.listeners
 
 import me.outspending.core.Core
-import me.outspending.core.database
-import me.outspending.core.munchPlayerData
 import me.outspending.core.packets.listener.PacketListeners
 import me.outspending.core.storage.DataHandler
 import me.outspending.core.storage.data.PlayerData
@@ -42,14 +40,14 @@ class PlayerListeners : Listener {
         // Load data
         runAsync {
             val time = measureTime {
-                val playerData = database.getData(munchPlayerData, uuid) ?: PlayerData(uuid)
+                val playerData = Core.database.getData(Core.munchPlayerData, uuid) ?: PlayerData(uuid)
 
                 DataHandler.addPlayer(uuid, playerData)
             }
 
             player.showTitle(
                 Title.title(
-                    "<gradient:main:second>★★★</gradient> <main><b>DATABASE</b> <gradient:second:main>★★★</gradient>"
+                    "<gradient:main:second>★★★</gradient> <main><b>Core.database</b> <gradient:second:main>★★★</gradient>"
                         .parse(),
                     "<gray><i>Finished loading your data in <main><u>$time</u><gray>!"
                         .parse(),
@@ -81,13 +79,13 @@ class PlayerListeners : Listener {
 
         runAsync {
             map[uuid]?.let {
-                val hasData = database.hasData(munchPlayerData, uuid) ?: false
+                val hasData = Core.database.hasData(Core.munchPlayerData, uuid) ?: false
                 if (hasData) {
                     println(1)
-                    database.updateData(munchPlayerData, it, uuid)
+                    Core.database.updateData(Core.munchPlayerData, it, uuid)
                 } else {
                     println(2)
-                    database.addData(munchPlayerData, it)
+                    Core.database.addData(Core.munchPlayerData, it)
                 }
 
                 DataHandler.removePlayer(uuid)

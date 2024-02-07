@@ -2,9 +2,8 @@ package me.outspending.core.commands.impl.admin
 
 import com.azuyamat.maestro.bukkit.annotations.Command
 import com.azuyamat.maestro.bukkit.annotations.SubCommand
-import me.outspending.core.messageConfig
+import me.outspending.core.Core
 import me.outspending.core.storage.DataHandler
-import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import org.bukkit.command.CommandSender
 
 @Command(
@@ -14,17 +13,17 @@ import org.bukkit.command.CommandSender
 class DatabaseCommand {
 
     fun onCommand(player: CommandSender) {
-        player.sendMessage(messageConfig.getValue("commands.admin.database.main").asFormattedMessage(true))
+        player.sendMessage(Core.messageConfig.getMessage("commands.admin.database.main"))
     }
 
     @SubCommand("reload")
     fun reload(player: CommandSender) {
         DataHandler.updateAllPlayerData()
-        player.sendMessage(messageConfig.getValue("commands.admin.database.reload_success").asFormattedMessage(true))
+        player.sendMessage(Core.messageConfig.getMessage("commands.admin.database.reload_success"))
     }
 
     @SubCommand("test")
     fun test(player: CommandSender) {
-        player.sendMessage(messageConfig.getValue("commands.admin.database.test").asFormattedMessage(true))
+        player.sendMessage(Core.messageConfig.getMessage("commands.admin.database.test"))
     }
 }

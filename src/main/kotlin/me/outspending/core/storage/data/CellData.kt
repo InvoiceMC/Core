@@ -1,6 +1,6 @@
 package me.outspending.core.storage.data
 
-import me.outspending.core.instance
+import me.outspending.core.Core
 import me.outspending.core.utils.Utilities.getData
 import org.bukkit.Location
 import java.util.*
@@ -13,7 +13,7 @@ data class CellData(
 ): Data {
 
     fun getTotalBlocksMined() = members.map { uuid ->
-        val player = instance.server.getPlayer(uuid) ?: return@map 0L // TODO: Add different impl for getting data from offline player
+        val player = Core.instance.server.getPlayer(uuid) ?: return@map 0L // TODO: Add different impl for getting data from offline player
         val data = player.getData() ?: return@map 0L
         data.blocksBroken
     }.sum()
