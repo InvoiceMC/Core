@@ -1,7 +1,6 @@
 package me.outspending.core.commands.impl.admin
 
 import com.azuyamat.maestro.bukkit.annotations.Command
-import kotlin.time.measureTime
 import me.outspending.core.utils.MineUtils
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import me.outspending.core.utils.shapes.CuboidShape
@@ -9,6 +8,7 @@ import org.bukkit.Material
 import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
 import org.bukkit.util.Vector
+import kotlin.time.measureTime
 
 @Command(
     name = "setmine",

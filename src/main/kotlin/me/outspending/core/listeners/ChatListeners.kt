@@ -8,7 +8,6 @@ import me.outspending.core.utils.Utilities.getData
 import me.outspending.core.utils.Utilities.toComponent
 import me.outspending.core.utils.Utilities.toTinyNumber
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
-import org.bukkit.Bukkit
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 

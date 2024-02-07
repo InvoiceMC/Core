@@ -1,7 +1,6 @@
 package me.outspending.core.utils.helpers
 
 import me.outspending.core.instance
-import me.outspending.core.utils.Utilities.orIfNull
 import me.outspending.core.utils.helpers.FormatHelper.Companion.chatcolorResolver
 import me.outspending.core.utils.helpers.FormatHelper.Companion.mainColorResolver
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
@@ -9,13 +8,11 @@ import me.outspending.core.utils.helpers.FormatHelper.Companion.secondColorResol
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
-import net.kyori.adventure.text.minimessage.Context
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.Tag
 import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags
-import org.bukkit.Bukkit
 import java.util.*
 import kotlin.math.max
 

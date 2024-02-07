@@ -7,8 +7,6 @@ import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
-import kotlin.math.max
-import kotlin.math.min
 import kotlin.random.Random
 
 interface PickaxeEnchant {

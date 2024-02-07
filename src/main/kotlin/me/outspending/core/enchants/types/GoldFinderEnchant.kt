@@ -4,7 +4,6 @@ import me.outspending.core.enchants.EnchantResult
 import me.outspending.core.enchants.PickaxeEnchant
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.Utilities.format
-import me.outspending.core.utils.Utilities.toComponent
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location

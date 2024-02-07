@@ -1,6 +1,8 @@
 package me.outspending.core.listeners
 
 import me.outspending.core.Core
+import me.outspending.core.database
+import me.outspending.core.munchPlayerData
 import me.outspending.core.packets.listener.PacketListeners
 import me.outspending.core.storage.DataHandler
 import me.outspending.core.storage.data.PlayerData
@@ -40,9 +42,9 @@ class PlayerListeners : Listener {
         // Load data
         runAsync {
             val time = measureTime {
-                val database = Core.playerDatabase
-                val playerData = if (database.hasData(uuid)) database.getData(uuid) else PlayerData()
-                DataHandler.addPlayer(uuid, playerData!!)
+                val playerData = database.getData(munchPlayerData, uuid) ?: PlayerData(uuid)
+
+                DataHandler.addPlayer(uuid, playerData)
             }
 
             player.showTitle(
@@ -79,13 +81,13 @@ class PlayerListeners : Listener {
 
         runAsync {
             map[uuid]?.let {
-                val database = Core.playerDatabase
-                if (database.hasData(uuid)) {
+                val hasData = database.hasData(munchPlayerData, uuid) ?: false
+                if (hasData) {
                     println(1)
-                    database.updateData(uuid, it)
+                    database.updateData(munchPlayerData, it, uuid)
                 } else {
                     println(2)
-                    database.createData(uuid, it)
+                    database.addData(munchPlayerData, it)
                 }
 
                 DataHandler.removePlayer(uuid)

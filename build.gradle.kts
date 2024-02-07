@@ -39,6 +39,9 @@ dependencies {
     implementation("fr.mrmicky:fastboard:2.0.2")
     compileOnly("net.luckperms:api:5.4")
 
+    // Database Stuff
+    implementation("com.github.InvoiceMC:Munch:78c79ed8c0")
+
     // FAWE
     implementation(platform("com.intellectualsites.bom:bom-newest:1.38"))
     compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")

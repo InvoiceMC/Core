@@ -1,7 +1,6 @@
 package me.outspending.core.utils.shapes
 
 import me.outspending.core.utils.Shape
-import me.outspending.core.utils.Utilities
 import me.outspending.core.utils.Utilities.toLocation
 import me.outspending.core.utils.runXYZ
 import org.bukkit.Location

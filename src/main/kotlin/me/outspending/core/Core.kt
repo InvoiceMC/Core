@@ -12,10 +12,10 @@ import me.outspending.core.mine.MineListener
 import me.outspending.core.scoreboard.ScoreboardHandler
 import me.outspending.core.storage.DataHandler
 import me.outspending.core.storage.data.PlayerData
-import me.outspending.core.storage.database.Database
-import me.outspending.core.storage.database.DatabaseHandler
-import me.outspending.core.storage.database.impl.PlayerDatabase
-import me.outspending.core.storage.database.serializer.Serializers
+import me.outspending.core.storage.serializers.UUIDSerializer
+import me.outspending.munch.Munch
+import me.outspending.munch.connection.MunchConnection
+import me.outspending.munch.serializer.SerializerFactory
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.luckperms.api.LuckPerms
 import org.bukkit.plugin.PluginManager
@@ -28,10 +28,13 @@ val instance
     get() = JavaPlugin.getPlugin(Core::class.java)
 var commands: MutableList<CommandData> = mutableListOf()
 
+// Data Stuff
+val database = MunchConnection.create()
+val munchPlayerData = Munch.create(PlayerData::class).process<UUID>()
+
 class Core : JavaPlugin() {
     companion object {
         lateinit var miniMessage: MiniMessage
-        lateinit var playerDatabase: Database<UUID, PlayerData>
         lateinit var scoreboardHandler: ScoreboardHandler
         lateinit var broadcastManager: BroadcastManager
         lateinit var leaderboardManager: LeaderboardManager
@@ -42,7 +45,6 @@ class Core : JavaPlugin() {
         val time = measureTime {
             // Initialize variables
             miniMessage = MiniMessage.miniMessage()
-            playerDatabase = PlayerDatabase()
             scoreboardHandler = ScoreboardHandler()
             broadcastManager = BroadcastManager()
             leaderboardManager = LeaderboardManager()
@@ -53,6 +55,9 @@ class Core : JavaPlugin() {
             }
             commands = maestro.commands
 
+            // Setup Databases
+            setupDatabases()
+
             // LuckPerms
             setupLuckperms()
 
@@ -60,9 +65,7 @@ class Core : JavaPlugin() {
             registerBroadcasts()
 
             // Check database file
-            DatabaseHandler.setupDatabase()
             DataHandler.startup()
-            playerDatabase.createTable()
 
             // Register Events
             registerEvents(server.pluginManager)
@@ -72,15 +75,26 @@ class Core : JavaPlugin() {
     }
 
     override fun onDisable() {
-        playerDatabase.updateAllData()
+        val values = DataHandler.playerData.values.toList()
+        database.updateAllData(munchPlayerData, values)
 
-        DatabaseHandler.closeConnection()
+        database.disconnect()
     }
 
     private fun setupLuckperms() {
         val service: RegisteredServiceProvider<LuckPerms>? =
             server.servicesManager.getRegistration(LuckPerms::class.java)
         service?.let { luckPermsProvider = it.provider }
+    }
+
+    private fun setupDatabases() {
+        val folder = dataFolder
+        if (!folder.exists()) folder.mkdirs()
+
+        database.connect(folder, "database.db")
+        database.createTable(munchPlayerData)
+
+        SerializerFactory.registerSerializer(UUIDSerializer())
     }
 
     private fun registerBroadcasts() {

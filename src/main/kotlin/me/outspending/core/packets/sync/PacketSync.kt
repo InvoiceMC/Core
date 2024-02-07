@@ -1,6 +1,5 @@
 package me.outspending.core.packets.sync
 
-import me.outspending.core.utils.Shape
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.block.data.BlockData
