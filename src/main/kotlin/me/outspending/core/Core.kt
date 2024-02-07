@@ -3,6 +3,8 @@ package me.outspending.core
 import com.azuyamat.maestro.bukkit.Maestro
 import com.azuyamat.maestro.bukkit.data.CommandData
 import me.outspending.core.broadcaster.BroadcastManager
+import me.outspending.core.config.ConfigManager
+import me.outspending.core.config.impl.MessagesConfig
 import me.outspending.core.leaderboards.LeaderboardManager
 import me.outspending.core.listeners.ChatListeners
 import me.outspending.core.listeners.CommandListeners
@@ -31,6 +33,9 @@ var commands: MutableList<CommandData> = mutableListOf()
 // Data Stuff
 val database = MunchConnection.create()
 val munchPlayerData = Munch.create(PlayerData::class).process<UUID>()
+
+// Config stuff
+val messageConfig = MessagesConfig();
 
 class Core : JavaPlugin() {
     companion object {
@@ -69,6 +74,9 @@ class Core : JavaPlugin() {
 
             // Register Events
             registerEvents(server.pluginManager)
+
+            // Setup config
+            messageConfig.load()
         }
 
         logger.info("Finished loading Core in $time!")

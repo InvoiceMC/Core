@@ -1,6 +1,7 @@
 package me.outspending.core.commands.impl.utility
 
 import com.azuyamat.maestro.bukkit.annotations.Command
+import me.outspending.core.messageConfig
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import org.bukkit.entity.Player
 
@@ -18,9 +19,19 @@ class FlyCommand {
         target.allowFlight = !target.allowFlight
         val status = if (target.allowFlight) "enabled" else "disabled"
         val color = if (target.allowFlight) "<green>" else "<red>"
-        player.sendMessage("<gray>Flight $color$status <gray>for <main>${target.name}".parse(true))
+        player.sendMessage(
+            messageConfig.getValue("commands.utility.fly.success_self").parseArgs(
+                color+status,
+                target.name
+            ).parse(true)
+        )
         if (target != player) {
-            target.sendMessage("<gray>Your flight was $color$status <gray>by <main>${player.name}".parse(true))
+            target.sendMessage(
+                messageConfig.getValue("commands.utility.fly.success_other").parseArgs(
+                    color+status,
+                    player.name
+                ).parse(true)
+            )
         }
     }
 }
