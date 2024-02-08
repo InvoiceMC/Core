@@ -1,6 +1,7 @@
 package me.outspending.core.listeners
 
 import me.outspending.core.Core
+import me.outspending.core.core
 import me.outspending.core.packets.listener.PacketListeners
 import me.outspending.core.storage.DataHandler
 import me.outspending.core.storage.data.PlayerData
@@ -40,7 +41,7 @@ class PlayerListeners : Listener {
         // Load data
         runAsync {
             val time = measureTime {
-                val playerData = Core.database.getData(Core.munchPlayerData, uuid) ?: PlayerData(uuid)
+                val playerData = core.database.getData(core.munchPlayerData, uuid) ?: PlayerData(uuid)
 
                 DataHandler.addPlayer(uuid, playerData)
             }
@@ -63,7 +64,7 @@ class PlayerListeners : Listener {
                 ),
             )
 
-            Core.scoreboardHandler.createScoreboard(player)
+            core.scoreboardHandler.createScoreboard(player)
 
             PacketListeners.addPlayer(player)
         }
@@ -79,19 +80,19 @@ class PlayerListeners : Listener {
 
         runAsync {
             map[uuid]?.let {
-                val hasData = Core.database.hasData(Core.munchPlayerData, uuid) ?: false
+                val hasData = core.database.hasData(core.munchPlayerData, uuid) ?: false
                 if (hasData) {
                     println(1)
-                    Core.database.updateData(Core.munchPlayerData, it, uuid)
+                    core.database.updateData(core.munchPlayerData, it, uuid)
                 } else {
                     println(2)
-                    Core.database.addData(Core.munchPlayerData, it)
+                    core.database.addData(core.munchPlayerData, it)
                 }
 
                 DataHandler.removePlayer(uuid)
             }
 
-            Core.scoreboardHandler.removeScoreboard(player)
+            core.scoreboardHandler.removeScoreboard(player)
 
             PacketListeners.removePlayer(player)
         }

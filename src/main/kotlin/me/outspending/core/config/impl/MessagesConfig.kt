@@ -2,8 +2,9 @@ package me.outspending.core.config.impl
 
 import me.outspending.core.config.ConfigManager
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
+import org.bukkit.plugin.java.JavaPlugin
 
-class MessagesConfig: ConfigManager("messages") {
+class MessagesConfig(plugin: JavaPlugin): ConfigManager("messages", plugin) {
     fun getMessage(key: String, withPrefix: Boolean = false) =
         getValue(key).asFormattedMessage(withPrefix)
     fun getMessageOr(key: String, withPrefix: Boolean = false, or: String = "") =

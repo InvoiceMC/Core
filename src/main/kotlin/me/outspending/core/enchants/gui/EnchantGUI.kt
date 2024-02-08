@@ -1,8 +1,8 @@
 package me.outspending.core.enchants.gui
 
-import me.outspending.core.Core
 import me.outspending.core.enchants.EnchantType
 import me.outspending.core.enchants.gui.GUIUtils.calculateEnchantCost
+import me.outspending.core.core
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.PersistentUtils
 import me.outspending.core.utils.Utilities.fix
@@ -32,7 +32,7 @@ class EnchantGUI(private val player: Player) {
         player.getData()?.let { data ->
             val gui: GUI =
                 gui(
-                    plugin = Core.instance,
+                    plugin = core,
                     title = "Enchantments".toComponent(),
                     type = GUIType.Chest(rows = 6),
                 ) {

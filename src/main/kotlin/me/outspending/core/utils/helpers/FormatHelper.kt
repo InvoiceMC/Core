@@ -1,6 +1,6 @@
 package me.outspending.core.utils.helpers
 
-import me.outspending.core.Core
+import me.outspending.core.core
 import me.outspending.core.utils.helpers.FormatHelper.Companion.chatcolorResolver
 import me.outspending.core.utils.helpers.FormatHelper.Companion.mainColorResolver
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
@@ -90,7 +90,7 @@ class FormatHelper(private val text: String) {
             ) { args: ArgumentQueue, _ ->
                 val uuidString = args.popOr("uuid expected").value()
                 val uuid = UUID.fromString(uuidString)
-                val player = Core.instance.server.getPlayer(uuid) ?: throw IllegalArgumentException("Player $uuidString not found")
+                val player = core.server.getPlayer(uuid) ?: throw IllegalArgumentException("Player $uuidString not found")
 
                 val color = NamedTextColor.GRAY // TODO: Get the player's chatcolor for real
                 Tag.styling(TextColor.color(color.red(), color.green(), color.blue()))

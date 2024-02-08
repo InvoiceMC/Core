@@ -2,6 +2,7 @@ package me.outspending.core.listeners
 
 import io.papermc.paper.event.player.AsyncChatEvent
 import me.outspending.core.Core
+import me.outspending.core.core
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.Utilities.format
 import me.outspending.core.utils.Utilities.getData
@@ -30,7 +31,7 @@ class ChatListeners : Listener {
             val displayName = Placeholder.component("displayname", sourceDisplayName)
             val msg = Placeholder.component("message", message)
             val playerData: PlayerData = player.getData() ?: PlayerData()
-            val playersPrefix: String = Core.luckPermsProvider.userManager.getUser(player.uniqueId)?.cachedData?.metaData?.prefix ?: "<gray>"
+            val playersPrefix: String = core.luckPermsProvider.userManager.getUser(player.uniqueId)?.cachedData?.metaData?.prefix ?: "<gray>"
 
             val hoverText: String =
                 PLAYER_STATS_HOVER_MESSAGE.format(

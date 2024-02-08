@@ -3,6 +3,7 @@ package me.outspending.core.commands.impl.utility
 import com.azuyamat.maestro.bukkit.annotations.Command
 import com.azuyamat.maestro.bukkit.annotations.Tab
 import me.outspending.core.Core
+import me.outspending.core.core
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import org.bukkit.command.CommandSender
 import kotlin.math.min
@@ -21,7 +22,7 @@ class HelpCommand {
 
         val isCommand = commandOrPage != null && commandOrPage.toIntOrNull() == null
         val allowedCommands =
-            Core.commandsList.filter { it.permission.isNotEmpty() && sender.hasPermission(it.permission) || it.permission.isEmpty() }
+            core.commandsList.filter { it.permission.isNotEmpty() && sender.hasPermission(it.permission) || it.permission.isEmpty() }
 
         val commandsSize = allowedCommands.size
         val maxPage = (commandsSize + COMMANDS_PER_PAGE - 1) / COMMANDS_PER_PAGE

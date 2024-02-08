@@ -1,6 +1,7 @@
 package me.outspending.core.storage
 
 import me.outspending.core.Core
+import me.outspending.core.core
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.Utilities.runAsync
 import me.outspending.core.utils.Utilities.runTaskTimerAsynchronously
@@ -43,7 +44,7 @@ class DataHandler {
         fun updateAllPlayerData() {
             runAsync {
                 val time = measureTime {
-                    Core.database.updateAllData(Core.munchPlayerData, playerData.values.toList())
+                    core.database.updateAllData(core.munchPlayerData, playerData.values.toList())
                 }
                 val players = Bukkit.getOnlinePlayers()
 

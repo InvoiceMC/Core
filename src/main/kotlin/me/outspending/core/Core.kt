@@ -3,6 +3,7 @@ package me.outspending.core
 import com.azuyamat.maestro.bukkit.Maestro
 import com.azuyamat.maestro.bukkit.data.CommandData
 import me.outspending.core.broadcaster.BroadcastManager
+import me.outspending.core.config.impl.BroadcastsConfig
 import me.outspending.core.config.impl.MessagesConfig
 import me.outspending.core.leaderboards.LeaderboardManager
 import me.outspending.core.listeners.ChatListeners
@@ -27,27 +28,23 @@ import kotlin.time.measureTime
 const val COMMANDS_PACKAGE = "me.outspending.core.commands.impl"
 const val DATABASE_NAME = "database.db"
 
+lateinit var core: Core
+
 class Core : JavaPlugin() {
-    companion object {
-        val instance
-            get() = getPlugin(Core::class.java)
-        var commandsList: MutableList<CommandData> = mutableListOf()
+    var commandsList: MutableList<CommandData> = mutableListOf()
+    val database = MunchConnection.create()
+    val munchPlayerData = Munch.create(PlayerData::class).process<UUID>()
+    val messageConfig = MessagesConfig(this)
+    val broadcastManager = BroadcastManager()
+    val broadcastsConfig = BroadcastsConfig(this)
 
-        // Data Stuff
-        val database = MunchConnection.create()
-        val munchPlayerData = Munch.create(PlayerData::class).process<UUID>()
+    private val leaderboardManager = LeaderboardManager() // Make public once it is used
 
-        // Config stuff
-        val messageConfig = MessagesConfig();
-
-        // Handlers and managers
-        val scoreboardHandler = ScoreboardHandler()
-        val broadcastManager = BroadcastManager()
-        val leaderboardManager = LeaderboardManager()
-        lateinit var luckPermsProvider: LuckPerms
-    }
+    lateinit var scoreboardHandler: ScoreboardHandler
+    lateinit var luckPermsProvider: LuckPerms
 
     override fun onEnable() {
+        core = this
         val time = measureTime {
             // Register Commands
             Maestro(this).apply {
@@ -55,14 +52,17 @@ class Core : JavaPlugin() {
                 commandsList = this.commands
             }
 
+            messageConfig.load()
+            broadcastsConfig.load() // It is important to load the broadcasts config before registering broadcasts
+
+            scoreboardHandler = ScoreboardHandler()
+
             setupDatabases()
             setupLuckPerms()
             registerBroadcasts()
             registerEvents(server.pluginManager)
 
             DataHandler.startup()
-
-            messageConfig.load()
         }
 
         logger.info("Finished loading Core in $time!")
@@ -97,6 +97,7 @@ class Core : JavaPlugin() {
         broadcastManager.addBroadcast("Welcome1", "Epicness1")
         broadcastManager.addBroadcast("Welcome2", "Epicness2")
         broadcastManager.addBroadcast("Welcome3", "Epicness3")
+        broadcastManager.registerFromConfig(broadcastsConfig)
 
         broadcastManager.start()
         logger.info("Finished registering broadcasts!")

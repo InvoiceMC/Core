@@ -1,9 +1,9 @@
 package me.outspending.core.enchants.gui
 
-import me.outspending.core.Core
 import me.outspending.core.enchants.EnchantType
 import me.outspending.core.enchants.PickaxeEnchant
 import me.outspending.core.enchants.gui.GUIUtils.calculateEnchantCost
+import me.outspending.core.core
 import me.outspending.core.utils.PersistentUtils
 import me.outspending.core.utils.Utilities.format
 import me.outspending.core.utils.Utilities.getData
@@ -34,7 +34,7 @@ class UpgradeGUI(private val enchantType: EnchantType) {
         player.getData()?.let { data ->
             val upgradeGUI: GUI =
                 gui(
-                    plugin = Core.instance,
+                    plugin = core,
                     title = "Upgrade ${enchant.getEnchantName().toUpperCase()}".toComponent(),
                     type = GUIType.Chest(rows = 3),
                 ) {

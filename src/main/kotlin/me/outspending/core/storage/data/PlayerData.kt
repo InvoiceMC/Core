@@ -9,13 +9,13 @@ import java.util.*
 @Table
 data class PlayerData(
     @PrimaryKey var uuid: UUID,
-    @Column([ColumnConstraint.NOTNULL]) var balance: Double,
-    @Column([ColumnConstraint.NOTNULL]) var gold: Int,
-    @Column([ColumnConstraint.NOTNULL]) var blocksBroken: Long,
-    @Column([ColumnConstraint.NOTNULL]) var prestige: Int,
-    @Column([ColumnConstraint.NOTNULL]) var multiplier: Float,
-    @Column([ColumnConstraint.NOTNULL]) var pmineName: String,
-    @Column([ColumnConstraint.NOTNULL]) var tag: String,
+    @Column(constraints = [ColumnConstraint.NOTNULL]) var balance: Double,
+    @Column(constraints = [ColumnConstraint.NOTNULL]) var gold: Int,
+    @Column(constraints = [ColumnConstraint.NOTNULL]) var blocksBroken: Long,
+    @Column(constraints = [ColumnConstraint.NOTNULL]) var prestige: Int,
+    @Column(constraints = [ColumnConstraint.NOTNULL]) var multiplier: Float,
+    @Column(constraints = [ColumnConstraint.NOTNULL]) var pmineName: String,
+    @Column(constraints = [ColumnConstraint.NOTNULL]) var tag: String,
     @Column var cellId: String? = null,
 ) : Data {
     constructor(uuid: UUID) : this(uuid, 0.0, 0, 0, 0, 1.0f, "", "")

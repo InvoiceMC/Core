@@ -40,7 +40,7 @@ dependencies {
     compileOnly("net.luckperms:api:5.4")
 
     // Database Stuff
-    implementation("com.github.InvoiceMC:Munch:78c79ed8c0")
+    implementation("com.github.InvoiceMC:Munch:f68f71c965")
 
     // FAWE
     implementation(platform("com.intellectualsites.bom:bom-newest:1.38"))
@@ -76,6 +76,11 @@ tasks {
         var dir = env.DIRECTORY.value
         dir += "Core.jar"
         outputJar.set(file(dir))
+
+        doLast {
+            val jarFile = file(dir)
+            println("ReobfJar: ${jarFile.absolutePath} (${jarFile.length() / (1024 * 1024)} mb)")
+        }
     }
 
     shadowJar {
