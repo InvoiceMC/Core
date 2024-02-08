@@ -1,7 +1,6 @@
 package me.outspending.core.listeners
 
 import io.papermc.paper.event.player.AsyncChatEvent
-import me.outspending.core.Core
 import me.outspending.core.core
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.Utilities.format

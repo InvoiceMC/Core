@@ -1,8 +1,8 @@
 package me.outspending.core.enchants.gui
 
+import me.outspending.core.core
 import me.outspending.core.enchants.EnchantType
 import me.outspending.core.enchants.gui.GUIUtils.calculateEnchantCost
-import me.outspending.core.core
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.PersistentUtils
 import me.outspending.core.utils.Utilities.fix

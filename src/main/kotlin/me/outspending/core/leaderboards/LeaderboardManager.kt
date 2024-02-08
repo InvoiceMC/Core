@@ -1,6 +1,5 @@
 package me.outspending.core.leaderboards
 
-import me.outspending.core.Core
 import me.outspending.core.core
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.Utilities.orIfNull

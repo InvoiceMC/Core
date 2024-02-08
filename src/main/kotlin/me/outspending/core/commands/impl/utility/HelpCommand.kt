@@ -2,7 +2,6 @@ package me.outspending.core.commands.impl.utility
 
 import com.azuyamat.maestro.bukkit.annotations.Command
 import com.azuyamat.maestro.bukkit.annotations.Tab
-import me.outspending.core.Core
 import me.outspending.core.core
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import org.bukkit.command.CommandSender

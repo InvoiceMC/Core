@@ -1,7 +1,6 @@
 package me.outspending.core.commands.impl.gameplay
 
 import com.azuyamat.maestro.bukkit.annotations.Command
-import me.outspending.core.Core
 import me.outspending.core.core
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.utils.Utilities.getData

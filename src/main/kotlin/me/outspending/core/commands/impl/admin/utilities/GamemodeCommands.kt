@@ -1,7 +1,6 @@
 package me.outspending.core.commands.impl.admin.utilities
 
 import com.azuyamat.maestro.bukkit.annotations.Command
-import me.outspending.core.Core
 import me.outspending.core.core
 import org.bukkit.GameMode
 import org.bukkit.entity.Player

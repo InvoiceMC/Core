@@ -1,6 +1,5 @@
 package me.outspending.core.listeners
 
-import me.outspending.core.Core
 import me.outspending.core.core
 import me.outspending.core.packets.listener.PacketListeners
 import me.outspending.core.storage.DataHandler
