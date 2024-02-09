@@ -40,17 +40,16 @@ class PlayerListeners : Listener {
         // Load data
         runAsync {
             val time = measureTime {
-                val playerData = core.database.getData(core.munchPlayerData, uuid) ?: PlayerData(uuid)
+                val playerData =
+                    core.database.getData(core.munchPlayerData, uuid) ?: PlayerData(uuid)
 
                 DataHandler.addPlayer(uuid, playerData)
             }
 
             player.showTitle(
                 Title.title(
-                    "<gradient:main:second>★★★</gradient> <main><b>Core.database</b> <gradient:second:main>★★★</gradient>"
-                        .parse(),
-                    "<gray><i>Finished loading your data in <main><u>$time</u><gray>!"
-                        .parse(),
+                    "<main><b>DATABASE</b>".parse(),
+                    "<gray><i>Finished loading your data in <main><u>$time</u><gray>!".parse(),
                 ),
             )
 
@@ -106,8 +105,7 @@ class PlayerListeners : Listener {
         if (newLevel > oldLevel) {
             val title: Title =
                 Title.title(
-                    "<bold><gradient:main:second>★★★</gradient> <main>LEVELUP <gradient:second:main>★★★</gradient>"
-                        .parse(),
+                    "<main><b>LEVELUP</b>".parse(),
                     "<main>$oldLevel <gray>➲ <second>$newLevel".parse(),
                 )
 
