@@ -51,7 +51,6 @@ class MiningDuplexHandler(
         super.channelRead(channelHandlerContext, packet)
     }
 
-
     /** Converts a BlockPos to a Location */
     private fun toLocation(pos: BlockPos): Location =
         Location(player.world, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble())

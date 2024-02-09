@@ -8,14 +8,15 @@ object PacketListeners {
         val channel = player.getConnection()?.connection?.channel
         val pipeline = channel?.pipeline()
 
-        pipeline?.addBefore("packet_handler", player.name, MiningDuplexHandler(player, player.getConnection()!!))
+        pipeline?.addBefore(
+            "packet_handler",
+            player.name,
+            MiningDuplexHandler(player, player.getConnection()!!)
+        )
     }
 
     fun removePlayer(player: Player) {
         val channel = player.getConnection()?.connection?.channel
-        channel?.eventLoop()?.submit {
-            channel.pipeline()?.remove(player.name)
-        }
+        channel?.eventLoop()?.submit { channel.pipeline()?.remove(player.name) }
     }
-
 }
