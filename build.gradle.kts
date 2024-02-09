@@ -42,11 +42,6 @@ dependencies {
     // Database Stuff
     implementation("com.github.InvoiceMC:Munch:b5c77e2e46")
 
-    // FAWE
-    implementation(platform("com.intellectualsites.bom:bom-newest:1.38"))
-    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Core")
-    compileOnly("com.fastasyncworldedit:FastAsyncWorldEdit-Bukkit") { isTransitive = false }
-
     implementation("com.github.Azuyamat.Maestro:bukkit:3.0.2") // Maestro command manager
 
     // JMH

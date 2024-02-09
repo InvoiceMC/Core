@@ -18,6 +18,8 @@ import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerLevelChangeEvent
 import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
 import java.util.*
 import kotlin.time.measureTime
 
@@ -37,6 +39,9 @@ class PlayerListeners : Listener {
             }
         e.joinMessage(joinMessage)
 
+        // Add Night Vision
+        player.addPotionEffect(PotionEffect(PotionEffectType.NIGHT_VISION, Int.MAX_VALUE, 1, false, false))
+        
         // Load data
         runAsync {
             val time = measureTime {
@@ -46,6 +51,7 @@ class PlayerListeners : Listener {
                 DataHandler.addPlayer(uuid, playerData)
             }
 
+            // Show data loaded title
             player.showTitle(
                 Title.title(
                     "<main><b>DATABASE</b>".parse(),
@@ -53,6 +59,7 @@ class PlayerListeners : Listener {
                 ),
             )
 
+            // Play sound
             player.playSound(
                 Sound.sound(
                     Key.key("minecraft", "entity.experience_orb.pickup"),
