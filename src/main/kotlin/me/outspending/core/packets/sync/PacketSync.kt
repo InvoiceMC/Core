@@ -10,20 +10,10 @@ object PacketSync {
     private val RENDER_DISTANCE: Int = Bukkit.getViewDistance() * 16
 
     /** Checks if the player can see the location */
-    private fun getSeeablePlayers(location: Location): MutableList<Player> {
-        val players = mutableListOf<Player>()
-
-        for (player in Bukkit.getOnlinePlayers()) {
-            val playerLoc: Location = player.location
-            val distance: Double = location.distance(playerLoc)
-
-            if (distance <= RENDER_DISTANCE) {
-                players.add(player)
-            }
-        }
-
-        return players
-    }
+    private fun getSeeablePlayers(location: Location): MutableList<Player> =
+        Bukkit.getOnlinePlayers()
+            .filter { location.distance(it.location) <= RENDER_DISTANCE }
+            .toMutableList()
 
     /**
      * Sends the block changes to the player using a list, which is faster cuz its using
@@ -34,9 +24,7 @@ object PacketSync {
         changes: MutableMap<Location, BlockData>
     ) = players.forEach { it.sendMultiBlockChange(changes) }
 
-    /**
-     * Syncs the block between clients that can physically see the location
-     */
+    /** Syncs the block between clients that can physically see the location */
     fun syncBlock(blockLocation: Location, blockData: BlockData) =
         getSeeablePlayers(blockLocation).forEach { it.sendBlockChange(blockLocation, blockData) }
 
