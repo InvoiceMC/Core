@@ -41,7 +41,7 @@ class PlayerListeners : Listener {
 
         // Add Night Vision
         player.addPotionEffect(PotionEffect(PotionEffectType.NIGHT_VISION, Int.MAX_VALUE, 1, false, false))
-        
+
         // Load data
         runAsync {
             val time = measureTime {
@@ -87,10 +87,8 @@ class PlayerListeners : Listener {
             map[uuid]?.let {
                 val hasData = core.database.hasData(core.munchPlayerData, uuid) ?: false
                 if (hasData) {
-                    println(1)
                     core.database.updateData(core.munchPlayerData, it, uuid)
                 } else {
-                    println(2)
                     core.database.addData(core.munchPlayerData, it)
                 }
 

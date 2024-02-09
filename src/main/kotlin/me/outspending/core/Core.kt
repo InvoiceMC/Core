@@ -14,6 +14,8 @@ import me.outspending.core.mine.MineListener
 import me.outspending.core.scoreboard.ScoreboardHandler
 import me.outspending.core.storage.DataHandler
 import me.outspending.core.storage.data.PlayerData
+import me.outspending.core.storage.serializers.BoundingBoxSerializer
+import me.outspending.core.storage.serializers.LocationSerializer
 import me.outspending.core.storage.serializers.UUIDSerializer
 import me.outspending.munch.Munch
 import me.outspending.munch.connection.MunchConnection
@@ -53,7 +55,9 @@ class Core : JavaPlugin() {
             }
 
             messageConfig.load()
-            broadcastsConfig.load() // It is important to load the broadcasts config before registering broadcasts
+            broadcastsConfig
+                .load() // It is important to load the broadcasts config before registering
+                        // broadcasts
 
             scoreboardHandler = ScoreboardHandler()
 
@@ -88,7 +92,11 @@ class Core : JavaPlugin() {
         database.connect(folder, DATABASE_NAME)
         database.createTable(munchPlayerData)
 
-        SerializerFactory.registerSerializers(UUIDSerializer())
+        SerializerFactory.registerSerializers(
+            UUIDSerializer(),
+            LocationSerializer(),
+            BoundingBoxSerializer()
+        )
     }
 
     private fun registerBroadcasts() {
@@ -105,11 +113,12 @@ class Core : JavaPlugin() {
 
     private fun registerEvents(pluginManager: PluginManager) {
         listOf(
-            ChatListeners(),
-            CommandListeners(),
-            MiscListeners(),
-            PlayerListeners(),
-            MineListener()
-        ).map { pluginManager.registerEvents(it, this) }
+                ChatListeners(),
+                CommandListeners(),
+                MiscListeners(),
+                PlayerListeners(),
+                MineListener()
+            )
+            .map { pluginManager.registerEvents(it, this) }
     }
 }
