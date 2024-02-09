@@ -46,7 +46,6 @@ class DataHandler {
                     core.database.updateAllData(core.munchPlayerData, playerData.values.toList())
                 }
                 val players = Bukkit.getOnlinePlayers()
-
                 players.forEach { player ->
                     player.playSound(
                         Sound.sound(Key.key("block.note_block.bit"), Sound.Source.PLAYER, .5f, 1.5f)

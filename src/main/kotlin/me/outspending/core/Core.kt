@@ -88,7 +88,7 @@ class Core : JavaPlugin() {
         database.connect(folder, DATABASE_NAME)
         database.createTable(munchPlayerData)
 
-        SerializerFactory.registerSerializer(UUIDSerializer())
+        SerializerFactory.registerSerializers(UUIDSerializer())
     }
 
     private fun registerBroadcasts() {

@@ -40,7 +40,7 @@ dependencies {
     compileOnly("net.luckperms:api:5.4")
 
     // Database Stuff
-    implementation("com.github.InvoiceMC:Munch:f68f71c965")
+    implementation("com.github.InvoiceMC:Munch:b5c77e2e46")
 
     // FAWE
     implementation(platform("com.intellectualsites.bom:bom-newest:1.38"))

@@ -20,5 +20,5 @@ data class PlayerData(
 ) : Data {
     constructor(uuid: UUID) : this(uuid, 0.0, 0, 0, 0, 1.0f, "", "")
 
-    constructor() : this(UUID.fromString(""), 0.0, 0, 0, 0, 1.0f, "", "")
+    constructor() : this(UUID.randomUUID(), 0.0, 0, 0, 0, 1.0f, "", "")
 }
