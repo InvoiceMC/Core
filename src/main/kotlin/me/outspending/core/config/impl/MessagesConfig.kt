@@ -1,7 +1,7 @@
 package me.outspending.core.config.impl
 
 import me.outspending.core.config.ConfigManager
-import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
+import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
 import org.bukkit.plugin.java.JavaPlugin
 
 class MessagesConfig(plugin: JavaPlugin): ConfigManager("messages", plugin) {

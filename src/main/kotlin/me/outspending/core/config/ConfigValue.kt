@@ -1,6 +1,6 @@
 package me.outspending.core.config
 
-import me.outspending.core.utils.helpers.FormatHelper
+import me.outspending.core.misc.helpers.FormatHelper
 
 class ConfigValue(private val value: Any?) {
     fun asRaw() = value

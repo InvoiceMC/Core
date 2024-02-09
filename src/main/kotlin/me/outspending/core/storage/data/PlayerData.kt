@@ -19,7 +19,7 @@ data class PlayerData(
     @Column(constraints = [ColumnConstraint.NOTNULL]) var pmineName: String,
     @Column(constraints = [ColumnConstraint.NOTNULL]) var tag: String,
     @Column var cellId: String? = null,
-) : Data {
+) {
     constructor(uuid: UUID) : this(uuid, 0.0, 0, 0, 0, 1.0f, "", "")
 
     constructor() : this(UUID.randomUUID(), 0.0, 0, 0, 0, 1.0f, "", "")

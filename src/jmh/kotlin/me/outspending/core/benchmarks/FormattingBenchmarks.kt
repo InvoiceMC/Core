@@ -1,6 +1,6 @@
 package me.outspending.core.benchmarks
 
-import me.outspending.core.utils.Utilities.toTinyString
+import me.outspending.core.Utilities.toTinyString
 import org.openjdk.jmh.annotations.Benchmark
 import org.openjdk.jmh.annotations.BenchmarkMode
 import org.openjdk.jmh.annotations.Fork

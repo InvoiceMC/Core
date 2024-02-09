@@ -1,12 +1,14 @@
 package me.outspending.core.listeners
 
+import me.outspending.core.Utilities.runAsync
+import me.outspending.core.Utilities.toComponent
 import me.outspending.core.core
-import me.outspending.core.packets.listener.PacketListeners
+import me.outspending.core.mining.duplex.PacketListeners
+import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
 import me.outspending.core.storage.DataHandler
+import me.outspending.core.storage.DatabaseHandler.database
+import me.outspending.core.storage.DatabaseHandler.munchPlayerData
 import me.outspending.core.storage.data.PlayerData
-import me.outspending.core.utils.Utilities.runAsync
-import me.outspending.core.utils.Utilities.toComponent
-import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
@@ -46,7 +48,7 @@ class PlayerListeners : Listener {
         runAsync {
             val time = measureTime {
                 val playerData =
-                    core.database.getData(core.munchPlayerData, uuid) ?: PlayerData(uuid)
+                    database.getData(munchPlayerData, uuid) ?: PlayerData(uuid)
 
                 DataHandler.addPlayer(uuid, playerData)
             }
@@ -85,11 +87,11 @@ class PlayerListeners : Listener {
 
         runAsync {
             map[uuid]?.let {
-                val hasData = core.database.hasData(core.munchPlayerData, uuid) ?: false
+                val hasData = database.hasData(munchPlayerData, uuid) ?: false
                 if (hasData) {
-                    core.database.updateData(core.munchPlayerData, it, uuid)
+                    database.updateData(munchPlayerData, it, uuid)
                 } else {
-                    core.database.addData(core.munchPlayerData, it)
+                    database.addData(munchPlayerData, it)
                 }
 
                 DataHandler.removePlayer(uuid)

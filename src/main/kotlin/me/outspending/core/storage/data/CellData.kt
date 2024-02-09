@@ -1,7 +1,7 @@
 package me.outspending.core.storage.data
 
+import me.outspending.core.Utilities.getData
 import me.outspending.core.core
-import me.outspending.core.utils.Utilities.getData
 import org.bukkit.Location
 import java.util.*
 
@@ -10,7 +10,7 @@ data class CellData(
     val members: MutableList<UUID>,
     val bound: CellBoundData,
     var spawnLocation: Location
-): Data {
+) {
 
     fun getTotalBlocksMined() = members.map { uuid ->
         val player = core.server.getPlayer(uuid) ?: return@map 0L // TODO: Add different impl for getting data from offline player

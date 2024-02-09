@@ -1,6 +1,6 @@
 package me.outspending.core.listeners
 
-import me.outspending.core.utils.Utilities.toComponent
+import me.outspending.core.Utilities.toComponent
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
