@@ -6,12 +6,36 @@ import org.bukkit.util.Vector
 import kotlin.math.max
 import kotlin.math.min
 
-fun interface Shape {
+interface Shape {
 
     fun run(
         blockLocation: Location,
         blockData: BlockData
     ): Pair<Int, MutableMap<Location, BlockData>>
+
+    fun run(
+        blockLocation: Location,
+        weightedCollection: WeightedCollection<BlockData>
+    ): Pair<Int, MutableMap<Location, BlockData>>
+
+    fun runInternal(
+        blockLocation: Location,
+        vec1: Vector,
+        vec2: Vector,
+        blockProcessor: (location: Location, blockChanges: MutableMap<Location, BlockData>) -> Unit
+    ): Pair<Int, MutableMap<Location, BlockData>> {
+        val blockVector = BlockVector3D(blockLocation, vec1, vec2)
+        val world = blockLocation.world
+
+        var num = 0
+        val blocks = runXYZ(blockVector) { x, y, z, blockChanges ->
+            blockProcessor(Utilities.toLocation(world, x, y, z), blockChanges)
+
+            num++
+        }
+
+        return (num to blocks)
+    }
 
     data class BlockVector3D(
         val minX: Int,

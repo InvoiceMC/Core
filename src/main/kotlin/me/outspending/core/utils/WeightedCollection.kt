@@ -3,45 +3,44 @@ package me.outspending.core.utils
 import java.util.*
 import kotlin.random.Random
 
+val random: Random = Random.Default
+
 class WeightedCollection<T> : Iterable<T> {
-    val random: Random = Random.Default
+    private val items: NavigableMap<Double, T> = TreeMap()
+    private var totalWeight: Double = 0.0
 
-    private val items: NavigableSet<WeightedItem<T>> = TreeSet()
-    private var total: Double = 0.0
+    fun add(weight: Double, item: T): WeightedCollection<T> {
+        if (weight <= 0) return this
 
-    fun add(
-        weight: Double,
-        value: T,
-    ) {
-        if (weight <= 0) return
-
-        total += weight
-        items.add(WeightedItem(total, value))
+        totalWeight += weight
+        items[totalWeight] = item
+        return this
     }
 
-    fun remove(value: T): Boolean {
-        val iterator = items.iterator()
-
+    fun remove(item: T): WeightedCollection<T> {
+        val iterator = items.entries.iterator()
         while (iterator.hasNext()) {
-            val item = iterator.next()
-
-            if (item.value == value) {
+            val entry = iterator.next()
+            if (entry.value == item) {
                 iterator.remove()
-                total -= item.weight
-                return true
+                totalWeight -= entry.key
             }
         }
 
-        return false
+        return this
     }
 
-    fun values(): List<T> {
-        return items.map { it.value }
+    fun next(): T {
+        val value: Double = random.nextDouble() * totalWeight
+        return items.higherEntry(value).value
     }
 
-    override fun iterator(): Iterator<T> {
-        return values().iterator()
+    fun nextAndRemove(): T {
+        val nextItem = next()
+        remove(nextItem)
+
+        return nextItem
     }
 
-    private data class WeightedItem<T>(val weight: Double, val value: T)
+    override fun iterator(): Iterator<T> = items.values.iterator()
 }

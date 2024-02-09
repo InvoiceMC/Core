@@ -2,6 +2,7 @@ package me.outspending.core.commands.impl.admin
 
 import com.azuyamat.maestro.bukkit.annotations.Command
 import me.outspending.core.utils.MineUtils
+import me.outspending.core.utils.WeightedCollection
 import me.outspending.core.utils.helpers.FormatHelper.Companion.parse
 import me.outspending.core.utils.shapes.CuboidShape
 import org.bukkit.Material
@@ -24,10 +25,15 @@ class SetMineCommand {
                         val vec1 = Vector(-size, -size, -size)
                         val vec2 = Vector(size, size, size)
 
-                        val blockData: BlockData = Material.COBBLESTONE.createBlockData()
+                        val collection = WeightedCollection<BlockData>()
+                            .add(0.25, Material.COBBLESTONE.createBlockData())
+                            .add(0.25, Material.STONE.createBlockData())
+                            .add(0.25, Material.ANDESITE.createBlockData())
+                            .add(0.25, Material.DIORITE.createBlockData())
+
                         val shape = CuboidShape(vec1, vec2)
 
-                        MineUtils.setBlocks(player, player.location, shape, blockData, true)
+                        MineUtils.setBlocks(player, player.location, shape, collection, true)
                     }
 
                     player.sendMessage("Done: <yellow>$time".parse(true))
