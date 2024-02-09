@@ -39,7 +39,7 @@ class GoldFinderEnchant : PickaxeEnchant {
         val goldFinderAmount: Int =
             random.nextInt((500 * enchantmentLevel), (2500 * enchantmentLevel))
         player.sendMessage(
-            "<main><b>ɢᴏʟᴅꜰɪɴᴅᴇʀ <dark_gray>➜</bold> <white>you've found <main>${goldFinderAmount.format()} ɢᴏʟᴅ <white>whilst mining!"
+            "<main><b>ɢᴏʟᴅꜰɪɴᴅᴇʀ <dark_gray>➜</b> <white>you've found <main>${goldFinderAmount.format()} ɢᴏʟᴅ <white>whilst mining!"
                 .parse()
         )
 

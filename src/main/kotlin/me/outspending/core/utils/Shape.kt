@@ -29,7 +29,8 @@ interface Shape {
 
         var num = 0
         val blocks = runXYZ(blockVector) { x, y, z, blockChanges ->
-            blockProcessor(Utilities.toLocation(world, x, y, z), blockChanges)
+            val location = Utilities.toLocation(world, x, y, z)
+            blockProcessor(location, blockChanges)
 
             num++
         }

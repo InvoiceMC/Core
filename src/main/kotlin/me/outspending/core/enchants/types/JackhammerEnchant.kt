@@ -45,8 +45,8 @@ class JackhammerEnchant : PickaxeEnchant {
             MineUtils.setBlocks(
                 player,
                 blockLocation,
+                CuboidShape(vec1, vec2),
 
-                shape = CuboidShape(vec1, vec2),
                 syncPackets = true
             )
 
