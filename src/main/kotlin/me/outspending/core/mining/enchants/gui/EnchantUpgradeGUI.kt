@@ -16,6 +16,7 @@ import org.bukkit.Material
 import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataType
+import kotlin.math.pow
 
 private val ENCHANT_STEPS = arrayOf(1, 5, 25, 50, 100, 500, 1000)
 
@@ -25,13 +26,10 @@ class EnchantUpgradeGUI(
 ) {
     private fun getEnchantCost(currentLevel: Int, increaseLevel: Int): Double {
         val increase = enchant.getIncreaseProgression() / 100
-        var cost = enchant.getInitialCost()
+        val initialCost = enchant.getInitialCost()
+        val totalLevel = currentLevel + increaseLevel
 
-        for (level in currentLevel until increaseLevel) {
-            cost *= (1 + increase)
-        }
-
-        return cost
+        return initialCost * (1 + increase).pow(totalLevel)
     }
 
     private fun createGUI(): GUI {
@@ -51,7 +49,7 @@ class EnchantUpgradeGUI(
             var index = 2
             for (num in ENCHANT_STEPS) {
                 val enchantCost: Double = getEnchantCost((enchantLevel + 1), num)
-                println("Amount: $enchantCost || Level: $enchantLevel || Num: $num")
+                println(enchantCost)
 
                 val hasEnough = enchantCost <= playerData.gold
                 val material = if (hasEnough) Material.LIME_STAINED_GLASS_PANE else Material.RED_STAINED_GLASS_PANE

@@ -15,7 +15,7 @@ interface PickaxeEnchant {
 
     fun getInitialCost(): Double = 100.0
 
-    fun getIncreaseProgression(): Double = 1.0
+    fun getIncreaseProgression(): Double = 0.5
 
     fun getMaxEnchantmentLevel(): Int = 25000
 
