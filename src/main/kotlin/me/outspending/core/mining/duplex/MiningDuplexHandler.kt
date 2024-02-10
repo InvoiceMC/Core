@@ -6,6 +6,7 @@ import me.outspending.core.Utilities.getData
 import me.outspending.core.Utilities.toComponent
 import me.outspending.core.mining.enchants.EnchantHandler
 import me.outspending.core.mining.enchants.EnchantResult
+import me.outspending.core.mining.pickaxe.PickaxeUpdater
 import me.outspending.core.mining.sync.PacketSync
 import net.minecraft.core.BlockPos
 import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket
@@ -17,6 +18,7 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import kotlin.random.Random
+import kotlin.time.measureTime
 
 class MiningDuplexHandler(
     private val player: Player,
@@ -58,7 +60,7 @@ class MiningDuplexHandler(
     /** Used for all the enchants in Invoice */
     private fun prisonBreak(player: Player, location: Location, mainHand: ItemStack) {
         // TODO: Add a list per block material and check, right now it doesn't check therefore all
-        // blocks are "mineable"
+        // blocks are "mine able"
         if ((mainHand.type != Material.DIAMOND_PICKAXE)) return
 
         // Check if the player has data and if it is, keep executing the code
@@ -83,6 +85,9 @@ class MiningDuplexHandler(
             data.gold += ((blockGold + result.gold) * data.multiplier).toInt()
             data.balance += ((blockMoney + result.money) * data.multiplier)
             data.blocksBroken += 1
+
+            val newItem = PickaxeUpdater.updatePickaxe(mainHand, result.blocks)
+            player.inventory.setItemInMainHand(newItem)
         }
     }
 }

@@ -55,11 +55,11 @@ class JackhammerEnchant : PickaxeEnchant {
 
         player.showTitle(
             Title.title(
-                "<main><b>JACKHAMMER".parse(),
+                "<main><b>ᴊᴀᴄᴋʜᴀᴍᴍᴇʀ".parse(),
                 "<gray>Blocks Broken: <main>${blockCount.regex()}".parse()
             )
         )
 
-        return EnchantResult(moneyAmount, coinsAmount, blockCount)
+        return EnchantResult(moneyAmount, coinsAmount, blockCount, blockCount)
     }
 }

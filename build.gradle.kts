@@ -35,7 +35,7 @@ dependencies {
 
     // Other
     implementation("net.kyori:adventure-text-minimessage:4.14.0")
-    implementation("com.github.DebitCardz:mc-chestui-plus:1.4.5")
+    implementation("com.github.DebitCardz:mc-chestui-plus:1.4.8")
     implementation("fr.mrmicky:fastboard:2.0.2")
     compileOnly("net.luckperms:api:5.4")
 

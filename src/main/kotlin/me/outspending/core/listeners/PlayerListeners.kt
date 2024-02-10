@@ -1,16 +1,14 @@
 package me.outspending.core.listeners
 
 import me.outspending.core.Utilities.runAsync
-import me.outspending.core.Utilities.toComponent
 import me.outspending.core.core
 import me.outspending.core.mining.duplex.PacketListeners
 import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
+import me.outspending.core.misc.helpers.enums.CustomSound
 import me.outspending.core.storage.DataHandler
 import me.outspending.core.storage.DatabaseHandler.database
 import me.outspending.core.storage.DatabaseHandler.munchPlayerData
 import me.outspending.core.storage.data.PlayerData
-import net.kyori.adventure.key.Key
-import net.kyori.adventure.sound.Sound
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.title.Title
 import org.bukkit.Bukkit
@@ -35,44 +33,37 @@ class PlayerListeners : Listener {
         val joinMessage: Component =
             if (!player.hasPlayedBefore()) {
                 "<#e08a19>${player.name} <white>has joined for the first time! <gray>[<#e8b36d>#${Bukkit.getOfflinePlayers().size}<gray>]"
-                    .toComponent()
+                    .parse()
             } else {
-                "<gray>${player.name} has joined!".toComponent()
+                "<gray>${player.name} has joined!".parse()
             }
         e.joinMessage(joinMessage)
 
         // Add Night Vision
-        player.addPotionEffect(PotionEffect(PotionEffectType.NIGHT_VISION, Int.MAX_VALUE, 1, false, false))
+        player.addPotionEffect(
+            PotionEffect(PotionEffectType.NIGHT_VISION, Int.MAX_VALUE, 1, false, false)
+        )
 
         // Load data
         runAsync {
             val time = measureTime {
-                val playerData =
-                    database.getData(munchPlayerData, uuid) ?: PlayerData(uuid)
-
+                val playerData = database.getData(munchPlayerData, uuid) ?: PlayerData(uuid)
                 DataHandler.addPlayer(uuid, playerData)
             }
 
             // Show data loaded title
             player.showTitle(
                 Title.title(
-                    "<main><b>DATABASE</b>".parse(),
-                    "<gray><i>Finished loading your data in <main><u>$time</u><gray>!".parse(),
+                    "<main><b>ᴅᴀᴛᴀʙᴀꜱᴇ</b>".parse(),
+                    "<gray><i>Loaded your data in <main><u>$time</u><gray>!".parse(),
                 ),
             )
 
             // Play sound
-            player.playSound(
-                Sound.sound(
-                    Key.key("minecraft", "entity.experience_orb.pickup"),
-                    Sound.Source.PLAYER,
-                    1.0f,
-                    1.65f,
-                ),
-            )
+            CustomSound.Success(pitch = 1.65F).playSound(player)
 
+            // Scoreboard & Packet Listener (DuplexChannel)
             core.scoreboardHandler.createScoreboard(player)
-
             PacketListeners.addPlayer(player)
         }
     }
@@ -87,6 +78,7 @@ class PlayerListeners : Listener {
 
         runAsync {
             map[uuid]?.let {
+                // Check's if the player has data inside the database, if so, update it, else, add it
                 val hasData = database.hasData(munchPlayerData, uuid) ?: false
                 if (hasData) {
                     database.updateData(munchPlayerData, it, uuid)
@@ -94,11 +86,12 @@ class PlayerListeners : Listener {
                     database.addData(munchPlayerData, it)
                 }
 
+                // Remove the player's data from memory
                 DataHandler.removePlayer(uuid)
             }
 
+            // Remove Scoreboard & Packet Listener (DuplexChannel)
             core.scoreboardHandler.removeScoreboard(player)
-
             PacketListeners.removePlayer(player)
         }
     }
@@ -112,19 +105,13 @@ class PlayerListeners : Listener {
         if (newLevel > oldLevel) {
             val title: Title =
                 Title.title(
-                    "<main><b>LEVELUP</b>".parse(),
+                    "<main><b>ʟᴇᴠᴇʟᴜᴘ</b>".parse(),
                     "<main>$oldLevel <gray>➲ <second>$newLevel".parse(),
                 )
 
             player.showTitle(title)
-            player.playSound(
-                Sound.sound(
-                    Key.key("minecraft", "entity.player.levelup"),
-                    Sound.Source.PLAYER,
-                    1.0f,
-                    1.56f,
-                ),
-            )
+
+            CustomSound.Levelup(pitch = 1.56F).playSound(player)
         }
     }
 }

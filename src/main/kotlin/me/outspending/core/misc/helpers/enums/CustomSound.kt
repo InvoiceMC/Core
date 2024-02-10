@@ -1,23 +1,29 @@
 package me.outspending.core.misc.helpers.enums
 
 import org.bukkit.Sound
+import org.bukkit.entity.Player
 
-/**
- * Enum class for custom sounds
- *
- * @param sound The sound to play
- * @param volume The volume of the sound
- * @param pitch The pitch of the sound
- */
-enum class CustomSound(
-    val sound: Sound,
-    val volume: Float = 0.5f,
-    val pitch: Float = 1f
-) {
-    Success(Sound.ENTITY_PLAYER_LEVELUP),
-    Failure(Sound.ENTITY_VILLAGER_NO),
-    Click(Sound.UI_BUTTON_CLICK),
-    Open(Sound.BLOCK_CHEST_OPEN),
-    Close(Sound.BLOCK_CHEST_CLOSE),
-    Pop(Sound.ENTITY_ITEM_PICKUP)
+open class CustomSound {
+    fun interface CoreSound {
+        fun playSound(player: Player)
+    }
+
+    data class Levelup(val volume: Float = 1F, val pitch: Float = 1F) : CoreSound {
+        override fun playSound(player: Player) {
+            player.playSound(player.location, Sound.ENTITY_PLAYER_LEVELUP, volume, pitch)
+        }
+    }
+
+    data class Success(val volume: Float = 1F, val pitch: Float = 1F) : CoreSound {
+        override fun playSound(player: Player) {
+            player.playSound(player.location, Sound.ENTITY_EXPERIENCE_ORB_PICKUP, volume, pitch)
+        }
+    }
+
+    data class Failure(val volume: Float = 1F, val pitch: Float = 1F) : CoreSound {
+        override fun playSound(player: Player) {
+            player.playSound(player.location, Sound.ENTITY_VILLAGER_NO, volume, pitch)
+        }
+    }
+
 }

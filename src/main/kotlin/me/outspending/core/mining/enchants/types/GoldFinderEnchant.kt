@@ -1,6 +1,7 @@
 package me.outspending.core.mining.enchants.types
 
 import me.outspending.core.Utilities.format
+import me.outspending.core.Utilities.toTinyString
 import me.outspending.core.mining.enchants.EnchantResult
 import me.outspending.core.mining.enchants.PickaxeEnchant
 import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
@@ -39,10 +40,10 @@ class GoldFinderEnchant : PickaxeEnchant {
         val goldFinderAmount: Int =
             random.nextInt((500 * enchantmentLevel), (2500 * enchantmentLevel))
         player.sendMessage(
-            "<main><b>ɢᴏʟᴅꜰɪɴᴅᴇʀ <dark_gray>➜</b> <white>you've found <main>${goldFinderAmount.format()} ɢᴏʟᴅ <white>whilst mining!"
+            "<main><b>ɢᴏʟᴅꜰɪɴᴅᴇʀ <dark_gray>➜</b> <white>you've found <yellow>⛁${goldFinderAmount.format().toTinyString()} <white>whilst mining!"
                 .parse()
         )
 
-        return EnchantResult(goldFinderAmount.toDouble(), goldFinderAmount, 0)
+        return EnchantResult(goldFinderAmount.toDouble(), goldFinderAmount)
     }
 }

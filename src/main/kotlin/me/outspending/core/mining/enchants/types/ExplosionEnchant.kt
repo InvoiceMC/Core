@@ -44,6 +44,6 @@ class ExplosionEnchant : PickaxeEnchant {
         val moneyAmount: Double = random.nextDouble(10.0, 25.0) * blockCount
         val coinsAmount: Int = (moneyAmount / 5).toInt()
 
-        return EnchantResult(moneyAmount, coinsAmount, blockCount)
+        return EnchantResult(moneyAmount, coinsAmount, blockCount, blockCount)
     }
 }

@@ -29,6 +29,7 @@ class ChatListeners : Listener {
         e.renderer { player, sourceDisplayName, message, _ ->
             val displayName = Placeholder.component("displayname", sourceDisplayName)
             val msg = Placeholder.component("message", message)
+
             val playerData: PlayerData = player.getData() ?: PlayerData()
             val playersPrefix: String = core.luckPermsProvider.userManager.getUser(player.uniqueId)?.cachedData?.metaData?.prefix ?: "<gray>"
 

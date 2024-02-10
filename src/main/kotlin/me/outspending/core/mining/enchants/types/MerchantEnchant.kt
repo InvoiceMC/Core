@@ -31,6 +31,6 @@ class MerchantEnchant : PickaxeEnchant {
         if (enchantmentLevel == 0) return EnchantResult()
 
         val amount = random.nextDouble((100.0 * enchantmentLevel), (250.0 * enchantmentLevel))
-        return EnchantResult(amount, 0, 0)
+        return EnchantResult(amount)
     }
 }

@@ -19,28 +19,26 @@ class PickaxeCommand {
         val itemStack = ItemStack(Material.DIAMOND_PICKAXE)
         itemStack.editMeta() { meta ->
             meta.displayName(
-                "<gradient:#e37622:#deb799>${player.name}'s</gradient> <gray>Pickaxe"
-                    .toComponent()
+                "<main>${player.name}'s</main> <gray>Pickaxe"
+                    .parse()
             )
             meta.lore(
                 listOf(
-                    "<dark_gray>Owned by ${player.name}",
                     "",
                     "<main>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ</main>",
-                    "<main><b>|</b> <white>N/A",
-                    "<main><b>|</b> <white>N/A",
-                    "<main><b>|</b> <white>N/A",
+                    "<main><b>|</b> <gray>ᴏᴡɴᴇʀ: <white>${player.name}",
+                    "<main><b>|</b> <gray>ʙʟᴏᴄᴋꜱ ʙʀᴏᴋᴇɴ: <white>0",
                     "",
                     "<main>ᴇɴᴄʜᴀɴᴛꜱ</main>",
                     "",
                 )
-                    .map { it.parse(false) }
+                    .map { it.parse() }
             )
 
             meta.addEnchant(Enchantment.DIG_SPEED, 1000, true)
             meta.isUnbreakable = true
 
-            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE)
+            meta.addItemFlags(ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_UNBREAKABLE, ItemFlag.HIDE_ATTRIBUTES)
         }
 
         player.inventory.addItem(itemStack)

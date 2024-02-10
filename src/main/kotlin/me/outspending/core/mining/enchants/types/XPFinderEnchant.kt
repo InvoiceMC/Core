@@ -1,5 +1,7 @@
-package me.outspending.core.mining.enchants
+package me.outspending.core.mining.enchants.types
 
+import me.outspending.core.mining.enchants.EnchantResult
+import me.outspending.core.mining.enchants.PickaxeEnchant
 import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
 import me.outspending.core.storage.data.PlayerData
 import net.kyori.adventure.title.Title
@@ -36,11 +38,11 @@ class XPFinderEnchant : PickaxeEnchant {
 
         player.showTitle(
             Title.title(
-                "<main><b>XPFINDER".parse(),
-                "<gray>You've found <main>${xp}</main> <gray>xp!".parse()
+                "<main><b>xᴘꜰɪɴᴅᴇʀ".parse(),
+                "<gray>You've found <main>$xp</main> <gray>xp!".parse()
             )
         )
 
-        return EnchantResult(0.0, 0, xp)
+        return EnchantResult(xp = xp)
     }
 }

@@ -41,7 +41,7 @@ class LevelFinderEnchant : PickaxeEnchant {
         delay(2) {
             player.showTitle(
                 Title.title(
-                    "<main><b>LEVELFINDER".toComponent(),
+                    "<main><b>ʟᴇᴠᴇʟꜰɪɴᴅᴇʀ".toComponent(),
                     "<gray>You've found <main>${amount}</main> <gray>levels!".toComponent()
                 )
             )
