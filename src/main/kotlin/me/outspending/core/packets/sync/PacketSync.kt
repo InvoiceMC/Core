@@ -1,4 +1,4 @@
-package me.outspending.core.mining.sync
+package me.outspending.core.packets.sync
 
 import org.bukkit.Bukkit
 import org.bukkit.Location

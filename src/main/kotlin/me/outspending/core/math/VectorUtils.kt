@@ -16,13 +16,11 @@ object VectorUtils {
         return abs(b - a) <= EPSILON
     }
 
-    @JvmStatic
     fun rotateVector(
         vector: Vector,
         originVector: Vector,
     ): Vector = rotateVector(vector, originVector.x, originVector.y, originVector.z)
 
-    @JvmStatic
     fun rotateAroundAxisX(
         vector: Vector,
         angle: Double,
@@ -37,7 +35,6 @@ object VectorUtils {
         )
     }
 
-    @JvmStatic
     fun rotateAroundAxisY(
         vector: Vector,
         angle: Double,
@@ -52,7 +49,6 @@ object VectorUtils {
         )
     }
 
-    @JvmStatic
     fun rotateAroundAxisZ(
         vector: Vector,
         angle: Double,
@@ -67,7 +63,6 @@ object VectorUtils {
         )
     }
 
-    @JvmStatic
     fun rotateVector(
         vector: Vector,
         angleX: Double,
@@ -83,7 +78,6 @@ object VectorUtils {
         )
     }
 
-    @JvmStatic
     fun dotProduct(
         vector1: Vector,
         vector2: Vector,
@@ -91,7 +85,6 @@ object VectorUtils {
         return vector1.x * vector2.x + vector1.y * vector2.y + vector1.z * vector2.z
     }
 
-    @JvmStatic
     fun crossProduct(
         vector1: Vector,
         vector2: Vector,
@@ -103,7 +96,6 @@ object VectorUtils {
         return Vector(x, y, z)
     }
 
-    @JvmStatic
     fun rotateAroundVector(
         location: Location,
         vector: Vector,

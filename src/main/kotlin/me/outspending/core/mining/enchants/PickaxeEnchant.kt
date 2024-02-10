@@ -13,15 +13,10 @@ import kotlin.random.Random
 interface PickaxeEnchant {
 
     fun getEnchantName(): String
-
     fun getEnchantItem(): Material
-
     fun getInitialCost(): Double = 100.0
-
     fun getIncreaseProgression(): Double = 1.0
-
     fun getMaxEnchantmentLevel(): Int = 25000
-
     fun getEnchantmentChance(enchantLevel: Int): Double
 
     fun getEnchantmentLevel(itemContainer: PersistentDataContainer): Int {
