@@ -13,7 +13,7 @@ import org.bukkit.plugin.RegisteredServiceProvider
 import org.bukkit.plugin.java.JavaPlugin
 import kotlin.time.measureTime
 
-const val COMMANDS_PACKAGE = "me.outspending.core.commands.impl"
+const val COMMANDS_PACKAGE = "me.outspending.core.commands"
 
 lateinit var core: Core
 
@@ -44,7 +44,7 @@ class Core : JavaPlugin() {
             DatabaseHandler.setupDatabase()
         }
 
-        logger.info("Finished loading Core in $time!")
+        logger.info("Core has finished loading in $time!")
     }
 
     override fun onDisable() {

@@ -40,7 +40,7 @@ dependencies {
     compileOnly("net.luckperms:api:5.4")
 
     // Database Stuff
-    implementation("com.github.InvoiceMC:Munch:b5c77e2e46")
+    implementation("com.github.InvoiceMC:Munch:555f98f609")
 
     implementation("com.github.Azuyamat.Maestro:bukkit:3.0.2") // Maestro command manager
 
