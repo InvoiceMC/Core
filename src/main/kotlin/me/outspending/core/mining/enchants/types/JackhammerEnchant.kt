@@ -10,6 +10,7 @@ import me.outspending.core.storage.data.PlayerData
 import net.kyori.adventure.title.Title
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.util.Vector
@@ -20,11 +21,9 @@ class JackhammerEnchant : PickaxeEnchant {
     private val DEFAULT_CHANCE = 0.0002
 
     override fun getEnchantName(): String = "jackhammer"
-
+    override fun getEnchantItem(): Material = Material.HOPPER
     override fun getInitialCost(): Double = 1000.0
-
-    override fun getMaxEnchantmentLevel(): Int = 25000
-
+    override fun getMaxEnchantmentLevel(): Int = 10
     override fun getEnchantmentChance(enchantLevel: Int): Double = DEFAULT_CHANCE * enchantLevel
 
     override fun execute(

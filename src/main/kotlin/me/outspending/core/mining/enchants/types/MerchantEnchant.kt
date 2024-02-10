@@ -5,19 +5,17 @@ import me.outspending.core.mining.enchants.PickaxeEnchant
 import me.outspending.core.storage.data.PlayerData
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
 import kotlin.random.Random
 
 class MerchantEnchant : PickaxeEnchant {
     override fun getEnchantName(): String = "merchant"
-
+    override fun getEnchantItem(): Material = Material.DRIED_KELP_BLOCK
     override fun getInitialCost(): Double = 100.0
-
     override fun getMaxEnchantmentLevel(): Int = 25000
-
-    // This enchant is always 100% therefore the chance is 0.0
-    override fun getEnchantmentChance(enchantLevel: Int): Double = 0.0
+    override fun getEnchantmentChance(enchantLevel: Int): Double = 0.0 // This enchant is always 100% therefore the chance is 0.0
 
     override fun execute(
         player: Player,

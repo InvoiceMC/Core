@@ -14,7 +14,5 @@ class EnchantTestCommand {
     fun onCommand(player: Player) {
         val heldItem = player.inventory.itemInMainHand
         require(heldItem.type == Material.DIAMOND_PICKAXE) { return }
-
-        EnchantUpgradeGUI(player, JackhammerEnchant()).open()
     }
 }

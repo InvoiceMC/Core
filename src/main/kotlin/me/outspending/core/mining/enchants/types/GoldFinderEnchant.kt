@@ -8,6 +8,7 @@ import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
 import me.outspending.core.storage.data.PlayerData
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
 import kotlin.random.Random
@@ -17,11 +18,9 @@ class GoldFinderEnchant : PickaxeEnchant {
     private val DEFAULT_CHANCE = 0.0002
 
     override fun getEnchantName(): String = "goldfinder"
-
+    override fun getEnchantItem(): Material = Material.SUNFLOWER
     override fun getInitialCost(): Double = 100.0
-
     override fun getMaxEnchantmentLevel(): Int = 25000
-
     override fun getEnchantmentChance(enchantLevel: Int): Double = DEFAULT_CHANCE * enchantLevel
 
     override fun execute(

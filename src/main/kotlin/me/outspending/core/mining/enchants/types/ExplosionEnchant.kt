@@ -7,6 +7,7 @@ import me.outspending.core.mining.shapes.SphereShape
 import me.outspending.core.storage.data.PlayerData
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
 import kotlin.random.Random
@@ -15,11 +16,9 @@ class ExplosionEnchant : PickaxeEnchant {
     private val DEFAULT_CHANCE = 0.0002
 
     override fun getEnchantName(): String = "explosion"
-
+    override fun getEnchantItem(): Material = Material.TNT
     override fun getInitialCost(): Double = 100.0
-
     override fun getMaxEnchantmentLevel(): Int = 25000
-
     override fun getEnchantmentChance(enchantLevel: Int): Double = DEFAULT_CHANCE * enchantLevel
 
     override fun execute(

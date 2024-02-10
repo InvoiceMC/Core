@@ -35,12 +35,14 @@ class EnchantUpgradeGUI(private val player: Player, private val enchant: Pickaxe
         var right = ENCHANT_MAX_MAX_LEVEL
         var cost = 0.0
         var maxLevel = currentLevel
+        val enchantMax = enchant.getMaxEnchantmentLevel()
 
+        if (currentLevel >= enchantMax) return (0.0 to currentLevel)
         while (left <= right) {
             val mid = left + (right - left) / 2
             val tempCost = getEnchantCost(currentLevel, mid - currentLevel)
 
-            if (tempCost <= playerData.gold) {
+            if (tempCost <= playerData.gold && mid <= enchantMax) {
                 cost = tempCost
                 maxLevel = mid
                 left = mid + 1
@@ -58,6 +60,8 @@ class EnchantUpgradeGUI(private val player: Player, private val enchant: Pickaxe
             title = "Upgrade ${enchant.getEnchantName().toUpperCase()}".parse(),
             type = GUIType.Chest(3)
         ) {
+            fillBorder { item = item(Material.GRAY_STAINED_GLASS_PANE) { name = " ".parse() } }
+
             val heldItem = player.inventory.itemInMainHand
             val meta = heldItem.itemMeta
             val playerData = player.getData() ?: return@gui
@@ -69,17 +73,27 @@ class EnchantUpgradeGUI(private val player: Player, private val enchant: Pickaxe
             for (num in ENCHANT_STEPS) {
                 val enchantCost: Double = getEnchantCost(enchantLevel, num)
 
+                val isMaxed = enchant.getMaxEnchantmentLevel() <= (enchantLevel + num)
                 val hasEnough = enchantCost <= playerData.gold
+
                 val material =
-                    if (hasEnough) Material.LIME_STAINED_GLASS_PANE
-                    else Material.RED_STAINED_GLASS_PANE
+                    if (hasEnough && !isMaxed) Material.LIME_DYE
+                    else Material.RED_DYE
 
                 slot(index, 2) {
                     item =
                         item(material) {
                             name = "<green><u>+$num".parse()
                             lore =
-                                listOf(
+                                if (isMaxed) {
+                                    listOf(
+                                        "",
+                                        "<red>You cannot upgrade this many levels!",
+                                        "<red>It's already at the maximum level!",
+                                        ""
+                                    ).map { it.parse() }
+                                } else {
+                                    listOf(
                                         "",
                                         "<main>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ",
                                         "<main><b>|</b> <gray>ᴄᴜʀʀᴇɴᴛ ʟᴇᴠᴇʟ: <white>${enchantLevel}",
@@ -87,9 +101,17 @@ class EnchantUpgradeGUI(private val player: Player, private val enchant: Pickaxe
                                         "",
                                         if (hasEnough) "<green><i>Click to upgrade"
                                         else "<red><i>Not Enough Gold!"
-                                    )
-                                    .map { it.parse() }
+                                    ).map { it.parse() }
+                                }
                             onClick { event ->
+                                if (isMaxed) {
+                                    player.sendMessage(
+                                        "<red>You cannot upgrade this many levels! It's already at the maximum level!"
+                                            .parse()
+                                    )
+                                    return@onClick
+                                }
+
                                 if (!hasEnough) {
                                     val neededGold = enchantCost - playerData.gold
                                     player.sendMessage(
@@ -142,13 +164,21 @@ class EnchantUpgradeGUI(private val player: Player, private val enchant: Pickaxe
 
                         playerData.gold -= cost
 
-                        println("Level: $level, Enchant Level: $enchantLevel, Total: ${level - enchantLevel}")
                         val item =
                             PickaxeEnchanter.enchantPickaxe(heldItem, enchant, (level - enchantLevel))
                         player.inventory.setItemInMainHand(item)
 
                         refresh()
                     }
+                }
+            }
+
+            slot(9, 3) {
+                item = item(Material.DARK_OAK_DOOR) {
+                    name = "<red>Back".parse()
+                    lore = listOf("", "<red>Click to go back.").map { it.parse() }
+                    glowing = true
+                    onClick { EnchantGUI(player).open() }
                 }
             }
         }
