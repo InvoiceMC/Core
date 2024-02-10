@@ -2,6 +2,7 @@ package me.outspending.core.commands.admin
 
 import com.azuyamat.maestro.bukkit.annotations.Command
 import me.outspending.core.mining.enchants.PickaxeEnchant
+import me.outspending.core.mining.enchants.PickaxeEnchanter
 import me.outspending.core.mining.pickaxe.PickaxeUpdater
 import org.bukkit.Material
 import org.bukkit.NamespacedKey
@@ -23,7 +24,7 @@ class EnchantCommand {
         val item = inventory.itemInMainHand
 
         if (item.type == Material.DIAMOND_PICKAXE) {
-            val newItem: ItemStack = PickaxeUpdater.enchantPickaxe(item, enchant, level)
+            val newItem: ItemStack = PickaxeEnchanter.enchantPickaxe(item, enchant, level)
             player.inventory.setItemInMainHand(newItem)
         }
     }

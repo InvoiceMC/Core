@@ -12,7 +12,7 @@ import java.util.*
 data class PlayerData(
     @PrimaryKey var uuid: UUID,
     @Column(constraints = [ColumnConstraint.NOTNULL]) var balance: Double,
-    @Column(constraints = [ColumnConstraint.NOTNULL]) var gold: Int,
+    @Column(constraints = [ColumnConstraint.NOTNULL]) var gold: Double,
     @Column(constraints = [ColumnConstraint.NOTNULL]) var blocksBroken: Long,
     @Column(constraints = [ColumnConstraint.NOTNULL]) var prestige: Int,
     @Column(constraints = [ColumnConstraint.NOTNULL]) var multiplier: Float,
@@ -20,9 +20,9 @@ data class PlayerData(
     @Column(constraints = [ColumnConstraint.NOTNULL]) var tag: String,
     @Column var cellId: String? = null,
 ) {
-    constructor(uuid: UUID) : this(uuid, 0.0, 0, 0, 0, 1.0f, "", "")
+    constructor(uuid: UUID) : this(uuid, 0.0, 0.0, 0, 0, 1.0f, "", "")
 
-    constructor() : this(UUID.randomUUID(), 0.0, 0, 0, 0, 1.0f, "", "")
+    constructor() : this(UUID.randomUUID(), 0.0, 0.0, 0, 0, 1.0f, "", "")
 
     fun getPlayer(): Player? = Bukkit.getPlayer(uuid)
 }
