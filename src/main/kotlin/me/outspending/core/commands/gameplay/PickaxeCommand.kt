@@ -1,7 +1,6 @@
 package me.outspending.core.commands.gameplay
 
 import com.azuyamat.maestro.bukkit.annotations.Command
-import me.outspending.core.Utilities.toComponent
 import me.outspending.core.core
 import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
 import org.bukkit.Material

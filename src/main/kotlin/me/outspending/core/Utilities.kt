@@ -44,6 +44,12 @@ object Utilities {
     fun Number.toTinyNumber(): String = NumberHelper(this).toTinyNumbers()
 
     /** Player */
+    fun Player.getPrefix(): String =
+        core.luckPermsProvider.userManager.getUser(this.uniqueId)?.cachedData?.metaData?.prefix
+            ?: "<gray>"
+
+    fun Player.getLuckPermsName(): String = "${this.getPrefix()}${this.name}"
+
     fun Player.getData(): PlayerData? = DataHandler.getPlayerData(this.uniqueId)
 
     fun Player.getConnection(): ServerGamePacketListenerImpl? =

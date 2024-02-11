@@ -1,9 +1,7 @@
 package me.outspending.core.mining.enchants.gui
 
-import kotlin.math.pow
 import me.outspending.core.Utilities.format
 import me.outspending.core.Utilities.getData
-import me.outspending.core.Utilities.runAsync
 import me.outspending.core.Utilities.toUpperCase
 import me.outspending.core.core
 import me.outspending.core.mining.enchants.PickaxeEnchant
@@ -17,6 +15,7 @@ import me.tech.mcchestui.utils.gui
 import me.tech.mcchestui.utils.openGUI
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import kotlin.math.pow
 
 private val ENCHANT_STEPS = arrayOf(1, 5, 25, 50, 100, 500) // Last one is for upgrade max
 private val ENCHANT_MAX_MAX_LEVEL = 25000

@@ -1,7 +1,7 @@
 package me.outspending.core.mining
 
-import me.outspending.core.packets.sync.PacketSync
 import me.outspending.core.misc.WeightedCollection
+import me.outspending.core.packets.sync.PacketSync
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.data.BlockData
