@@ -40,8 +40,8 @@ class ChatListeners : Listener {
         e.renderer { player, _, message, _ ->
             val newMessage: Component =
                 ChatHandler.builder(message)
-                    .pingPlayers()
-                    .replaceItem(player.inventory.itemInMainHand)
+                    .pingPlayers(player)
+                    //.replaceItem(player.inventory.itemInMainHand)
                     .build()
 
             val msg = Placeholder.component("message", newMessage)
