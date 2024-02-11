@@ -1,17 +1,38 @@
 package me.outspending.core.storage.serializers
 
 import me.outspending.munch.serializer.Serializer
+import me.outspending.munch.serializer.SerializerFactory
+import java.lang.reflect.ParameterizedType
+import kotlin.reflect.KClass
 
-class ListSerializer: Serializer<List<Any>> {
-    override fun getSerializerClass(): Class<List<Any>> = List::class.java as Class<List<Any>>
-
-    override fun deserialize(str: String): List<Any> {
-        return str.split(",").map { it }
+class ListSerializer<T : Any> : Serializer<List<T>> {
+    @Suppress("UNCHECKED_CAST")
+    private fun getTClass(): KClass<T> {
+        val type = javaClass.genericSuperclass as ParameterizedType
+        return type.actualTypeArguments[0] as KClass<T>
     }
 
-    override fun serialize(obj: Any?): String {
-        val list = obj as? List<Any> ?: return ""
+    private fun getSerializer(): Serializer<T> {
+        val clazz = getTClass()
+        return SerializerFactory.getSerializer(clazz) ?: error("No serializer found for $clazz")
+    }
 
-        return list.joinToString(",")
+    @Suppress("UNCHECKED_CAST")
+    override fun getSerializerClass(): Class<List<T>> = List::class.java as Class<List<T>>
+
+    override fun deserialize(str: String): List<T> {
+        val serializer = getSerializer()
+
+        val values = str.split(",")
+        return values.map { serializer.deserialize(it) }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    override fun serialize(obj: Any?): String {
+        val list = obj as? List<T> ?: return ""
+        val serializer = getSerializer()
+
+        val values = list.map { serializer.serialize(it) }
+        return values.joinToString(",")
     }
 }
