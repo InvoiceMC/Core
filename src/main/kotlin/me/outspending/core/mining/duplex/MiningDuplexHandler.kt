@@ -4,9 +4,9 @@ import io.netty.channel.ChannelDuplexHandler
 import io.netty.channel.ChannelHandlerContext
 import me.outspending.core.Utilities.getData
 import me.outspending.core.Utilities.toComponent
+import me.outspending.core.mining.PickaxeUpdater
 import me.outspending.core.mining.enchants.EnchantHandler
 import me.outspending.core.mining.enchants.EnchantResult
-import me.outspending.core.mining.PickaxeUpdater
 import me.outspending.core.packets.sync.PacketSync
 import net.minecraft.core.BlockPos
 import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket
@@ -21,12 +21,15 @@ import kotlin.random.Random
 
 class MiningDuplexHandler(
     private val player: Player,
-    private val connection: ServerGamePacketListenerImpl
+    private val connection: ServerGamePacketListenerImpl,
 ) : ChannelDuplexHandler() {
-    private val RANDOM: Random = Random.Default
-    private val NULLBLOCK = Material.AIR.createBlockData()
+    private val random: Random = Random.Default
+    private val airBlock = Material.AIR.createBlockData()
 
-    override fun channelRead(channelHandlerContext: ChannelHandlerContext, packet: Any?) {
+    override fun channelRead(
+        channelHandlerContext: ChannelHandlerContext,
+        packet: Any?,
+    ) {
         if (packet is ServerboundPlayerActionPacket) {
             if (packet.action != ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK) {
                 return
@@ -41,7 +44,7 @@ class MiningDuplexHandler(
             val location = toLocation(pos)
 
             connection.send(ClientboundBlockDestructionPacket(player.entityId, pos, -1))
-            PacketSync.syncBlock(location, NULLBLOCK)
+            PacketSync.syncBlock(location, airBlock)
 
             prisonBreak(player, location, mainHand)
             return
@@ -53,11 +56,14 @@ class MiningDuplexHandler(
     }
 
     /** Converts a BlockPos to a Location */
-    private fun toLocation(pos: BlockPos): Location =
-        Location(player.world, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble())
+    private fun toLocation(pos: BlockPos): Location = Location(player.world, pos.x.toDouble(), pos.y.toDouble(), pos.z.toDouble())
 
     /** Used for all the enchants in Invoice */
-    private fun prisonBreak(player: Player, location: Location, mainHand: ItemStack) {
+    private fun prisonBreak(
+        player: Player,
+        location: Location,
+        mainHand: ItemStack,
+    ) {
         // TODO: Add a list per block material and check, right now it doesn't check therefore all
         // blocks are "mine able"
         if ((mainHand.type != Material.DIAMOND_PICKAXE)) return
@@ -65,19 +71,18 @@ class MiningDuplexHandler(
         // Check if the player has data and if it is, keep executing the code
         player.getData()?.let { data ->
             // Execute all the enchants that the player has on their pickaxe
-            val result: EnchantResult =
-                EnchantHandler.executeAllEnchants(player, data, location, RANDOM)
+            val result: EnchantResult = EnchantHandler.executeAllEnchants(player, data, location, random)
 
             // Some other things
             if (player.level >= (100 + (25 * data.prestige))) {
                 player.sendActionBar(
-                    "<red>You are at the max level, use <dark_red>/ᴘʀᴇꜱᴛɪɢᴇ".toComponent()
+                    "<red>You are at the max level, use <dark_red>/ᴘʀᴇꜱᴛɪɢᴇ".toComponent(),
                 )
             } else {
                 player.giveExp(1 + result.xp)
             }
 
-            val blockMoney = RANDOM.nextDouble(5.0, 15.0)
+            val blockMoney = random.nextDouble(5.0, 15.0)
             val blockGold = blockMoney / 5
 
             // Add to the player's data
