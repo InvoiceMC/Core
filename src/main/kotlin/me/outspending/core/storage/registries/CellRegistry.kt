@@ -3,8 +3,8 @@ package me.outspending.core.storage.registries
 import me.outspending.core.Utilities.getAdmins
 import me.outspending.core.Utilities.runAsync
 import me.outspending.core.core
-import me.outspending.core.storage.DatabaseHandler
-import me.outspending.core.storage.DatabaseHandler.munchCellData
+import me.outspending.core.storage.DatabaseManager.database
+import me.outspending.core.storage.DatabaseManager.munchCellData
 import me.outspending.core.storage.data.CellData
 import org.bukkit.Location
 import org.bukkit.util.BoundingBox
@@ -28,6 +28,10 @@ object CellRegistry {
         cells.remove(id)
     }
 
+    fun updateCell(cell: CellData) {
+        database.updateData(munchCellData, cell, cell.id)
+    }
+
     fun updateAllCells() {
         val message = core.messageConfig.getMessageOr(
             "cell.data.update-all",
@@ -35,7 +39,7 @@ object CellRegistry {
             "<gray>Successfully saved cell(s) data!"
             )
         runAsync {
-            DatabaseHandler.database.updateAllData(munchCellData, cells.values.toList())
+            database.updateAllData(munchCellData, cells.values.toList())
         }
         getAdmins().forEach {
             it.sendMessage(message)

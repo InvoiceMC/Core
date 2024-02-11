@@ -2,8 +2,8 @@ package me.outspending.core.misc.leaderboard
 
 import me.outspending.core.Utilities.orIfNull
 import me.outspending.core.Utilities.runAsync
-import me.outspending.core.storage.DatabaseHandler.database
-import me.outspending.core.storage.DatabaseHandler.munchPlayerData
+import me.outspending.core.storage.DatabaseManager.database
+import me.outspending.core.storage.DatabaseManager.munchPlayerData
 import me.outspending.core.storage.data.PlayerData
 
 class LeaderboardManager {
