@@ -3,7 +3,7 @@ plugins {
     id("io.papermc.paperweight.userdev") version "1.5.11"
     id("me.champeau.jmh") version "0.7.2"
     id("co.uzzu.dotenv.gradle") version "4.0.0" // Dotenv support
-    kotlin("jvm") version "2.0.0-Beta2"
+    kotlin("jvm") version "2.0.0-Beta3"
     java
 }
 
