@@ -1,4 +1,4 @@
-package me.outspending.core.mining.pickaxe
+package me.outspending.core.mining
 
 import me.outspending.core.Utilities.format
 import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
@@ -40,6 +40,8 @@ object PickaxeUpdater {
     }
 
     fun updatePickaxe(item: ItemStack, addBB: Int): ItemStack {
+        if (!isPickaxe(item)) return item
+
         item.editMeta { meta ->
             val data = meta.persistentDataContainer
 

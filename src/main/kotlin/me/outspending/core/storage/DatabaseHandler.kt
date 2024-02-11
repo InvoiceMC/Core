@@ -1,6 +1,7 @@
 package me.outspending.core.storage
 
 import me.outspending.core.Utilities
+import me.outspending.core.Utilities.runTaskTimer
 import me.outspending.core.core
 import me.outspending.core.storage.data.CellData
 import me.outspending.core.storage.data.PlayerData
@@ -36,8 +37,8 @@ object DatabaseHandler {
                 SerializerFactory.registerSerializer(serializer)
             }
 
-        Utilities.runTaskTimer(6000, 6000) { PlayerRegistry.updateAllPlayerData() }
-        Utilities.runTaskTimer(6000, 6000) { CellRegistry.updateAllCells() }
+        runTaskTimer(6000, 6000) { PlayerRegistry.updateAllPlayerData() }
+        runTaskTimer(6000, 6000) { CellRegistry.updateAllCells() }
     }
 
     fun stopDatabase() {
