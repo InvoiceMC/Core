@@ -19,21 +19,19 @@ class ScoreboardHandler {
     private val scoreboardMap: MutableMap<UUID, FastBoard> = mutableMapOf()
     private val scoreboardFormat: Array<String> =
         arrayOf(
+            "         <gray>ꜱᴇᴀꜱᴏɴ 1",
             "",
             "<main><bold>%player%",
-            "<main>▐ <gray>Prestige: <#c97be3>★%prestige%",
-            "<main>▐ <gray>Level: <white>%level%",
-            "<main>▐ <dark_gray>- %progress%",
+            "<main><b>|</b> <gray>Prestige: <dark_gray>[%prestige%<dark_gray>]",
+            "<main><b>|</b> <gray>Level: <white>%level%",
+            "<main><b>|</b> <dark_gray>- %progress%",
             "",
-            "<main>▐ <gray>Balance: <green>$%balance%",
-            "<main>▐ <gray>Gold: <yellow>⛁%gold%",
-            "<main>▐ <gray>Mined: ⛏%blocks%",
+            "<main><bold>ʙᴀʟᴀɴᴄᴇꜱ",
+            "<main><b>|</b> <gray>Balance: <green>$%balance%",
+            "<main><b>|</b> <gray>Gold: <yellow>⛁%gold%",
+            "<main><b>|</b> <gray>Mined: ⛏%blocks%",
             "",
-            "<main><bold>SERVER",
-            "<main>▐ <gray>Players: <white>%player_count%<white>/<white>%max_players%",
-            "<main>▐ <gray>Ping: <white>%ping%",
-            "",
-            "<white><u>Invoice</u>.minehut.gg"
+            "<white><u>Invoice</u>.minehut.gg     "
         )
 
     init {
@@ -66,35 +64,29 @@ class ScoreboardHandler {
     private fun parseLine(
         player: Player,
         line: String,
-        playerData: PlayerData,
-        pmine: String
+        playerData: PlayerData
     ): String {
         return line
             .replace("%player%", player.name)
-            .replace("%pmine%", pmine.ifEmpty { "N/A" })
+            .replace("%pmine%", playerData.pmineName.ifEmpty { "N/A" })
             .replace("%level%", player.level.toString())
             .replace(
                 "%progress%",
-                "${progressBar(player.exp)} <dark_gray>[<gray>${(player.exp * 100.0).fix()}%<dark_gray>]"
+                "${progressBar(player.exp, 5, "■")} <dark_gray>[<gray>${(player.exp * 100.0).fix()}%<dark_gray>]"
             )
             .replace("%balance%", playerData.balance.format())
             .replace("%gold%", playerData.gold.format())
             .replace("%blocks%", playerData.blocksBroken.format())
-            .replace("%prestige%", playerData.prestige.toString())
-            .replace("%player_count%", player.server.onlinePlayers.size.toString())
-            .replace("%max_players%", player.server.maxPlayers.toString())
-            .replace("%ping%", player.ping.toString() + "ms")
+            .replace("%prestige%", "<#c97be3>★${playerData.prestige}")
     }
 
     private fun updateScoreboard(board: FastBoard) {
         val player: Player = board.player
 
         player.getData()?.let { playerData ->
-            val pmine = playerData.pmineName
-
-            board.updateTitle("<main><b>INVOICE</b> <gray>S1".parse())
+            board.updateTitle("<main><b>ɪɴᴠᴏɪᴄᴇ</b>".parse())
             board.updateLines(
-                scoreboardFormat.map { toSmallCaps(parseLine(player, it, playerData, pmine)).parse(false) }
+                scoreboardFormat.map { toSmallCaps(parseLine(player, it, playerData)).parse(false) }
             )
         }
     }

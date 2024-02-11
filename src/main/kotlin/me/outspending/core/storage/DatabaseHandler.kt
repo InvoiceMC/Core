@@ -1,6 +1,6 @@
 package me.outspending.core.storage
 
-import me.outspending.core.Utilities
+import me.outspending.core.Utilities.runTaskTimer
 import me.outspending.core.core
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.munch.Munch
@@ -31,7 +31,7 @@ object DatabaseHandler {
                 SerializerFactory.registerSerializer(serializer)
             }
 
-        Utilities.runTaskTimer(6000, 6000) { DataHandler.updateAllPlayerData() }
+        runTaskTimer(6000, 6000) { DataHandler.updateAllPlayerData() }
     }
 
     fun stopDatabase() {

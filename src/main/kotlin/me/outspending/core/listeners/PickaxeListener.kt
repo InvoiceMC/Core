@@ -1,6 +1,6 @@
-package me.outspending.core.mining.pickaxe
+package me.outspending.core.listeners
 
-import me.outspending.core.mining.enchants.gui.EnchantGUI
+import me.outspending.core.mining.enchants.gui.MainEnchantGUI
 import org.bukkit.Material
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -21,7 +21,7 @@ class PickaxeListener : Listener {
 
         // Then check if the player is holding a pickaxe and open the GUI
         if (player.inventory.itemInMainHand.type == Material.DIAMOND_PICKAXE) {
-            EnchantGUI(player).open()
+            MainEnchantGUI(player).open()
         }
     }
 }

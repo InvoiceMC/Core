@@ -11,7 +11,10 @@ import me.outspending.core.storage.DatabaseHandler.munchPlayerData
 import me.outspending.core.storage.data.PlayerData
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.title.Title
+import net.md_5.bungee.api.ChatColor
+import org.apache.commons.lang.mutable.Mutable
 import org.bukkit.Bukkit
+import org.bukkit.Color
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -20,10 +23,28 @@ import org.bukkit.event.player.PlayerLevelChangeEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
+import java.net.URL
 import java.util.*
+import javax.imageio.ImageIO
 import kotlin.time.measureTime
 
 class PlayerListeners : Listener {
+    private fun getSkin(player: Player, symbol: Char = '█'): MutableList<String> {
+        val skin: MutableList<String> = mutableListOf()
+        val image = ImageIO.read(URL("https://crafatar.com/avatars/${player.uniqueId}?size=8&overlay"))
+        for (x in 0 until 8) {
+            var currentLine = ""
+            for (y in 0 until 8) {
+                val color = ChatColor.of(java.awt.Color(image.getRGB(y, x)))
+                currentLine += "$color$symbol"
+            }
+
+            skin.add(currentLine)
+        }
+
+        return skin
+    }
+
     @EventHandler
     fun onPlayerJoin(e: PlayerJoinEvent) {
         val player: Player = e.player

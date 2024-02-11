@@ -3,7 +3,7 @@ package me.outspending.core
 import com.azuyamat.maestro.bukkit.Maestro
 import com.azuyamat.maestro.bukkit.data.CommandData
 import me.outspending.core.config.impl.MessagesConfig
-import me.outspending.core.listeners.ListenerHandler
+import me.outspending.core.listeners.ListenerRegistry
 import me.outspending.core.misc.broadcaster.BroadcastHandler
 import me.outspending.core.misc.broadcaster.BroadcastManager
 import me.outspending.core.misc.scoreboard.ScoreboardHandler
@@ -39,7 +39,7 @@ class Core : JavaPlugin() {
             messageConfig.load()
             scoreboardHandler = ScoreboardHandler()
 
-            ListenerHandler.registerEvents(server.pluginManager)
+            ListenerRegistry.registerEvents(server.pluginManager)
             BroadcastHandler.registerAllBroadcasts()
             DatabaseHandler.setupDatabase()
         }
