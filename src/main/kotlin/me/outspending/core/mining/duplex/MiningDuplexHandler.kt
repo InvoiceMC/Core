@@ -4,9 +4,9 @@ import io.netty.channel.ChannelDuplexHandler
 import io.netty.channel.ChannelHandlerContext
 import me.outspending.core.Utilities.getData
 import me.outspending.core.Utilities.toComponent
+import me.outspending.core.mining.PickaxeUpdater
 import me.outspending.core.mining.enchants.EnchantHandler
 import me.outspending.core.mining.enchants.EnchantResult
-import me.outspending.core.mining.PickaxeUpdater
 import me.outspending.core.packets.sync.PacketSync
 import net.minecraft.core.BlockPos
 import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket

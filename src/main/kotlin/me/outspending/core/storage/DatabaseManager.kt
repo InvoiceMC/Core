@@ -1,6 +1,5 @@
 package me.outspending.core.storage
 
-import me.outspending.core.Utilities
 import me.outspending.core.Utilities.runTaskTimer
 import me.outspending.core.core
 import me.outspending.core.storage.data.CellData
@@ -17,7 +16,7 @@ import java.util.*
 const val SERIALIZER_PACKAGE = "me.outspending.core.storage.serializers"
 const val DATABASE_NAME = "database.db"
 
-object DatabaseHandler {
+object DatabaseManager {
     val database = MunchConnection.create()
     val munchPlayerData = Munch.create(PlayerData::class).process<UUID>()
     val munchCellData = Munch.create(CellData::class).process<String>()
@@ -51,5 +50,12 @@ object DatabaseHandler {
         database.updateAllData(munchCellData, cellData)
 
         database.disconnect()
+    }
+    
+    fun updateAllData() {
+        runTaskTimer(6000, 6000) {
+            PlayerRegistry.updateAllPlayerData()
+            CellRegistry.updateAllCells()
+        }
     }
 }

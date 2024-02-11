@@ -7,7 +7,6 @@ import me.outspending.core.core
 import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
 import me.outspending.core.storage.data.CellData
 import me.outspending.core.storage.registries.CellRegistry
-import me.outspending.core.storage.registries.PlayerRegistry
 import org.bukkit.entity.Player
 
 @Command(

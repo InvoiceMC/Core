@@ -8,8 +8,8 @@ import me.outspending.core.Utilities.progressBar
 import me.outspending.core.Utilities.runTaskTimer
 import me.outspending.core.misc.helpers.FormatHelper
 import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
-import me.outspending.core.storage.registries.PlayerRegistry
 import me.outspending.core.storage.data.PlayerData
+import me.outspending.core.storage.registries.PlayerRegistry
 import org.bukkit.entity.Player
 import java.util.*
 

@@ -2,8 +2,8 @@ package me.outspending.core.storage.registries
 
 import me.outspending.core.Utilities.runAsync
 import me.outspending.core.Utilities.toComponent
-import me.outspending.core.storage.DatabaseHandler.database
-import me.outspending.core.storage.DatabaseHandler.munchPlayerData
+import me.outspending.core.storage.DatabaseManager.database
+import me.outspending.core.storage.DatabaseManager.munchPlayerData
 import me.outspending.core.storage.data.PlayerData
 import net.kyori.adventure.key.Key
 import net.kyori.adventure.sound.Sound

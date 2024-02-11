@@ -3,8 +3,8 @@ package me.outspending.core
 import me.outspending.core.misc.helpers.FormatHelper
 import me.outspending.core.misc.helpers.NumberHelper
 import me.outspending.core.misc.helpers.miniMessage
-import me.outspending.core.storage.registries.PlayerRegistry
 import me.outspending.core.storage.data.PlayerData
+import me.outspending.core.storage.registries.PlayerRegistry
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import net.minecraft.network.protocol.Packet

@@ -7,7 +7,7 @@ import me.outspending.core.listeners.ListenerRegistry
 import me.outspending.core.misc.broadcaster.BroadcastHandler
 import me.outspending.core.misc.broadcaster.BroadcastManager
 import me.outspending.core.misc.scoreboard.ScoreboardHandler
-import me.outspending.core.storage.DatabaseHandler
+import me.outspending.core.storage.DatabaseManager
 import net.luckperms.api.LuckPerms
 import org.bukkit.plugin.RegisteredServiceProvider
 import org.bukkit.plugin.java.JavaPlugin
@@ -41,14 +41,14 @@ class Core : JavaPlugin() {
 
             ListenerRegistry.registerEvents(server.pluginManager)
             BroadcastHandler.registerAllBroadcasts()
-            DatabaseHandler.setupDatabase()
+            DatabaseManager.setupDatabase()
         }
 
         logger.info("Core has finished loading in $time!")
     }
 
     override fun onDisable() {
-        DatabaseHandler.stopDatabase()
+        DatabaseManager.stopDatabase()
     }
 
     private fun setupLuckPerms() {
