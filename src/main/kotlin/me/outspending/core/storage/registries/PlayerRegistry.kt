@@ -33,6 +33,10 @@ object PlayerRegistry {
 
     fun getPlayerData(uuid: UUID): PlayerData? = playerData[uuid]
 
+    fun updatePlayerData(uuid: UUID, playerData: PlayerData) {
+        database.updateData(munchPlayerData, playerData, uuid)
+    }
+
     fun updateAllPlayerData() {
         runAsync {
             val time = measureTime {

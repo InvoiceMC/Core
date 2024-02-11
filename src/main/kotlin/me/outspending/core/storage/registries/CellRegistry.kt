@@ -28,6 +28,10 @@ object CellRegistry {
         cells.remove(id)
     }
 
+    fun updateCell(cell: CellData) {
+        DatabaseHandler.database.updateData(munchCellData, cell, cell.id)
+    }
+
     fun updateAllCells() {
         val message = core.messageConfig.getMessageOr(
             "cell.data.update-all",
