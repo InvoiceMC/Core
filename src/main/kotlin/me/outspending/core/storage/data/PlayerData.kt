@@ -16,7 +16,7 @@ data class PlayerData(
     @Column(constraints = [ColumnConstraint.NOTNULL]) var blocksBroken: Long,
     @Column(constraints = [ColumnConstraint.NOTNULL]) var prestige: Int,
     @Column(constraints = [ColumnConstraint.NOTNULL]) var multiplier: Float,
-    @Column(constraints = [ColumnConstraint.NOTNULL]) var pmineName: String,
+    @Column(constraints = [ColumnConstraint.NOTNULL]) var pmineName: String, // TODO: We must remove this
     @Column(constraints = [ColumnConstraint.NOTNULL]) var tag: String,
     @Column var cellId: String? = null,
 ) {

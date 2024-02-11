@@ -2,7 +2,10 @@ package me.outspending.core.storage
 
 import me.outspending.core.Utilities
 import me.outspending.core.core
+import me.outspending.core.storage.data.CellData
 import me.outspending.core.storage.data.PlayerData
+import me.outspending.core.storage.registries.CellRegistry
+import me.outspending.core.storage.registries.PlayerRegistry
 import me.outspending.munch.Munch
 import me.outspending.munch.connection.MunchConnection
 import me.outspending.munch.serializer.Serializer
@@ -16,12 +19,14 @@ const val DATABASE_NAME = "database.db"
 object DatabaseHandler {
     val database = MunchConnection.create()
     val munchPlayerData = Munch.create(PlayerData::class).process<UUID>()
+    val munchCellData = Munch.create(CellData::class).process<String>()
 
     fun setupDatabase() {
         if (database.isConnected()) return
 
         database.connect(core.dataFolder, DATABASE_NAME)
         database.createTable(munchPlayerData)
+        database.createTable(munchCellData)
 
         // Have no clue why this doesn't work in munch but :shrug:
         Reflections(SERIALIZER_PACKAGE)
@@ -31,14 +36,18 @@ object DatabaseHandler {
                 SerializerFactory.registerSerializer(serializer)
             }
 
-        Utilities.runTaskTimer(6000, 6000) { DataHandler.updateAllPlayerData() }
+        Utilities.runTaskTimer(6000, 6000) { PlayerRegistry.updateAllPlayerData() }
+        Utilities.runTaskTimer(6000, 6000) { CellRegistry.updateAllCells() }
     }
 
     fun stopDatabase() {
         if (!database.isConnected()) return
 
-        val data = DataHandler.playerData.values.toList()
-        database.updateAllData(munchPlayerData, data)
+        val playerData = PlayerRegistry.playerData.values.toList()
+        database.updateAllData(munchPlayerData, playerData)
+
+        val cellData = CellRegistry.cells.values.toList()
+        database.updateAllData(munchCellData, cellData)
 
         database.disconnect()
     }

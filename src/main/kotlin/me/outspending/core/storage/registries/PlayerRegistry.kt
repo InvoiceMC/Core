@@ -1,4 +1,4 @@
-package me.outspending.core.storage
+package me.outspending.core.storage.registries
 
 import me.outspending.core.Utilities.runAsync
 import me.outspending.core.Utilities.toComponent
@@ -11,7 +11,7 @@ import org.bukkit.Bukkit
 import java.util.*
 import kotlin.time.measureTime
 
-object DataHandler {
+object PlayerRegistry {
 
     private val BROADCAST_MESSAGE: String =
         listOf(
@@ -26,12 +26,12 @@ object DataHandler {
     val playerData: MutableMap<UUID, PlayerData> = mutableMapOf()
 
     fun addPlayer(uuid: UUID, playerData: PlayerData) {
-        this.playerData[uuid] = playerData
+        PlayerRegistry.playerData[uuid] = playerData
     }
 
-    fun removePlayer(uuid: UUID) = this.playerData.remove(uuid)
+    fun removePlayer(uuid: UUID) = playerData.remove(uuid)
 
-    fun getPlayerData(uuid: UUID): PlayerData? = this.playerData[uuid]
+    fun getPlayerData(uuid: UUID): PlayerData? = playerData[uuid]
 
     fun updateAllPlayerData() {
         runAsync {

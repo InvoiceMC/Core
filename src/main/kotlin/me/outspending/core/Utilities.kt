@@ -3,7 +3,7 @@ package me.outspending.core
 import me.outspending.core.misc.helpers.FormatHelper
 import me.outspending.core.misc.helpers.NumberHelper
 import me.outspending.core.misc.helpers.miniMessage
-import me.outspending.core.storage.DataHandler
+import me.outspending.core.storage.registries.PlayerRegistry
 import me.outspending.core.storage.data.PlayerData
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
@@ -50,7 +50,7 @@ object Utilities {
 
     fun Player.getLuckPermsName(): String = "${this.getPrefix()}${this.name}"
 
-    fun Player.getData(): PlayerData? = DataHandler.getPlayerData(this.uniqueId)
+    fun Player.getData(): PlayerData? = PlayerRegistry.getPlayerData(this.uniqueId)
 
     fun Player.getConnection(): ServerGamePacketListenerImpl? =
         (this as? CraftPlayer)?.handle?.connection
@@ -113,4 +113,8 @@ object Utilities {
     /** Location */
     fun toLocation(world: World, x: Int, y: Int, z: Int) =
         Location(world, x.toDouble(), y.toDouble(), z.toDouble())
+
+    fun getStaff(): List<Player> = Bukkit.getOnlinePlayers().filter { it.hasPermission("core.staff") }
+
+    fun getAdmins(): List<Player> = Bukkit.getOnlinePlayers().filter { it.hasPermission("core.admin") }
 }

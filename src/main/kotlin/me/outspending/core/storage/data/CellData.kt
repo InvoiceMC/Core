@@ -1,20 +1,29 @@
 package me.outspending.core.storage.data
 
-import me.outspending.core.Utilities.getData
-import me.outspending.core.core
+import me.outspending.core.storage.enums.CellRank
+import me.outspending.core.storage.registries.CellRegistry
+import me.outspending.munch.Column
+import me.outspending.munch.ColumnConstraint
+import me.outspending.munch.PrimaryKey
+import me.outspending.munch.Table
 import org.bukkit.Location
+import org.bukkit.entity.Player
+import org.bukkit.util.BoundingBox
 import java.util.*
 
+@Table
 data class CellData(
-    var name: String,
-    val members: MutableList<UUID>,
-    val bound: CellBoundData,
-    var spawnLocation: Location
+    @PrimaryKey var id: String,
+    @Column(constraints = [ColumnConstraint.NOTNULL]) val members: MutableList<Pair<CellRank, UUID>>,
+    @Column(constraints = [ColumnConstraint.NOTNULL]) val bound: BoundingBox,
+    @Column(constraints = [ColumnConstraint.NOTNULL]) var spawn: Location
 ) {
-
-    fun getTotalBlocksMined() = members.map { uuid ->
-        val player = core.server.getPlayer(uuid) ?: return@map 0L // TODO: Add different impl for getting data from offline player
-        val data = player.getData() ?: return@map 0L
-        data.blocksBroken
-    }.sum()
+    constructor(id: String, owner: Player): this(
+        id,
+        mutableListOf(
+            Pair(CellRank.LEADER, owner.uniqueId)
+        ),
+        CellRegistry.getNextBoundingBox(),
+        owner.location
+    )
 }

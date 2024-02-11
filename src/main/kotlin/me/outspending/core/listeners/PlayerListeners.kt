@@ -5,7 +5,7 @@ import me.outspending.core.core
 import me.outspending.core.mining.duplex.PacketListeners
 import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
 import me.outspending.core.misc.helpers.enums.CustomSound
-import me.outspending.core.storage.DataHandler
+import me.outspending.core.storage.registries.PlayerRegistry
 import me.outspending.core.storage.DatabaseHandler.database
 import me.outspending.core.storage.DatabaseHandler.munchPlayerData
 import me.outspending.core.storage.data.PlayerData
@@ -48,7 +48,7 @@ class PlayerListeners : Listener {
         runAsync {
             val time = measureTime {
                 val playerData = database.getData(munchPlayerData, uuid) ?: PlayerData(uuid)
-                DataHandler.addPlayer(uuid, playerData)
+                PlayerRegistry.addPlayer(uuid, playerData)
             }
 
             // Show data loaded title
@@ -72,7 +72,7 @@ class PlayerListeners : Listener {
     fun onPlayerLeave(e: PlayerQuitEvent) {
         val player: Player = e.player
         val uuid: UUID = player.uniqueId
-        val map = DataHandler.playerData
+        val map = PlayerRegistry.playerData
 
         e.quitMessage(null)
 
@@ -87,7 +87,7 @@ class PlayerListeners : Listener {
                 }
 
                 // Remove the player's data from memory
-                DataHandler.removePlayer(uuid)
+                PlayerRegistry.removePlayer(uuid)
             }
 
             // Remove Scoreboard & Packet Listener (DuplexChannel)

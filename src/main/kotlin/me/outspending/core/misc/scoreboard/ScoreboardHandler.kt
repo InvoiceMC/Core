@@ -8,7 +8,7 @@ import me.outspending.core.Utilities.progressBar
 import me.outspending.core.Utilities.runTaskTimer
 import me.outspending.core.misc.helpers.FormatHelper
 import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
-import me.outspending.core.storage.DataHandler
+import me.outspending.core.storage.registries.PlayerRegistry
 import me.outspending.core.storage.data.PlayerData
 import org.bukkit.entity.Player
 import java.util.*
@@ -38,7 +38,7 @@ class ScoreboardHandler {
 
     init {
         runTaskTimer(REFRESH_RATE, REFRESH_RATE, true) {
-            DataHandler.playerData.keys.forEach { uuid ->
+            PlayerRegistry.playerData.keys.forEach { uuid ->
                 val scoreboard: FastBoard = scoreboardMap[uuid] ?: return@forEach
 
                 updateScoreboard(scoreboard)
