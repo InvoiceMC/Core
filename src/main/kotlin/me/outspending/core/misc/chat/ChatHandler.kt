@@ -10,7 +10,8 @@ import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import org.bukkit.Bukkit
 import org.bukkit.inventory.ItemStack
 
-const val ITEM_FORMAT: String = "<dark_gray>[<hover:show_text:'<lore>'><displayname></hover> <gray><amount><dark_gray>]"
+const val ITEM_FORMAT: String =
+    "<dark_gray>[<hover:show_text:'<lore>'><displayname></hover> <gray><amount><dark_gray>]"
 
 object ChatHandler {
     private val plainSerializer = PlainTextComponentSerializer.builder().build()
@@ -35,8 +36,11 @@ object ChatHandler {
 
     fun replaceItem(component: Component, item: ItemStack): Component {
         if (item.type.isAir) return component
-        val replacement = TextReplacementConfig.builder()
-            .matchLiteral("[item]").replacement(convertItemToComponent(item)).build()
+        val replacement =
+            TextReplacementConfig.builder()
+                .matchLiteral("[item]")
+                .replacement(convertItemToComponent(item))
+                .build()
 
         return component.replaceText(replacement)
     }
@@ -48,10 +52,11 @@ object ChatHandler {
         Bukkit.getOnlinePlayers()
             .filter { plainMessage.contains(it.name) }
             .forEach {
-                val replacement = TextReplacementConfig.builder()
-                    .matchLiteral(it.name)
-                    .replacement("<yellow><u>@${it.name}".toComponent())
-                    .build()
+                val replacement =
+                    TextReplacementConfig.builder()
+                        .matchLiteral(it.name)
+                        .replacement("<yellow><u>@${it.name}".toComponent())
+                        .build()
 
                 newComponent = message.replaceText(replacement)
                 CustomSound.Ping().playSound(it)
@@ -60,20 +65,18 @@ object ChatHandler {
         return newComponent
     }
 
-    class Builder(private val component: Component) {
-        private var message: Component = component
+    class Builder(private var component: Component) {
 
         fun replaceItem(item: ItemStack): Builder {
-            message = ChatHandler.replaceItem(message, item)
+            component = replaceItem(component, item)
             return this
         }
 
         fun pingPlayers(): Builder {
-            message = ChatHandler.pingPlayers(message)
+            component = pingPlayers(component)
             return this
         }
 
-        fun build(): Component = message
-
+        fun build(): Component = component
     }
 }
