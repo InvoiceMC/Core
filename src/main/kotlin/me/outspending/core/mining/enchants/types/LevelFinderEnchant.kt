@@ -17,6 +17,7 @@ class LevelFinderEnchant : PickaxeEnchant {
     private val DEFAULT_CHANCE = 0.0002
 
     override fun getEnchantName(): String = "levelfinder"
+    override fun getDescription(): String = "Chance to find levels whilst mining."
     override fun getEnchantItem(): Material = Material.REDSTONE_TORCH
     override fun getInitialCost(): Double = 100.0
     override fun getMaxEnchantmentLevel(): Int = 25000

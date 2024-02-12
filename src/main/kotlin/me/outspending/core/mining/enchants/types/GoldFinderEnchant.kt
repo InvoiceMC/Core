@@ -18,6 +18,7 @@ class GoldFinderEnchant : PickaxeEnchant {
     private val DEFAULT_CHANCE = 0.0002
 
     override fun getEnchantName(): String = "goldfinder"
+    override fun getDescription(): String = "Chance to find gold whilst mining."
     override fun getEnchantItem(): Material = Material.SUNFLOWER
     override fun getInitialCost(): Double = 100.0
     override fun getMaxEnchantmentLevel(): Int = 25000
@@ -39,7 +40,7 @@ class GoldFinderEnchant : PickaxeEnchant {
         val goldFinderAmount: Int =
             random.nextInt((500 * enchantmentLevel), (2500 * enchantmentLevel))
         player.sendMessage(
-            "<main><b>ɢᴏʟᴅꜰɪɴᴅᴇʀ <dark_gray>➜</b> <white>you've found <yellow>⛁${goldFinderAmount.format().toTinyString()} <white>whilst mining!"
+            "<main><b>ɢᴏʟᴅꜰɪɴᴅᴇʀ <dark_gray>➜</b> <white>You've found <yellow>⛁${goldFinderAmount.format().toTinyString()} <white>whilst mining!"
                 .parse()
         )
 

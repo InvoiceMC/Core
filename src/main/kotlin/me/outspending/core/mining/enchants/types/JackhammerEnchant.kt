@@ -21,6 +21,7 @@ class JackhammerEnchant : PickaxeEnchant {
     private val DEFAULT_CHANCE = 0.0002
 
     override fun getEnchantName(): String = "jackhammer"
+    override fun getDescription(): String = "Chance to break blocks in a flat radius of 5."
     override fun getEnchantItem(): Material = Material.HOPPER
     override fun getInitialCost(): Double = 1000.0
     override fun getMaxEnchantmentLevel(): Int = 10

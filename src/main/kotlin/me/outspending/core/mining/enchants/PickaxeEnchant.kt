@@ -13,6 +13,7 @@ import kotlin.random.Random
 interface PickaxeEnchant {
 
     fun getEnchantName(): String
+    fun getDescription(): String
     fun getEnchantItem(): Material
     fun getInitialCost(): Double = 100.0
     fun getIncreaseProgression(): Double = 1.0

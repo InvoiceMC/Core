@@ -15,6 +15,9 @@ import org.bukkit.entity.Player
 class MainEnchantGUI(private val player: Player): EnchantGUI {
 
     override fun createGUI(): GUI {
+        val heldItem = player.inventory.itemInMainHand
+        val meta = heldItem.itemMeta
+        val data = meta.persistentDataContainer
         return gui(
             plugin = core,
             title = "Upgrade Pickaxe".parse(),
@@ -25,6 +28,9 @@ class MainEnchantGUI(private val player: Player): EnchantGUI {
             var y = 2
             var x = 2
             for (enchant in EnchantHandler.pickaxeEnchants) {
+                val enchantLevel = enchant.getEnchantmentLevel(data)
+                val maxLevel = enchant.getMaxEnchantmentLevel()
+                val chance = if (enchant.getEnchantmentChance(enchantLevel) <= 100) enchant.getEnchantmentChance(enchantLevel) else 100
                 val enchantName: String = enchant.getEnchantName()
                 val enchantItem: Material = enchant.getEnchantItem()
 
@@ -32,6 +38,10 @@ class MainEnchantGUI(private val player: Player): EnchantGUI {
                     item = item(enchantItem) {
                         name = "<main>${enchantName.toUpperCase()}".parse()
                         lore = listOf(
+                            "<dark_gray><i>ᴇɴᴄʜᴀɴᴛ",
+                            "",
+                            "<second>${enchant.getDescription()}",
+                            "<second>${enchantLevel}<gray>/<second>${maxLevel} <gray>($chance%)",
                             "",
                             "<green>Click to upgrade this enchant."
                         ).map { it.parse() }

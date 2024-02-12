@@ -12,6 +12,7 @@ import kotlin.random.Random
 
 class MerchantEnchant : PickaxeEnchant {
     override fun getEnchantName(): String = "merchant"
+    override fun getDescription(): String = "Chance to find money whilst mining."
     override fun getEnchantItem(): Material = Material.DRIED_KELP_BLOCK
     override fun getInitialCost(): Double = 100.0
     override fun getMaxEnchantmentLevel(): Int = 25000

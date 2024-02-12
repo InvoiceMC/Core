@@ -16,6 +16,7 @@ class XPFinderEnchant : PickaxeEnchant {
     private val DEFAULT_CHANCE = 0.0002
 
     override fun getEnchantName(): String = "xpfinder"
+    override fun getDescription(): String = "Chance to find xp whilst mining."
     override fun getEnchantItem(): Material = Material.EXPERIENCE_BOTTLE
     override fun getInitialCost(): Double = 100.0
     override fun getMaxEnchantmentLevel(): Int = 25000

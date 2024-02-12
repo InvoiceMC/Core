@@ -16,6 +16,8 @@ class ExplosionEnchant : PickaxeEnchant {
     private val DEFAULT_CHANCE = 0.0002
 
     override fun getEnchantName(): String = "explosion"
+    override fun getDescription(): String = "Chance to explode blocks in a radius of 4."
+
     override fun getEnchantItem(): Material = Material.TNT
     override fun getInitialCost(): Double = 100.0
     override fun getMaxEnchantmentLevel(): Int = 25000
@@ -31,7 +33,6 @@ class ExplosionEnchant : PickaxeEnchant {
         random: Random
     ): EnchantResult {
         if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
-
         val blockCount = MineUtils.setBlocks(
             player,
             blockLocation,
