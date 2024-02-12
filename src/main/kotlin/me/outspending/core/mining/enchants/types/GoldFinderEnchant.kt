@@ -16,7 +16,6 @@ import kotlin.random.Random
 class GoldFinderEnchant : PickaxeEnchant {
 
     private val DEFAULT_CHANCE = 0.0002
-
     override fun getEnchantName(): String = "goldfinder"
     override fun getDescription(): String = "Chance to find gold whilst mining."
     override fun getEnchantItem(): Material = Material.SUNFLOWER

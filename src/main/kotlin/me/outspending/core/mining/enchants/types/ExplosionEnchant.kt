@@ -17,7 +17,6 @@ class ExplosionEnchant : PickaxeEnchant {
 
     override fun getEnchantName(): String = "explosion"
     override fun getDescription(): String = "Chance to explode blocks in a radius of 4."
-
     override fun getEnchantItem(): Material = Material.TNT
     override fun getInitialCost(): Double = 100.0
     override fun getMaxEnchantmentLevel(): Int = 25000
