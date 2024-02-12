@@ -8,7 +8,9 @@ plugins {
 }
 
 group = "me.outspending"
+
 version = "0.0.1"
+
 description = "Core plugin for the server Invoice"
 
 repositories {
@@ -48,14 +50,9 @@ dependencies {
 }
 
 tasks {
+    assemble { dependsOn(reobfJar) }
 
-    assemble {
-        dependsOn(reobfJar)
-    }
-
-    javadoc {
-        options.encoding = Charsets.UTF_8.name()
-    }
+    javadoc { options.encoding = Charsets.UTF_8.name() }
 
     processResources {
         val props =
@@ -67,9 +64,7 @@ tasks {
             )
         inputs.properties(props)
         filteringCharset = Charsets.UTF_8.name()
-        filesMatching("plugin.yml") {
-            expand(props)
-        }
+        filesMatching("plugin.yml") { expand(props) }
     }
 
     reobfJar {
@@ -86,11 +81,7 @@ tasks {
         }
     }
 
-    shadowJar {
-        relocate("fr.mrmicky.fastboard", "me.outspending.core.relocations.fastboard")
-    }
+    shadowJar { relocate("fr.mrmicky.fastboard", "me.outspending.core.relocations.fastboard") }
 
-    kotlin {
-        jvmToolchain(17)
-    }
+    kotlin { jvmToolchain(17) }
 }

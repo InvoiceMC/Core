@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:no-wildcard-imports")
+
 package me.outspending.core.storage.data
 
 import me.outspending.core.storage.enums.CellRank
@@ -16,14 +18,17 @@ data class CellData(
     @PrimaryKey var id: String,
     @Column(constraints = [ColumnConstraint.NOTNULL]) val members: MutableList<Pair<CellRank, UUID>>,
     @Column(constraints = [ColumnConstraint.NOTNULL]) val bound: BoundingBox,
-    @Column(constraints = [ColumnConstraint.NOTNULL]) var spawn: Location
+    @Column(constraints = [ColumnConstraint.NOTNULL]) var spawn: Location,
 ) {
-    constructor(id: String, owner: Player): this(
+    // Has to have an empty constructor for munch
+    constructor() : this("", mutableListOf(), BoundingBox(0.0, 0.0, 0.0, 0.0, 0.0, 0.0), Location(null, 0.0, 0.0, 0.0))
+
+    constructor(id: String, owner: Player) : this(
         id,
         mutableListOf(
-            Pair(CellRank.LEADER, owner.uniqueId)
+            Pair(CellRank.LEADER, owner.uniqueId),
         ),
         CellRegistry.getNextBoundingBox(),
-        owner.location
+        owner.location,
     )
 }

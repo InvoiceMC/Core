@@ -16,7 +16,7 @@ import net.kyori.adventure.text.minimessage.tag.standard.StandardTags
 import java.util.*
 import kotlin.math.max
 
-private val MAIN_COLOR: TextColor = TextColor.color(140, 140, 255) // #8c8cff
+private val MAIN_COLOR: TextColor = TextColor.color(230, 144, 78) // #e6904e
 private val SECOND_COLOR: (Float) -> TextColor = {
     listOf(MAIN_COLOR.red(), MAIN_COLOR.green())
         .map { n -> max(n * it, 255.0f).toInt() }

@@ -8,8 +8,10 @@ import kotlin.reflect.KClass
 class ListSerializer<T : Any> : Serializer<List<T>> {
     @Suppress("UNCHECKED_CAST")
     private fun getTClass(): KClass<T> {
-        val type = javaClass.genericSuperclass as ParameterizedType
-        return type.actualTypeArguments[0] as KClass<T>
+        return (
+            (javaClass.genericSuperclass as ParameterizedType)
+                .actualTypeArguments[0] as Class<T>
+        ).kotlin
     }
 
     private fun getSerializer(): Serializer<T> {
