@@ -16,12 +16,8 @@ import net.kyori.adventure.text.minimessage.tag.standard.StandardTags
 import java.util.*
 import kotlin.math.max
 
-private val MAIN_COLOR: TextColor = TextColor.color(230, 144, 78) // #e6904e
-private val SECOND_COLOR: (Float) -> TextColor = {
-    listOf(MAIN_COLOR.red(), MAIN_COLOR.green())
-        .map { n -> max(n * it, 255.0f).toInt() }
-        .let { n -> TextColor.color(n[0], n[1], 255) }
-}
+private val MAIN_COLOR: TextColor = TextColor.color(232, 132, 56) // #e88438
+private val SECOND_COLOR: TextColor = TextColor.color(224, 161, 112) // #e0a170
 
 val miniMessage = MiniMessage.builder()
     .tags(TagResolver.builder()
@@ -109,9 +105,8 @@ class FormatHelper(private val text: String) {
         fun secondColorResolver(): TagResolver {
             return TagResolver.resolver(
                 "second"
-            ) { args: ArgumentQueue, _ ->
-                val intensity = (args.nextOrNull() ?: "2").toString().toFloat()
-                Tag.styling(SECOND_COLOR(intensity))
+            ) { _: ArgumentQueue, _ ->
+                Tag.styling(SECOND_COLOR)
             }
         }
 

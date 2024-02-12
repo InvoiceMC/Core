@@ -51,7 +51,7 @@ class PlayerListeners : Listener {
         // Join message
         val joinMessage: Component =
             if (!player.hasPlayedBefore()) {
-                "<#e08a19>${player.name} <white>has joined for the first time! <gray>[<#e8b36d>#${Bukkit.getOfflinePlayers().size}<gray>]"
+                "<main>${player.name} <white>has joined for the first time! <gray>[<second>#${Bukkit.getOfflinePlayers().size}<gray>]"
                     .parse()
             } else {
                 "<gray>${player.name} has joined!".parse()
@@ -74,7 +74,7 @@ class PlayerListeners : Listener {
             player.showTitle(
                 Title.title(
                     "<main><b>ᴅᴀᴛᴀʙᴀꜱᴇ</b>".parse(),
-                    "<gray><i>Loaded your data in <main><u>$time</u><gray>!".parse(),
+                    "<gray><i>Loaded your data in <second><u>$time</u><gray>!".parse(),
                 ),
             )
 
