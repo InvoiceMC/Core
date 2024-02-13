@@ -25,6 +25,8 @@ repositories {
     maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
 
     maven { url = uri("https://jitpack.io") }
+
+    maven { url = uri("https://repo.codemc.io/repository/maven-public/") }
 }
 
 dependencies {
@@ -47,6 +49,9 @@ dependencies {
     jmh("commons-io:commons-io:2.7")
     jmh("org.openjdk.jmh:jmh-core:1.37")
     jmhAnnotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.37")
+
+    // NBT-api
+    implementation("de.tr7zw:item-nbt-api:2.12.2")
 }
 
 tasks {
@@ -81,7 +86,10 @@ tasks {
         }
     }
 
-    shadowJar { relocate("fr.mrmicky.fastboard", "me.outspending.core.relocations.fastboard") }
+    shadowJar {
+        relocate("fr.mrmicky.fastboard", "me.outspending.core.relocations.fastboard")
+        relocate("de.tr7zw.changeme.nbtapi", "me.outspending.core.relocations.nbtapi")
+    }
 
     kotlin { jvmToolchain(17) }
 }

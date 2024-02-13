@@ -31,23 +31,18 @@ class MiningDuplexHandler(
         packet: Any?,
     ) {
         if (packet is ServerboundPlayerActionPacket) {
-            if (packet.action != ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK) {
-                return
+            if (packet.action == ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK) {
+                val mainHand = player.inventory.itemInMainHand
+                if (mainHand.type == Material.DIAMOND_PICKAXE) {
+                    val pos: BlockPos = packet.pos
+                    val location = toLocation(pos)
+
+                    connection.send(ClientboundBlockDestructionPacket(player.entityId, pos, -1))
+                    PacketSync.syncBlock(location, airBlock)
+
+                    prisonBreak(player, location, mainHand)
+                }
             }
-
-            val mainHand = player.inventory.itemInMainHand
-            if (mainHand.type != Material.DIAMOND_PICKAXE) {
-                return
-            }
-
-            val pos: BlockPos = packet.pos
-            val location = toLocation(pos)
-
-            connection.send(ClientboundBlockDestructionPacket(player.entityId, pos, -1))
-            PacketSync.syncBlock(location, airBlock)
-
-            prisonBreak(player, location, mainHand)
-            return
         } else if (packet is ServerboundUseItemOnPacket) {
             return
         }
