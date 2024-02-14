@@ -12,11 +12,6 @@ import org.bukkit.command.CommandSender
     permission = "core.admin.config"
 )
 class ConfigCommand {
-
-    fun onCommand(sender: CommandSender) {
-        sender.sendMessage(core.messageConfig.getMessage("commands.admin.config.main"))
-    }
-
     @SubCommand(
         name = "reload",
         description = "Reload the <main>config",

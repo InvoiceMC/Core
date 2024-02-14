@@ -12,11 +12,6 @@ import org.bukkit.entity.Player
     permission = "core.admin.utilities.speed"
 )
 class SpeedCommand {
-
-    fun onCommand(player: Player) {
-        player.sendMessage(core.messageConfig.getMessage("commands.admin.utilities.speed.main"))
-    }
-
     @SubCommand(
         name = "walk",
         description = "Set your <main>walk speed",

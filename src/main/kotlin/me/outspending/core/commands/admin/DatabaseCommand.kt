@@ -11,11 +11,6 @@ import org.bukkit.command.CommandSender
     permission = "core.database",
 )
 class DatabaseCommand {
-
-    fun onCommand(player: CommandSender) {
-        player.sendMessage(core.messageConfig.getMessage("commands.admin.database.main"))
-    }
-
     @SubCommand("reload")
     fun reload(player: CommandSender) {
         PlayerRegistry.updateAllPlayerData()

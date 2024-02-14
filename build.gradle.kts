@@ -43,7 +43,7 @@ dependencies {
 
     implementation("com.github.InvoiceMC:Munch:555f98f609") // Database Manager
 
-    implementation("com.github.Azuyamat.Maestro:bukkit:3.0.2") // Maestro command manager
+    implementation("com.github.Azuyamat:Maestro:3.2.1") // Maestro command manager
 
     // JMH
     jmh("commons-io:commons-io:2.7")
