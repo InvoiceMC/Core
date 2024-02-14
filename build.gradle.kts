@@ -41,7 +41,7 @@ dependencies {
     implementation("fr.mrmicky:fastboard:2.0.2") // Our Scoreboard API
     compileOnly("net.luckperms:api:5.4") // LuckPerms API
 
-    implementation("com.github.InvoiceMC:Munch:b9c56a85f7") // Database Manager
+    implementation("com.github.InvoiceMC:Munch:dc42fc1bbe") // Database Manager
 
     implementation("com.github.Azuyamat:Maestro:3.2.1") // Maestro command manager
 
