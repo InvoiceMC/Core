@@ -48,6 +48,10 @@ abstract class ConfigManager(name: String, plugin: JavaPlugin) {
         return config.getValues(true)
     }
 
+    fun getRawConfig(): YamlConfiguration {
+        return config
+    }
+
     private fun makeFileIfNotExists() {
         if (!configFile.exists()) {
             configFile.parentFile.mkdirs()

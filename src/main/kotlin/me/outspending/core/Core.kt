@@ -3,6 +3,7 @@ package me.outspending.core
 import com.azuyamat.maestro.bukkit.Maestro
 import com.azuyamat.maestro.bukkit.data.CommandData
 import me.outspending.core.config.impl.MessagesConfig
+import me.outspending.core.config.impl.QuestsConfig
 import me.outspending.core.gameplay.crates.CratesManager
 import me.outspending.core.listeners.ListenerRegistry
 import me.outspending.core.misc.broadcaster.BroadcastHandler
@@ -21,6 +22,7 @@ lateinit var core: Core
 class Core : JavaPlugin() {
     var commandsList: MutableList<CommandData> = mutableListOf()
     val messageConfig = MessagesConfig(this)
+    val questsConfig = QuestsConfig(this)
     val broadcastManager = BroadcastManager()
     lateinit var  cratesManager: CratesManager
 
