@@ -21,7 +21,6 @@ class BroadcastManager {
         config.getBroadcasts().forEach { broadcast ->
             val messages = broadcast.value.split(BROADCAST_INDENTATION_CHAR).map { it.trim().replace(
                 BROADCAST_INDENTATION_CHAR, "") }.toTypedArray()
-            println("Registering broadcast with custom id: ${broadcast.key}\nMessages: ${messages.joinToString()}")
             broadcasts.add(
                 AutoBroadcast(broadcast.key, *messages).apply {
                     unProtect()

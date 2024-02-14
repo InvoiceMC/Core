@@ -19,6 +19,7 @@ class ConfigCommand {
     )
     fun reload(sender: CommandSender) {
         core.messageConfig.reload()
+        core.questsConfig.reload()
         sender.sendMessage(core.messageConfig.getMessage("commands.admin.config.reload_success"))
     }
 

@@ -3,15 +3,23 @@ package me.outspending.core.config
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
+import kotlin.time.measureTime
 
 abstract class ConfigManager(name: String, plugin: JavaPlugin) {
     private val dataFolder = plugin.dataFolder
     private val configFile = File(dataFolder, "config/$name.yml")
     private var config = YamlConfiguration()
 
-    fun load() {
-        makeFileIfNotExists()
-        config.load(configFile)
+    init {
+        load()
+    }
+
+    private fun load() {
+        val time = measureTime {
+            makeFileIfNotExists()
+            config.load(configFile)
+        }
+        println("[CONFIG] Loaded $configFile in $time!")
     }
 
     fun save() {

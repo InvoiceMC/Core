@@ -39,8 +39,6 @@ class Core : JavaPlugin() {
             }
 
             setupLuckPerms()
-
-            messageConfig.load()
             scoreboardHandler = ScoreboardHandler()
 
             cratesManager = CratesManager()
