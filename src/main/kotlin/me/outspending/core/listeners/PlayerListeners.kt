@@ -6,7 +6,6 @@ import me.outspending.core.mining.duplex.PacketListeners
 import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
 import me.outspending.core.misc.helpers.enums.CustomSound
 import me.outspending.core.storage.DatabaseManager.database
-import me.outspending.core.storage.DatabaseManager.munchPlayerData
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.storage.registries.PlayerRegistry
 import net.kyori.adventure.text.Component
@@ -29,7 +28,8 @@ import kotlin.time.measureTime
 class PlayerListeners : Listener {
     private fun getSkin(player: Player, symbol: Char = '█'): MutableList<String> {
         val skin: MutableList<String> = mutableListOf()
-        val image = ImageIO.read(URL("https://crafatar.com/avatars/${player.uniqueId}?size=8&overlay"))
+        val image =
+            ImageIO.read(URL("https://crafatar.com/avatars/${player.uniqueId}?size=8&overlay"))
         for (x in 0 until 8) {
             var currentLine = ""
             for (y in 0 until 8) {
@@ -66,8 +66,18 @@ class PlayerListeners : Listener {
         // Load data
         runAsync {
             val time = measureTime {
-                val playerData = database.getData(munchPlayerData, uuid) ?: PlayerData(uuid)
-                PlayerRegistry.addPlayer(uuid, playerData)
+                database.getData(uuid).thenAccept {
+                    val playerData: PlayerData
+                    if (it == null) {
+                        playerData = PlayerData(uuid)
+
+                        database.addData(playerData)
+                    } else {
+                        playerData = database.getData(uuid).get()!!
+                    }
+
+                    PlayerRegistry.addPlayer(uuid, playerData)
+                }
             }
 
             // Show data loaded title
@@ -97,12 +107,10 @@ class PlayerListeners : Listener {
 
         runAsync {
             map[uuid]?.let {
-                // Check's if the player has data inside the database, if so, update it, else, add it
-                val hasData = database.hasData(munchPlayerData, uuid) ?: false
-                if (hasData) {
-                    database.updateData(munchPlayerData, it, uuid)
-                } else {
-                    database.addData(munchPlayerData, it)
+                // Check's if the player has data inside the database, if so, update it, else, add
+                // it
+                database.getData(uuid).thenAccept {
+                    it?.let { data -> database.updateData(data, uuid) }
                 }
 
                 // Remove the player's data from memory

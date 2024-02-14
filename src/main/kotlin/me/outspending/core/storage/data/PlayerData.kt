@@ -10,7 +10,7 @@ import java.util.*
 
 @Table
 data class PlayerData(
-    @PrimaryKey var uuid: UUID,
+    @PrimaryKey val uuid: UUID,
     @Column(constraints = [ColumnConstraint.NOTNULL]) var balance: Double,
     @Column(constraints = [ColumnConstraint.NOTNULL]) var gold: Double,
     @Column(constraints = [ColumnConstraint.NOTNULL]) var blocksBroken: Long,
@@ -21,8 +21,6 @@ data class PlayerData(
     @Column var cellId: String? = null,
 ) {
     constructor(uuid: UUID) : this(uuid, 0.0, 0.0, 0, 0, 1.0f, "", "")
-
-    constructor() : this(UUID.randomUUID(), 0.0, 0.0, 0, 0, 1.0f, "", "")
 
     fun getPlayer(): Player? = Bukkit.getPlayer(uuid)
 }

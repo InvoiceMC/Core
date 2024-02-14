@@ -46,7 +46,7 @@ class ChatListeners : Listener {
 
             val msg = Placeholder.component("message", newMessage)
 
-            val playerData: PlayerData = player.getData() ?: PlayerData()
+            val playerData: PlayerData = player.getData()!!
             val hoverText: String = createHoverText(playerData, player.level)
 
             "<hover:show_text:'$hoverText'>${player.getLuckPermsName()}<gold><bold>${player.level.toTinyNumber()}</bold></hover> <gray>»<white> <message>"

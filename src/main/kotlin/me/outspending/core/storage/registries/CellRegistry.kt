@@ -1,10 +1,6 @@
 package me.outspending.core.storage.registries
 
-import me.outspending.core.Utilities.getAdmins
-import me.outspending.core.Utilities.runAsync
 import me.outspending.core.core
-import me.outspending.core.storage.DatabaseManager.database
-import me.outspending.core.storage.DatabaseManager.munchCellData
 import me.outspending.core.storage.data.CellData
 import org.bukkit.Location
 import org.bukkit.util.BoundingBox
@@ -29,21 +25,21 @@ object CellRegistry {
     }
 
     fun updateCell(cell: CellData) {
-        database.updateData(munchCellData, cell, cell.id)
+        // database.updateData(munchCellData, cell, cell.id)
     }
 
     fun updateAllCells() {
-        val message = core.messageConfig.getMessageOr(
-            "cell.data.update-all",
-            true,
-            "<gray>Successfully saved cell(s) data!"
-            )
-        runAsync {
-            database.updateAllData(munchCellData, cells.values.toList())
-        }
-        getAdmins().forEach {
-            it.sendMessage(message)
-        }
+//        val message = core.messageConfig.getMessageOr(
+//            "cell.data.update-all",
+//            true,
+//            "<gray>Successfully saved cell(s) data!"
+//            )
+//        runAsync {
+//            database.updateAllData(munchCellData, cells.values.toList())
+//        }
+//        getAdmins().forEach {
+//            it.sendMessage(message)
+//        }
     }
 
     fun getNextBoundingBox(): BoundingBox {

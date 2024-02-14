@@ -17,16 +17,14 @@ const val SERIALIZER_PACKAGE = "me.outspending.core.storage.serializers"
 const val DATABASE_NAME = "database.db"
 
 object DatabaseManager {
-    val database = MunchConnection.create()
     val munchPlayerData = Munch.create(PlayerData::class).process<UUID>()
-    val munchCellData = Munch.create(CellData::class).process<String>()
+    val database = MunchConnection.create(munchPlayerData)
+    // val munchCellData = Munch.create(CellData::class).process<String>()
 
     fun setupDatabase() {
-        if (database.isConnected()) return
-
         database.connect(core.dataFolder, DATABASE_NAME)
-        database.createTable(munchPlayerData)
-        database.createTable(munchCellData)
+        database.createTable()
+        // database.createTable(munchCellData)
 
         // Have no clue why this doesn't work in munch but :shrug:
         Reflections(SERIALIZER_PACKAGE)
@@ -44,10 +42,10 @@ object DatabaseManager {
         if (!database.isConnected()) return
 
         val playerData = PlayerRegistry.playerData.values.toList()
-        database.updateAllData(munchPlayerData, playerData)
+        database.updateAllData(playerData)
 
-        val cellData = CellRegistry.cells.values.toList()
-        database.updateAllData(munchCellData, cellData)
+        // val cellData = CellRegistry.cells.values.toList()
+        // database.updateAllData(munchCellData, cellData)
 
         database.disconnect()
     }
@@ -55,7 +53,7 @@ object DatabaseManager {
     fun updateAllData() {
         runTaskTimer(6000, 6000) {
             PlayerRegistry.updateAllPlayerData()
-            CellRegistry.updateAllCells()
+            // CellRegistry.updateAllCells()
         }
     }
 }
