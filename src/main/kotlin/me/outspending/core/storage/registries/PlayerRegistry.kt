@@ -34,14 +34,15 @@ object PlayerRegistry {
     fun getPlayerData(uuid: UUID): PlayerData? = playerData[uuid]
 
     fun updatePlayerData(uuid: UUID, playerData: PlayerData) {
-        database.updateData(playerData, uuid)
+        database.updateData(munchPlayerData, playerData, uuid)
     }
 
     fun updateAllPlayerData() {
         runAsync {
             val time = measureTime {
-                database.updateAllData(playerData.values.toList())
+                database.updateAllData(munchPlayerData, playerData.values.toList())
             }
+
             val players = Bukkit.getOnlinePlayers()
             players.forEach { player ->
                 player.playSound(

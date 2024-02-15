@@ -68,7 +68,6 @@ class ScoreboardHandler {
     ): String {
         return line
             .replace("%player%", player.name)
-            .replace("%pmine%", playerData.pmineName.ifEmpty { "N/A" })
             .replace("%level%", player.level.toString())
             .replace(
                 "%progress%",

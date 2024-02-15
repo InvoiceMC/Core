@@ -7,6 +7,7 @@ import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
 import me.outspending.core.misc.helpers.enums.CustomSound
 import me.outspending.core.quests.QuestsHandler
 import me.outspending.core.storage.DatabaseManager.database
+import me.outspending.core.storage.DatabaseManager.munchPlayerData
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.storage.registries.PlayerRegistry
 import net.kyori.adventure.text.Component
@@ -67,14 +68,14 @@ class PlayerListeners : Listener {
         // Load data
         runAsync {
             val time = measureTime {
-                database.getData(uuid).thenAccept {
+                database.getData(munchPlayerData, uuid).thenAccept {
                     val playerData: PlayerData
                     if (it == null) {
                         playerData = PlayerData(uuid)
 
-                        database.addData(playerData)
+                        database.addData(munchPlayerData, playerData)
                     } else {
-                        playerData = database.getData(uuid).get()!!
+                        playerData = database.getData(munchPlayerData, uuid).get()!!
                     }
 
                     PlayerRegistry.addPlayer(uuid, playerData)
@@ -112,8 +113,8 @@ class PlayerListeners : Listener {
             map[uuid]?.let {
                 // Check's if the player has data inside the database, if so, update it, else, add
                 // it
-                database.getData(uuid).thenAccept {
-                    it?.let { data -> database.updateData(data, uuid) }
+                database.getData(munchPlayerData, uuid).thenAccept {
+                    it?.let { data -> database.updateData(munchPlayerData, data, uuid) }
                 }
 
                 // Remove the player's data from memory

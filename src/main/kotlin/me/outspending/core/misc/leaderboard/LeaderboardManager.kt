@@ -8,7 +8,7 @@ import me.outspending.core.storage.data.PlayerData
 
 // Gotta redo this whole class since new Munch System
 class LeaderboardManager {
-    private fun getAllData(): List<PlayerData>? = database.getAllData().get()
+    private fun getAllData(): List<PlayerData>? = database.getAllData(munchPlayerData).get()
 
     private inline fun <T : Comparable<T>> getTop(
         data: List<PlayerData>?,

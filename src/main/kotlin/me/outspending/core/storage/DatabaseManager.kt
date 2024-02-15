@@ -18,13 +18,11 @@ const val DATABASE_NAME = "database.db"
 
 object DatabaseManager {
     val munchPlayerData = Munch.create(PlayerData::class).process<UUID>()
-    val database = MunchConnection.create(munchPlayerData)
-    // val munchCellData = Munch.create(CellData::class).process<String>()
+    val database = MunchConnection.global()
 
     fun setupDatabase() {
         database.connect(core.dataFolder, DATABASE_NAME)
-        database.createTable()
-        // database.createTable(munchCellData)
+        database.createTable(munchPlayerData)
 
         // Have no clue why this doesn't work in munch but :shrug:
         Reflections(SERIALIZER_PACKAGE)
@@ -34,26 +32,21 @@ object DatabaseManager {
                 SerializerFactory.registerSerializer(serializer)
             }
 
-        runTaskTimer(6000, 6000) { PlayerRegistry.updateAllPlayerData() }
-        runTaskTimer(6000, 6000) { CellRegistry.updateAllCells() }
+        updateAllData()
     }
 
     fun stopDatabase() {
         if (!database.isConnected()) return
 
         val playerData = PlayerRegistry.playerData.values.toList()
-        database.updateAllData(playerData)
-
-        // val cellData = CellRegistry.cells.values.toList()
-        // database.updateAllData(munchCellData, cellData)
+        database.updateAllData(munchPlayerData, playerData)
 
         database.disconnect()
     }
     
-    fun updateAllData() {
+    private fun updateAllData() {
         runTaskTimer(6000, 6000) {
             PlayerRegistry.updateAllPlayerData()
-            // CellRegistry.updateAllCells()
         }
     }
 }
