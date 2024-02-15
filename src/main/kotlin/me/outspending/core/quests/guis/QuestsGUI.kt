@@ -6,8 +6,6 @@ import me.outspending.core.misc.helpers.FormatHelper
 import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
 import me.outspending.core.misc.helpers.NumberHelper
 import me.outspending.core.quests.QUESTS_LIMIT
-import me.outspending.core.quests.QuestsHandler
-import me.outspending.core.quests.enums.QuestEvent
 import me.tech.mcchestui.GUI
 import me.tech.mcchestui.GUIType
 import me.tech.mcchestui.item.item

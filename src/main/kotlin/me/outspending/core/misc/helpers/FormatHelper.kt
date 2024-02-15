@@ -14,7 +14,6 @@ import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import net.kyori.adventure.text.minimessage.tag.standard.StandardTags
 import java.util.*
-import kotlin.math.max
 
 private val MAIN_COLOR: TextColor = TextColor.color(232, 132, 56) // #e88438
 private val SECOND_COLOR: TextColor = TextColor.color(224, 161, 112) // #e0a170

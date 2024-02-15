@@ -4,7 +4,6 @@ import com.azuyamat.maestro.bukkit.annotations.Command
 import com.azuyamat.maestro.bukkit.annotations.SubCommand
 import me.outspending.core.core
 import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
-import me.outspending.core.storage.registries.PlayerRegistry
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.command.CommandSender

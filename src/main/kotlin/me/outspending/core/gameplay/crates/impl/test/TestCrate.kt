@@ -2,9 +2,6 @@ package me.outspending.core.gameplay.crates.impl.test
 
 import de.tr7zw.changeme.nbtapi.NBTBlock
 import me.outspending.core.Utilities
-import me.outspending.core.gameplay.crates.impl.test.rewards.SecondReward
-import me.outspending.core.gameplay.crates.impl.rank.rewards.CommonReward
-import me.outspending.core.gameplay.crates.particles.SpiralParticles
 import me.outspending.core.gameplay.crates.types.ICrate
 import me.outspending.core.gameplay.crates.types.IReward
 import me.outspending.core.misc.WeightedCollection
@@ -12,7 +9,6 @@ import me.outspending.core.misc.items.ItemCreator
 import org.bukkit.*
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import org.bukkit.scheduler.BukkitTask
 
 class TestCrate() : ICrate {
 

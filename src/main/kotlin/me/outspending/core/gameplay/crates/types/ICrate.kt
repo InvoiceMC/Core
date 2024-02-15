@@ -4,17 +4,13 @@ import me.outspending.core.core
 import me.outspending.core.gameplay.crates.particles.SpiralParticles
 import me.outspending.core.misc.WeightedCollection
 import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
-import me.outspending.core.misc.hologram.Hologram
 import org.bukkit.Bukkit
 import org.bukkit.Location
-import org.bukkit.Particle
 import org.bukkit.Particle.DustOptions
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.util.Vector
 import org.reflections.Reflections
-import java.util.*
-import kotlin.collections.HashMap
 
 interface ICrate {
 

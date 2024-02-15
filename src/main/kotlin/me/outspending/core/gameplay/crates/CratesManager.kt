@@ -2,15 +2,12 @@ package me.outspending.core.gameplay.crates
 
 import me.outspending.core.Utilities.delay
 import me.outspending.core.core
-import me.outspending.core.gameplay.crates.impl.rank.RankCrate
-import me.outspending.core.gameplay.crates.impl.test.TestCrate
 import me.outspending.core.gameplay.crates.particles.SpiralParticles
 import me.outspending.core.gameplay.crates.types.ICrate
 import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
 import me.outspending.core.misc.hologram.Hologram
 import org.bukkit.Bukkit
 import org.bukkit.entity.Entity
-import org.bukkit.event.Listener
 import org.reflections.Reflections
 
 const val CRATES_PACKAGE = "me.outspending.core.gameplay.crates.impl"

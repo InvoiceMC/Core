@@ -1,9 +1,7 @@
 package me.outspending.core.gameplay.crates.impl.rank.rewards
 
 import me.outspending.core.gameplay.crates.types.IReward
-import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
 import me.outspending.core.misc.items.ItemCreator
-import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
