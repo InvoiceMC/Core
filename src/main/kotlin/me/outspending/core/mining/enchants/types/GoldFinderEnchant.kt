@@ -43,6 +43,6 @@ class GoldFinderEnchant : PickaxeEnchant {
                 .parse()
         )
 
-        return EnchantResult(goldFinderAmount.toDouble(), goldFinderAmount)
+        return EnchantResult(gold = goldFinderAmount)
     }
 }
