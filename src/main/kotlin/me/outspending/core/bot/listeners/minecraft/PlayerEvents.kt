@@ -37,20 +37,20 @@ class PlayerEvents: Listener {
         DiscordBot.updateActivity()
     }
 
-//    @EventHandler
-//    fun onChat(event: AsyncChatEvent) {
-//        val player = event.player
-//        val message = (event.message() as TextComponent).content()
-//
-//        val embed = EmbedFactory("🗨️ Chat")
-//            .setDescription("**${player.name}**: $message")
-//            .setColor("#FFFFFF")
-//
-//        if (event.isCancelled)
-//            embed.setColor("#FF0000")
-//
-//        DiscordBot.getLogChannel().sendMessageEmbeds(embed.build()).queue()
-//    }
+    @EventHandler
+    fun onChat(event: AsyncChatEvent) {
+        val player = event.player
+        val message = (event.message() as TextComponent).content()
+
+        val embed = EmbedFactory("🗨️ Chat")
+            .setDescription("**${player.name}**: $message")
+            .setColor("#FFFFFF")
+
+        if (event.isCancelled)
+            embed.setColor("#FF0000")
+
+        DiscordBot.getLogChannel().sendMessageEmbeds(embed.build()).queue()
+    }
 
     @EventHandler
     fun onCommand(event: PlayerCommandPreprocessEvent) {
@@ -58,7 +58,7 @@ class PlayerEvents: Listener {
         val command = event.message
 
         val embed = EmbedFactory("⌨️ Command")
-            .setDescription("**${player.name}**: $command")
+            .setDescription("**${player.name}**: `$command`")
             .setColor("#222222")
 
         DiscordBot.getLogChannel().sendMessageEmbeds(embed.build()).queue()

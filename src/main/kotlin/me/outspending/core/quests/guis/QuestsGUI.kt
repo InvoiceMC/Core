@@ -7,6 +7,7 @@ import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
 import me.outspending.core.misc.helpers.NumberHelper
 import me.outspending.core.quests.QUESTS_LIMIT
 import me.outspending.core.quests.QuestsHandler
+import me.outspending.core.quests.data.PlayerQuest
 import me.outspending.core.quests.enums.QuestEvent
 import me.tech.mcchestui.GUI
 import me.tech.mcchestui.GUIType
@@ -31,7 +32,7 @@ class QuestsGUI(private val player: Player) {
         ) {
             fillBorder { item = item(Material.GRAY_STAINED_GLASS_PANE) { name = " ".parse() } }
 
-            val quests = player.getData()?.quests ?: mutableListOf()
+            val quests = mutableListOf<PlayerQuest>()
             val onGoingQuests = quests.filter { it.status.isOngoing() }
 
             for (i in 0 until MAX_QUESTS) {
