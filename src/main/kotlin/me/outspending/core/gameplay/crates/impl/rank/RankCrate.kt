@@ -2,9 +2,6 @@ package me.outspending.core.gameplay.crates.impl.rank
 
 import de.tr7zw.changeme.nbtapi.NBTBlock
 import me.outspending.core.Utilities
-import me.outspending.core.gameplay.crates.impl.rank.rewards.CommonReward
-import me.outspending.core.gameplay.crates.impl.rank.rewards.RareReward
-import me.outspending.core.gameplay.crates.particles.SpiralParticles
 import me.outspending.core.gameplay.crates.types.ICrate
 import me.outspending.core.gameplay.crates.types.IReward
 import me.outspending.core.misc.WeightedCollection

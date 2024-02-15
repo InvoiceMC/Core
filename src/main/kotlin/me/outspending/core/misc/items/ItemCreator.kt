@@ -4,7 +4,6 @@ import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
 import net.kyori.adventure.text.Component
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
-import java.util.*
 
 class ItemCreator @JvmOverloads constructor(var material: Material, amount: Int = 1) {
     var amount: Int = 1

@@ -1,7 +1,6 @@
 package me.outspending.core.gameplay.crates.particles
 
 import me.outspending.core.core
-import org.bukkit.Color
 import org.bukkit.Location
 import org.bukkit.Particle
 import org.bukkit.Particle.DustOptions
