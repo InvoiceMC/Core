@@ -1,10 +1,8 @@
 package me.outspending.core.bot.listeners.minecraft
 
-import io.papermc.paper.event.player.AsyncChatEvent
 import me.outspending.core.bot.DiscordBot
 import me.outspending.core.bot.factories.EmbedFactory
 import me.outspending.core.core
-import net.kyori.adventure.text.TextComponent
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -37,20 +35,20 @@ class PlayerEvents: Listener {
         DiscordBot.updateActivity()
     }
 
-//    @EventHandler
-//    fun onChat(event: AsyncChatEvent) {
-//        val player = event.player
-//        val message = (event.message() as TextComponent).content()
-//
-//        val embed = EmbedFactory("🗨️ Chat")
-//            .setDescription("**${player.name}**: $message")
-//            .setColor("#FFFFFF")
-//
-//        if (event.isCancelled)
-//            embed.setColor("#FF0000")
-//
-//        DiscordBot.getLogChannel().sendMessageEmbeds(embed.build()).queue()
-//    }
+    @EventHandler
+    fun onChat(event: AsyncChatEvent) {
+        val player = event.player
+        val message = (event.message() as TextComponent).content()
+
+        val embed = EmbedFactory("🗨️ Chat")
+            .setDescription("**${player.name}**: $message")
+            .setColor("#FFFFFF")
+
+        if (event.isCancelled)
+            embed.setColor("#FF0000")
+
+        DiscordBot.getLogChannel().sendMessageEmbeds(embed.build()).queue()
+    }
 
     @EventHandler
     fun onCommand(event: PlayerCommandPreprocessEvent) {
@@ -58,7 +56,7 @@ class PlayerEvents: Listener {
         val command = event.message
 
         val embed = EmbedFactory("⌨️ Command")
-            .setDescription("**${player.name}**: $command")
+            .setDescription("**${player.name}**: `$command`")
             .setColor("#222222")
 
         DiscordBot.getLogChannel().sendMessageEmbeds(embed.build()).queue()

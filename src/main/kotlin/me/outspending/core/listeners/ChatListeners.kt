@@ -49,18 +49,14 @@ class ChatListeners : Listener {
 
             val msg = Placeholder.component("message", newMessage)
 
-            val rawMessage = (msg as TextComponent).content()
-            val embed = EmbedFactory("🗨️ Chat")
-                .setDescription("**${player.name}**: $rawMessage")
-                .setColor("#FFFFFF")
-
-            if (e.isCancelled)
-                embed.setColor("#FF0000")
-
-            DiscordBot.getLogChannel().sendMessageEmbeds(embed.build()).queue()
-
-            val playerData: PlayerData = player.getData()!!
-            val hoverText: String = createHoverText(playerData, player.level)
+            val playerData = player.getData()
+            val hoverText = playerData.let {
+                if (it != null) {
+                    createHoverText(it, player.level)
+                } else {
+                    "<red>No player data"
+                }
+            }
 
             "<hover:show_text:'$hoverText'>${player.getLuckPermsName()}<gold><bold>${player.level.toTinyNumber()}</bold></hover> <gray>»<white> <message>"
                 .toComponent(msg)
