@@ -5,6 +5,7 @@ import me.outspending.core.misc.helpers.FormatHelper
 class ConfigValue(private val value: Any?) {
     fun asRaw() = value
     fun asString() = value.toString()
+    fun asStringOr(or: String) = if (value == null) or else asString()
     fun asInt() = value.toString().toInt()
     fun asDouble() = value.toString().toDouble()
     fun asBoolean() = value.toString().toBoolean()

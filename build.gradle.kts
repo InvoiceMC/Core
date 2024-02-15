@@ -45,6 +45,8 @@ dependencies {
 
     implementation("com.github.Azuyamat:Maestro:3.2.1") // Maestro command manager
 
+    implementation("net.dv8tion:JDA:5.0.0-beta.20") // JDA
+
     // JMH
     jmh("commons-io:commons-io:2.7")
     jmh("org.openjdk.jmh:jmh-core:1.37")

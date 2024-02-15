@@ -2,6 +2,8 @@ package me.outspending.core
 
 import com.azuyamat.maestro.bukkit.Maestro
 import com.azuyamat.maestro.bukkit.data.CommandData
+import me.outspending.core.bot.DiscordBot
+import me.outspending.core.config.impl.DiscordConfig
 import me.outspending.core.config.impl.MessagesConfig
 import me.outspending.core.config.impl.QuestsConfig
 import me.outspending.core.gameplay.crates.CratesManager
@@ -23,6 +25,7 @@ class Core : JavaPlugin() {
     var commandsList: MutableList<CommandData> = mutableListOf()
     val messageConfig = MessagesConfig(this)
     val questsConfig = QuestsConfig(this)
+    val discordConfig = DiscordConfig(this)
     val broadcastManager = BroadcastManager()
     lateinit var  cratesManager: CratesManager
 
@@ -45,6 +48,8 @@ class Core : JavaPlugin() {
             ListenerRegistry.registerEvents(server.pluginManager)
             BroadcastHandler.registerAllBroadcasts()
             DatabaseManager.setupDatabase()
+
+            DiscordBot.start()
         }
 
         logger.info("Core has finished loading in $time!")

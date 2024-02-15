@@ -6,9 +6,12 @@ import me.outspending.core.Utilities.getData
 import me.outspending.core.Utilities.getLuckPermsName
 import me.outspending.core.Utilities.toComponent
 import me.outspending.core.Utilities.toTinyNumber
+import me.outspending.core.bot.DiscordBot
+import me.outspending.core.bot.factories.EmbedFactory
 import me.outspending.core.misc.chat.ChatHandler
 import me.outspending.core.storage.data.PlayerData
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.TextComponent
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -45,6 +48,16 @@ class ChatListeners : Listener {
                     .build()
 
             val msg = Placeholder.component("message", newMessage)
+
+            val rawMessage = (msg as TextComponent).content()
+            val embed = EmbedFactory("🗨️ Chat")
+                .setDescription("**${player.name}**: $rawMessage")
+                .setColor("#FFFFFF")
+
+            if (e.isCancelled)
+                embed.setColor("#FF0000")
+
+            DiscordBot.getLogChannel().sendMessageEmbeds(embed.build()).queue()
 
             val playerData: PlayerData = player.getData()!!
             val hoverText: String = createHoverText(playerData, player.level)
