@@ -69,7 +69,7 @@ class NumberHelper(
     fun toBar(max: Number, bars: Int, separator: String = "|"): String {
         val filledBars = (number.toDouble() / max.toDouble() * bars.toDouble()).toInt()
         val emptyBars = bars - filledBars
-        return "<main>[<main>${separator.repeat(filledBars)}<gray>${separator.repeat(emptyBars)}<main>]"
+        return "<gray>[<main>${separator.repeat(filledBars)}<gray>${separator.repeat(emptyBars)}<gray>]"
     }
 
     // Convert number to tiny numbers

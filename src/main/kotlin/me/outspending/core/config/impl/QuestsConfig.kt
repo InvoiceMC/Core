@@ -1,6 +1,7 @@
 package me.outspending.core.config.impl
 
 import me.outspending.core.config.ConfigManager
+import me.outspending.core.quests.data.Quest
 import me.outspending.core.quests.data.Reward
 import me.outspending.core.quests.enums.QuestEvent
 import me.outspending.core.quests.enums.RewardType
@@ -9,14 +10,19 @@ import org.bukkit.plugin.java.JavaPlugin
 class QuestsConfig(plugin: JavaPlugin): ConfigManager("quests", plugin) {
     private val rawConfig = getRawConfig()
 
-    val colors: Map<QuestEvent, String> = loadColors()
-    val rewards: Map<QuestEvent, Reward> = loadRewards()
-    val messages: Map<QuestEvent, String> = loadMessages()
+    private val rewards: Map<QuestEvent, Reward> = loadRewards()
+    private val messages: Map<QuestEvent, String> = loadMessages()
+    private val quests: Map<QuestEvent, List<Quest>> = loadQuests()
 
-    private fun loadColors(): Map<QuestEvent, String> {
-        val section = getSection("colors") ?: return mapOf()
+    fun getQuests(event: QuestEvent) = quests[event] ?: emptyList()
+    fun getReward(event: QuestEvent) = rewards[event]
+    fun getMessage(event: QuestEvent) = messages[event]
+
+
+    private fun loadQuests(): Map<QuestEvent, List<Quest>> {
+        val section = getSection("quests") ?: return mapOf()
         return QuestEvent.entries.associateWith {
-            section.get(it.name).toString()
+            section.getStringList(it.name).map { id -> Quest(id, it) }
         }
     }
 
