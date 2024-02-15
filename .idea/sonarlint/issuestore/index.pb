@@ -35,8 +35,6 @@ T
 $.idea/codeStyles/codeStyleConfig.xml,d\d\dd7b3350c29c49497756c7f32c69a3bed18b1cba
 l
 <src/main/kotlin/me/outspending/core/storage/data/CellData.kt,e\1\e11a55729e368fe2ea8083a3363cb44a7ef90761
-^
-.src/main/kotlin/me/outspending/core/Testing.kt,7\8\7837c5696668cdf427f3a4f4c776d628ecd424f1
 v
 Fsrc/main/kotlin/me/outspending/core/commands/admin/BroadcastCommand.kt,8\7\8769bbe2215474e1962ca673929460d4cbde2436
 p
@@ -69,3 +67,6 @@ k
 Msrc/main/kotlin/me/outspending/core/storage/serializers/CellRankSerializer.kt,8\4\84ffe00c97ce22484bb9b2f814bf7ecd2088baf1
 €
 Psrc/main/kotlin/me/outspending/core/storage/serializers/PlayerQuestSerializer.kt,1\4\1438b6eba3141396d9c2c23f0b26ca472b9fde6d
+:
+
+.gitignore,a\5\a5cc2925ca8258af241be7e5b0381edf30266302
