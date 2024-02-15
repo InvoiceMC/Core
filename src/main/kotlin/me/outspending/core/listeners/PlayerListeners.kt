@@ -5,6 +5,7 @@ import me.outspending.core.core
 import me.outspending.core.mining.duplex.PacketListeners
 import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
 import me.outspending.core.misc.helpers.enums.CustomSound
+import me.outspending.core.quests.QuestsHandler
 import me.outspending.core.storage.DatabaseManager.database
 import me.outspending.core.storage.data.PlayerData
 import me.outspending.core.storage.registries.PlayerRegistry
@@ -94,6 +95,8 @@ class PlayerListeners : Listener {
             // Scoreboard & Packet Listener (DuplexChannel)
             core.scoreboardHandler.createScoreboard(player)
             PacketListeners.addPlayer(player)
+
+            QuestsHandler(player)
         }
     }
 

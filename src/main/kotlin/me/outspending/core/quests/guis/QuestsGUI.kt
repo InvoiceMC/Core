@@ -1,9 +1,12 @@
 package me.outspending.core.quests.guis
 
+import me.outspending.core.Utilities.getData
 import me.outspending.core.core
 import me.outspending.core.misc.helpers.FormatHelper
 import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
 import me.outspending.core.misc.helpers.NumberHelper
+import me.outspending.core.quests.QUESTS_LIMIT
+import me.outspending.core.quests.QuestsHandler
 import me.outspending.core.quests.enums.QuestEvent
 import me.tech.mcchestui.GUI
 import me.tech.mcchestui.GUIType
@@ -13,7 +16,7 @@ import me.tech.mcchestui.utils.openGUI
 import org.bukkit.Material
 import org.bukkit.entity.Player
 
-const val MAX_QUESTS = 5
+const val MAX_QUESTS = QUESTS_LIMIT
 
 class QuestsGUI(private val player: Player) {
     fun open() {
@@ -28,14 +31,16 @@ class QuestsGUI(private val player: Player) {
         ) {
             fillBorder { item = item(Material.GRAY_STAINED_GLASS_PANE) { name = " ".parse() } }
 
-            val quests = core.questsConfig.getQuests(QuestEvent.COMMAND_SENT)
-            val onGoingQuests = quests.subList(0, MAX_QUESTS.coerceAtMost(quests.size))
+            val quests = player.getData()?.quests ?: mutableListOf()
+            val onGoingQuests = quests.filter { it.status.isOngoing() }
 
             for (i in 0 until MAX_QUESTS) {
                 val quest = onGoingQuests.getOrNull(i) ?: continue
                 val questId = quest.id
                 val questName = questId.replace("_", " ")
-                val message = core.questsConfig.getMessage(QuestEvent.COMMAND_SENT)?.replace("{command}", questName) ?: continue
+                val event = core.questsConfig.getEvent(questId) ?: continue
+                val message = core.questsConfig.getMessage(event)
+                    ?.replace("{command}", questName) ?: continue
                 val progressBar = NumberHelper(0.0).toBar(1.0, 5, "■")
 
                 val formattedName = FormatHelper("<main>$questName").toTitleCase().parse()
@@ -44,13 +49,13 @@ class QuestsGUI(private val player: Player) {
                     item = item(Material.WRITABLE_BOOK) {
                         name = formattedName
                         lore = listOf(
-                            "<gray><i>(( Not started ))",
+                            "<gray><i>(( ${quest.status.prettyName()} ))",
                             " ",
                             message,
                             "<gray>Click for more details",
                             "<gray>Progress: $progressBar",
                             " ",
-                            "<dark_gray><i>ID: ${quest.event}<dark_gray>_${questId.uppercase()}"
+                            "<dark_gray><i>ID: ${questId.uppercase()}"
                         ).map { it.parse() }
                     }
                     onClick {

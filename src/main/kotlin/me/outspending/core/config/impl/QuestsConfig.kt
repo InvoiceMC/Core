@@ -15,8 +15,10 @@ class QuestsConfig(plugin: JavaPlugin): ConfigManager("quests", plugin) {
     private val quests: Map<QuestEvent, List<Quest>> = loadQuests()
 
     fun getQuests(event: QuestEvent) = quests[event] ?: emptyList()
+    fun getQuests() = quests
     fun getReward(event: QuestEvent) = rewards[event]
     fun getMessage(event: QuestEvent) = messages[event]
+    fun getEvent(id: String) = QuestEvent.entries.find { it.name.equals(id, true) }
 
 
     private fun loadQuests(): Map<QuestEvent, List<Quest>> {

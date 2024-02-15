@@ -20,7 +20,7 @@ data class PlayerData(
     @Column(constraints = [ColumnConstraint.NOTNULL]) var pmineName: String, // TODO: We must remove this
     @Column(constraints = [ColumnConstraint.NOTNULL]) var tag: String,
     @Column var cellId: String? = null,
-    @Column var quests: List<PlayerQuest> = emptyList()
+    @Column var quests: MutableList<PlayerQuest> = mutableListOf()
 ) {
     constructor(uuid: UUID) : this(uuid, 0.0, 0.0, 0, 0, 1.0f, "", "")
 
