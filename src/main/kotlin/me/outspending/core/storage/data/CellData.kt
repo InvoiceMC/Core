@@ -20,9 +20,6 @@ data class CellData(
     @Column(constraints = [ColumnConstraint.NOTNULL]) val bound: BoundingBox,
     @Column(constraints = [ColumnConstraint.NOTNULL]) var spawn: Location,
 ) {
-    // Has to have an empty constructor for munch
-    constructor() : this("", mutableListOf(), BoundingBox(0.0, 0.0, 0.0, 0.0, 0.0, 0.0), Location(null, 0.0, 0.0, 0.0))
-
     constructor(id: String, owner: Player) : this(
         id,
         mutableListOf(

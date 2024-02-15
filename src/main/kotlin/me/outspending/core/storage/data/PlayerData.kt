@@ -18,8 +18,7 @@ data class PlayerData(
     @Column(constraints = [ColumnConstraint.NOTNULL]) var prestige: Int,
     @Column(constraints = [ColumnConstraint.NOTNULL]) var multiplier: Float,
     @Column(constraints = [ColumnConstraint.NOTNULL]) var tag: String,
-    @Column var cellId: String? = null,
-    var quests: MutableList<PlayerQuest> = mutableListOf() // IDK HELP ME
+    @Column var cellId: String? = null
 ) {
     constructor(uuid: UUID) : this(uuid, 0.0, 0.0, 0, 0, 1.0f, "")
 
