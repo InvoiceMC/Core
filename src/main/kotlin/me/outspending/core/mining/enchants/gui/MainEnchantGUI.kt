@@ -41,6 +41,7 @@ class MainEnchantGUI(private val player: Player): EnchantGUI {
                             "<dark_gray><i>ᴇɴᴄʜᴀɴᴛ",
                             "",
                             "<second>${enchant.getDescription()}",
+                            "",
                             "<second>${enchantLevel}<gray>/<second>${maxLevel} <gray>($chance%)",
                             "",
                             "<green>Click to upgrade this enchant."
