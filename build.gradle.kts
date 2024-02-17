@@ -26,7 +26,7 @@ allprojects {
     dependencies {
         compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
         implementation("net.kyori:adventure-text-minimessage:4.14.0")
-        implementation("org.reflections:reflections:0.10.2")
+        implementation("org.reflections:reflections:0.9.8")
         implementation("de.tr7zw:item-nbt-api:2.12.2")
     }
 }
