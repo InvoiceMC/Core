@@ -31,11 +31,14 @@ dependencies {
     compileOnly("net.luckperms:api:5.4") // LuckPerms API
 
     // Modules
+    compileOnly(project(":Core-Bot"))
     compileOnly(project(":Core-Main"))
     compileOnly(project(":Core-Data"))
     compileOnly(project(":Core-Configs"))
+    compileOnly(project(":Core-Crates"))
     compileOnly(project(":Core-Commands"))
     compileOnly(project(":Core-Scoreboard"))
+    compileOnly(project(":Core-Listeners"))
 
     // JMH
     jmh("commons-io:commons-io:2.7")

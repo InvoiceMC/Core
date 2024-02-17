@@ -1,6 +1,6 @@
 package me.outspending.core.bot.factories
 
-import me.outspending.core.bot.BotManager.discordConfig
+import me.outspending.core.bot.discordConfig
 import net.dv8tion.jda.api.EmbedBuilder
 import net.dv8tion.jda.api.entities.MessageEmbed
 import java.awt.Color

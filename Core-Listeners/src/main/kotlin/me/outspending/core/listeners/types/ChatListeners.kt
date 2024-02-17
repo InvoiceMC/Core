@@ -1,9 +1,10 @@
-package me.outspending.core.chat
+package me.outspending.core.listeners.types
 
 import io.papermc.paper.event.player.AsyncChatEvent
 import me.outspending.core.Utilities.format
 import me.outspending.core.Utilities.toComponent
 import me.outspending.core.Utilities.toTinyNumber
+import me.outspending.core.chat.ChatHandler
 import me.outspending.core.data.Extentions.getData
 import me.outspending.core.data.player.PlayerData
 import net.kyori.adventure.text.Component

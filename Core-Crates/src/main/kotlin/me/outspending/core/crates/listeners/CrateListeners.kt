@@ -1,7 +1,7 @@
-package me.outspending.core.crates
+package me.outspending.core.crates.listeners
 
 import de.tr7zw.changeme.nbtapi.NBTBlock
-import me.outspending.core.crates.CratesManager.cratesHandler
+import me.outspending.core.crates.cratesHandler
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener

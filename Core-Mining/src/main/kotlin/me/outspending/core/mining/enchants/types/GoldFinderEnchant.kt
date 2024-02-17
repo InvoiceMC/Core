@@ -2,10 +2,10 @@ package me.outspending.core.mining.enchants.types
 
 import me.outspending.core.Utilities.format
 import me.outspending.core.Utilities.toTinyString
+import me.outspending.core.data.player.PlayerData
+import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.mining.enchants.EnchantResult
 import me.outspending.core.mining.enchants.PickaxeEnchant
-import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
-import me.outspending.core.storage.data.PlayerData
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
 import org.bukkit.Material

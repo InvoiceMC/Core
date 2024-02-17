@@ -1,4 +1,4 @@
-package me.outspending.core.mining
+package me.outspending.core.listeners.types
 
 import me.outspending.core.mining.enchants.gui.MainEnchantGUI
 import org.bukkit.Material

@@ -1,6 +1,6 @@
 package me.outspending.core.misc.broadcaster
 
-import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
+import me.outspending.core.helpers.FormatHelper.Companion.parse
 import org.bukkit.Bukkit
 
 class AutoBroadcast(val customId: String, private vararg val messages: String) {

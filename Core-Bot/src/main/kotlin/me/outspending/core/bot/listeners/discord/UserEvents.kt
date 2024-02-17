@@ -1,13 +1,13 @@
 package me.outspending.core.bot.listeners.discord
 
+import me.outspending.core.CoreHandler.core
 import me.outspending.core.bot.DiscordBot
-import me.outspending.core.core
-import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
+import me.outspending.core.helpers.FormatHelper.Companion.parse
 import net.dv8tion.jda.api.entities.emoji.Emoji
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 
-class UserEvents: ListenerAdapter() {
+class UserEvents : ListenerAdapter() {
     @Override
     override fun onMessageReceived(event: MessageReceivedEvent) {
         if (event.author.isBot) return

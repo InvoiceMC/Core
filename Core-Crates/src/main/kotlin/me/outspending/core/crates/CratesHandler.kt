@@ -1,7 +1,6 @@
 package me.outspending.core.crates
 
 import me.outspending.core.Utilities.delay
-import me.outspending.core.crates.CratesManager.cratesHandler
 import me.outspending.core.crates.particles.SpiralParticles
 import me.outspending.core.crates.types.ICrate
 import me.outspending.core.helpers.FormatHelper.Companion.parse
@@ -11,6 +10,7 @@ import org.bukkit.entity.Entity
 import org.reflections.Reflections
 
 const val CRATES_PACKAGE = "me.outspending.core.gameplay.crates.impl"
+internal val cratesHandler = CratesHandler()
 
 class CratesHandler {
 

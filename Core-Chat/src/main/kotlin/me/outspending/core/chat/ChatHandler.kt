@@ -14,7 +14,8 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 const val ITEM_FORMAT: String =
-    "<dark_gray>[<white><hover:show_text:'<lore>'><displayname></hover> <gray><amount><dark_gray>]"
+    "<dark_gray>[<white><displayname> <gray><amount><dark_gray>]"
+const val ITEM_LORE_FORMAT: String = "<dark_gray>[<white><hover:show_text:'<lore>'><displayname></hover> <gray><amount><dark_gray>]"
 
 
 object ChatHandler {
@@ -38,9 +39,9 @@ object ChatHandler {
         }
 
         return if (lorePlaceholder != null) {
-            ITEM_FORMAT.toComponent(lorePlaceholder, displayNamePlaceholder, amountPlaceholder)
+            ITEM_LORE_FORMAT.toComponent(lorePlaceholder, displayNamePlaceholder, amountPlaceholder)
         } else {
-            ITEM_FORMAT.toComponent(TagResolver.empty(), displayNamePlaceholder, amountPlaceholder)
+            ITEM_FORMAT.toComponent(displayNamePlaceholder, amountPlaceholder)
         }
     }
 

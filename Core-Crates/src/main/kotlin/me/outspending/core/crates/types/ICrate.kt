@@ -1,6 +1,6 @@
 package me.outspending.core.crates.types
 
-import me.outspending.core.crates.CratesManager.cratesHandler
+import me.outspending.core.crates.cratesHandler
 import me.outspending.core.crates.particles.SpiralParticles
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.misc.WeightedCollection

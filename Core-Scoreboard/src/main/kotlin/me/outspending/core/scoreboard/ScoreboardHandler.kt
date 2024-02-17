@@ -14,6 +14,7 @@ import org.bukkit.entity.Player
 import java.util.*
 
 const val REFRESH_RATE = 2 * 20L // Every 2 seconds
+val scoreboardManager = ScoreboardHandler()
 
 class ScoreboardHandler {
     private val scoreboardMap: MutableMap<UUID, FastBoard> = mutableMapOf()

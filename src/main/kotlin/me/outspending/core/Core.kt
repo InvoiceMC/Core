@@ -1,7 +1,10 @@
 package me.outspending.core
 
+import me.outspending.core.bot.DiscordBot
 import me.outspending.core.commands.CommandRegistry
 import me.outspending.core.data.DatabaseManager
+import me.outspending.core.listeners.ListenerRegistry
+import me.outspending.core.misc.broadcaster.BroadcastHandler
 import org.bukkit.plugin.java.JavaPlugin
 import kotlin.time.measureTime
 
@@ -12,16 +15,14 @@ class Core : JavaPlugin() {
     override fun onEnable() {
         val time = measureTime {
             CoreHandler.setup(this)
+
+            ListenerRegistry.registerEvents()
             CommandRegistry.registerAll()
 
             DatabaseManager.setupDatabase()
-//
-//            cratesManager = CratesManager()
-//            ListenerRegistry.registerEvents(server.pluginManager)
-//            BroadcastHandler.registerAllBroadcasts()
-//            DatabaseManager.setupDatabase()
-//
-//            DiscordBot.start()
+            BroadcastHandler.registerAllBroadcasts()
+
+            DiscordBot.start()
         }
 
         logger.info("Core has finished loading in $time!")

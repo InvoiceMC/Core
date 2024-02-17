@@ -1,5 +1,6 @@
 package me.outspending.core.quests
 
+import me.outspending.core.CoreHandler.core
 import org.bukkit.entity.Player
 
 const val QUESTS_LIMIT = 7

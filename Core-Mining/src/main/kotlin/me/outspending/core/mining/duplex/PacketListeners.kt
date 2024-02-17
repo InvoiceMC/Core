@@ -1,6 +1,6 @@
 package me.outspending.core.mining.duplex
 
-import me.outspending.core.Utilities.getConnection
+import me.outspending.core.mining.Extentions.getConnection
 import org.bukkit.entity.Player
 
 object PacketListeners {

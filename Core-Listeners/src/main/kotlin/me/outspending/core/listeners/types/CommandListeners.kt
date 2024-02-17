@@ -1,4 +1,4 @@
-package me.outspending.core.listeners
+package me.outspending.core.listeners.types
 
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import org.bukkit.entity.Player

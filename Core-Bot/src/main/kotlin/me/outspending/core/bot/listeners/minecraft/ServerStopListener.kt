@@ -19,6 +19,6 @@ class ServerStopListener: Listener {
             .setDescription("What a shame. I was having fun.")
             .addField("Uptime", duration.toString(), false)
             .build()
-        DiscordBot.getLogChannel().sendMessageEmbeds(embed).queue()
+        DiscordBot.logChannel.sendMessageEmbeds(embed).queue()
     }
 }

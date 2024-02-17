@@ -13,10 +13,10 @@ import java.util.*
 const val SERIALIZER_PACKAGE = "me.outspending.core.storage.serializers"
 const val DATABASE_NAME = "database.db"
 
-object DatabaseManager {
-    val munchPlayerData = Munch.create(PlayerData::class).process<UUID>()
-    val database = MunchConnection.global()
+val munchPlayerData = Munch.create(PlayerData::class).process<UUID>()
+val database = MunchConnection.global()
 
+object DatabaseManager {
     fun setupDatabase() {
         database.connect(core.dataFolder, DATABASE_NAME)
         database.createTable(munchPlayerData)
@@ -40,7 +40,7 @@ object DatabaseManager {
 
         database.disconnect()
     }
-    
+
     private fun updateAllData() {
         runTaskTimer(6000, 6000) {
             PlayerRegistry.updateAllPlayerData()

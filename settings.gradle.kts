@@ -2,6 +2,11 @@ pluginManagement {
     plugins {
         kotlin("jvm") version "1.9.22"
     }
+
+    repositories {
+        gradlePluginPortal()
+        maven ("https://repo.papermc.io/repository/maven-public/")
+    }
 }
 
 plugins {
@@ -19,3 +24,4 @@ include("Core-Bot")
 include("Core-Scoreboard")
 include("Core-Chat")
 include("Core-Commands")
+include("Core-Listeners")

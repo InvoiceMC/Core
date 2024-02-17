@@ -1,12 +1,13 @@
-package me.outspending.core.data.player
+package me.outspending.core.listeners.types
 
-import me.outspending.core.CoreHandler.core
 import me.outspending.core.Utilities.runAsync
-import me.outspending.core.data.DatabaseManager.database
-import me.outspending.core.data.DatabaseManager.munchPlayerData
+import me.outspending.core.data.DataHandler
 import me.outspending.core.data.PlayerRegistry
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.helpers.enums.CustomSound
+import me.outspending.core.mining.duplex.PacketListeners
+import me.outspending.core.quests.QuestsHandler
+import me.outspending.core.scoreboard.scoreboardManager
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.title.Title
 import org.bukkit.Bukkit
@@ -45,18 +46,7 @@ class PlayerListeners : Listener {
         // Load data
         runAsync {
             val time = measureTime {
-                database.getData(munchPlayerData, uuid).thenAccept {
-                    val playerData: PlayerData
-                    if (it == null) {
-                        playerData = PlayerData(uuid)
-
-                        database.addData(munchPlayerData, playerData)
-                    } else {
-                        playerData = database.getData(munchPlayerData, uuid).get()!!
-                    }
-
-                    PlayerRegistry.addPlayer(uuid, playerData)
-                }
+                DataHandler.addData(uuid)
             }
 
             // Show data loaded title
@@ -71,7 +61,7 @@ class PlayerListeners : Listener {
             CustomSound.Success(pitch = 1.65F).playSound(player)
 
             // Scoreboard & Packet Listener (DuplexChannel)
-            core.scoreboardHandler.createScoreboard(player)
+            scoreboardManager.createScoreboard(player)
             PacketListeners.addPlayer(player)
 
             QuestsHandler(player)
@@ -88,18 +78,11 @@ class PlayerListeners : Listener {
 
         runAsync {
             map[uuid]?.let {
-                // Check's if the player has data inside the database, if so, update it, else, add
-                // it
-                database.getData(munchPlayerData, uuid).thenAccept {
-                    it?.let { data -> database.updateData(munchPlayerData, data, uuid) }
-                }
-
-                // Remove the player's data from memory
-                PlayerRegistry.removePlayer(uuid)
+                DataHandler.removeData(uuid)
             }
 
             // Remove Scoreboard & Packet Listener (DuplexChannel)
-            core.scoreboardHandler.removeScoreboard(player)
+            scoreboardManager.removeScoreboard(player)
             PacketListeners.removePlayer(player)
         }
     }

@@ -1,10 +1,10 @@
 package me.outspending.core.mining.enchants.types
 
+import me.outspending.core.data.player.PlayerData
 import me.outspending.core.mining.MineUtils
 import me.outspending.core.mining.enchants.EnchantResult
 import me.outspending.core.mining.enchants.PickaxeEnchant
 import me.outspending.core.mining.shapes.SphereShape
-import me.outspending.core.storage.data.PlayerData
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
 import org.bukkit.Material

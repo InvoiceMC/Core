@@ -1,10 +1,10 @@
-package me.outspending.core.misc.leaderboard
+package me.outspending.core.data.leaderboard
 
 import me.outspending.core.Utilities.orIfNull
 import me.outspending.core.Utilities.runAsync
-import me.outspending.core.storage.DatabaseManager.database
-import me.outspending.core.storage.DatabaseManager.munchPlayerData
-import me.outspending.core.storage.data.PlayerData
+import me.outspending.core.data.database
+import me.outspending.core.data.munchPlayerData
+import me.outspending.core.data.player.PlayerData
 
 // Gotta redo this whole class since new Munch System
 class LeaderboardManager {

@@ -1,9 +1,9 @@
 package me.outspending.core.bot.listeners.minecraft
 
 import io.papermc.paper.event.player.AsyncChatEvent
+import me.outspending.core.CoreHandler.core
 import me.outspending.core.bot.DiscordBot
 import me.outspending.core.bot.factories.EmbedFactory
-import me.outspending.core.core
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
@@ -12,7 +12,8 @@ import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerQuitEvent
 
-class PlayerEvents: Listener {
+class PlayerEvents : Listener {
+
     @EventHandler
     fun onPlayerJoin(event: PlayerJoinEvent) {
         val embed = EmbedFactory("👋 Player Joined")
@@ -21,7 +22,7 @@ class PlayerEvents: Listener {
             .setThumbnail(getImage(event.player))
             .setFooter(playerCount())
             .build()
-        DiscordBot.getLogChannel().sendMessageEmbeds(embed).queue()
+        DiscordBot.logChannel.sendMessageEmbeds(embed).queue()
         DiscordBot.updateActivity()
     }
 
@@ -33,7 +34,7 @@ class PlayerEvents: Listener {
             .setThumbnail(getImage(event.player))
             .setFooter(playerCount())
             .build()
-        DiscordBot.getLogChannel().sendMessageEmbeds(embed).queue()
+        DiscordBot.logChannel.sendMessageEmbeds(embed).queue()
         DiscordBot.updateActivity()
     }
 
@@ -49,7 +50,7 @@ class PlayerEvents: Listener {
         if (event.isCancelled)
             embed.setColor("#FF0000")
 
-        DiscordBot.getLogChannel().sendMessageEmbeds(embed.build()).queue()
+        DiscordBot.logChannel.sendMessageEmbeds(embed.build()).queue()
     }
 
     @EventHandler
@@ -61,7 +62,7 @@ class PlayerEvents: Listener {
             .setDescription("**${player.name}**: `$command`")
             .setColor("#222222")
 
-        DiscordBot.getLogChannel().sendMessageEmbeds(embed.build()).queue()
+        DiscordBot.logChannel.sendMessageEmbeds(embed.build()).queue()
     }
 
     private fun getImage(player: Player) = "https://crafatar.com/avatars/${player.uniqueId}?size=128&overlay"
