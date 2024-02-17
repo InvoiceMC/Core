@@ -15,14 +15,13 @@ class Core : JavaPlugin() {
     override fun onEnable() {
         val time = measureTime {
             CoreHandler.setup(this)
+            DiscordBot.start()
 
             ListenerRegistry.registerEvents()
             CommandRegistry.registerAll()
 
             DatabaseManager.setupDatabase()
             // BroadcastHandler.registerAllBroadcasts()
-
-            DiscordBot.start()
         }
 
         logger.info("Core has finished loading in $time!")

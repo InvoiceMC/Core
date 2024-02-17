@@ -1,4 +1,4 @@
 dependencies {
-    compileOnly(project(":Core-Main"))
-    compileOnly(project(":Core-Quests"))
+    compileOnly(project(path = ":Core-Quests", configuration = "shadow"))
+    compileOnly(project(path = ":Core-Main", configuration = "shadow"))
 }

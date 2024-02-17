@@ -5,5 +5,5 @@ plugins {
 dependencies {
     paperweight.paperDevBundle("1.20.4-R0.1-SNAPSHOT")
 
-    implementation(project(":Core-Main"))
+    compileOnly(project(path = ":Core-Main", configuration = "shadow"))
 }

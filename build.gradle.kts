@@ -25,9 +25,17 @@ allprojects {
 
     dependencies {
         compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+
+        api("org.reflections:reflections:0.9.8")
+
         implementation("net.kyori:adventure-text-minimessage:4.14.0")
-        implementation("org.reflections:reflections:0.9.8")
         implementation("de.tr7zw:item-nbt-api:2.12.2")
+    }
+
+    tasks {
+        kotlin {
+            jvmToolchain(17)
+        }
     }
 }
 
@@ -83,6 +91,4 @@ tasks {
         val directory = env.DIRECTORY.value
         destinationDirectory.set(file(directory))
     }
-
-    kotlin { jvmToolchain(17) }
 }

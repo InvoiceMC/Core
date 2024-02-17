@@ -11,7 +11,7 @@ import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
 import java.util.*
 
-const val SERIALIZER_PACKAGE = "me.outspending.core.storage.serializers"
+const val SERIALIZER_PACKAGE = "me.outspending.core.data.serializers"
 const val DATABASE_NAME = "database.db"
 
 val munchPlayerData = Munch.create(PlayerData::class).process<UUID>()
@@ -23,7 +23,7 @@ object DatabaseManager {
         database.createTable(munchPlayerData)
 
         // Have no clue why this doesn't work in munch but :shrug:
-        Reflections(SERIALIZER_PACKAGE, SubTypesScanner(false))
+        Reflections(SERIALIZER_PACKAGE)
             .getSubTypesOf(Serializer::class.java)
             .forEach {
                 val serializer = it.getDeclaredConstructor().newInstance() as Serializer<*>

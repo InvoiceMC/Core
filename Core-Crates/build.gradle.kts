@@ -1,4 +1,4 @@
 dependencies {
-    compileOnly(project(":Core-Holograms"))
-    compileOnly(project(":Core-Main"))
+    compileOnly(project(path = ":Core-Holograms", configuration = "shadow"))
+    compileOnly(project(path = ":Core-Main", configuration = "shadow"))
 }

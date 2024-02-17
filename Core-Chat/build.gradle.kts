@@ -1,4 +1,4 @@
 dependencies {
-    compileOnly(project(":Core-Main"))
-    compileOnly(project(":Core-Data"))
+    compileOnly(project(path = ":Core-Main", configuration = "shadow"))
+    compileOnly(project(path = ":Core-Data", configuration = "shadow"))
 }
