@@ -1,5 +1,6 @@
 plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.papermc.paperweight.userdev") version "1.5.11" apply false
     id("me.champeau.jmh") version "0.7.2"
     id("co.uzzu.dotenv.gradle") version "4.0.0" // Dotenv support
     kotlin("jvm") version "2.0.0-Beta4"
@@ -32,13 +33,19 @@ dependencies {
 
     // Modules
     compileOnly(project(":Core-Bot"))
-    compileOnly(project(":Core-Main"))
-    compileOnly(project(":Core-Data"))
+    compileOnly(project(":Core-Chat"))
+    compileOnly(project(":Core-Commands"))
     compileOnly(project(":Core-Configs"))
     compileOnly(project(":Core-Crates"))
-    compileOnly(project(":Core-Commands"))
-    compileOnly(project(":Core-Scoreboard"))
+    compileOnly(project(":Core-Data"))
     compileOnly(project(":Core-Listeners"))
+    compileOnly(project(":Core-Main"))
+    compileOnly(project(":Core-Quests"))
+    compileOnly(project(":Core-Scoreboard"))
+
+    // Reobf Modules (These are only modules that contain paperweight)
+    compileOnly(project(path = ":Core-Mining", configuration = "reobf"))
+    compileOnly(project(path = ":Core-Holograms", configuration = "reobf"))
 
     // JMH
     jmh("commons-io:commons-io:2.7")

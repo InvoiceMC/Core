@@ -4,7 +4,7 @@ import me.outspending.core.Utilities.delay
 import me.outspending.core.crates.particles.SpiralParticles
 import me.outspending.core.crates.types.ICrate
 import me.outspending.core.helpers.FormatHelper.Companion.parse
-import me.outspending.core.misc.hologram.Hologram
+import me.outspending.core.holograms.Hologram
 import org.bukkit.Bukkit
 import org.bukkit.entity.Entity
 import org.reflections.Reflections
