@@ -32,6 +32,7 @@ dependencies {
 
     // Modules
     compileOnly(project(":Core-Main"))
+    compileOnly(project(":Core-Data"))
     compileOnly(project(":Core-Configs"))
     compileOnly(project(":Core-Commands"))
     compileOnly(project(":Core-Scoreboard"))

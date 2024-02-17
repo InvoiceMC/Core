@@ -1,6 +1,5 @@
 package me.outspending.core.listeners
 
-import me.outspending.core.Utilities.toComponent
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler

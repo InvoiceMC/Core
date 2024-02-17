@@ -6,8 +6,8 @@ import me.outspending.core.Utilities.format
 import me.outspending.core.Utilities.progressBar
 import me.outspending.core.Utilities.runTaskTimer
 import me.outspending.core.data.Extentions.getData
-import me.outspending.core.data.player.PlayerData
 import me.outspending.core.data.PlayerRegistry
+import me.outspending.core.data.player.PlayerData
 import me.outspending.core.helpers.FormatHelper
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import org.bukkit.entity.Player

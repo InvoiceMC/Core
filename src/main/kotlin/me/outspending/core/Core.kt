@@ -1,7 +1,7 @@
 package me.outspending.core
 
 import me.outspending.core.commands.CommandRegistry
-import me.outspending.core.scoreboard.ScoreboardHandler
+import me.outspending.core.data.DatabaseManager
 import org.bukkit.plugin.java.JavaPlugin
 import kotlin.time.measureTime
 
@@ -13,7 +13,8 @@ class Core : JavaPlugin() {
         val time = measureTime {
             CoreHandler.setup(this)
             CommandRegistry.registerAll()
-            
+
+            DatabaseManager.setupDatabase()
 //
 //            cratesManager = CratesManager()
 //            ListenerRegistry.registerEvents(server.pluginManager)
@@ -26,9 +27,9 @@ class Core : JavaPlugin() {
         logger.info("Core has finished loading in $time!")
     }
 
-//    override fun onDisable() {
-//        DatabaseManager.stopDatabase()
-//    }
+    override fun onDisable() {
+        DatabaseManager.stopDatabase()
+    }
 
 //    private fun setupLuckPerms() {
 //        val service: RegisteredServiceProvider<LuckPerms>? =
