@@ -1,6 +1,6 @@
 package me.outspending.core.mining.enchants
 
-import me.outspending.core.storage.data.PlayerData
+import me.outspending.core.data.player.PlayerData
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
 import org.bukkit.Material

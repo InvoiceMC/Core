@@ -2,8 +2,8 @@ package me.outspending.core.commands.admin
 
 import com.azuyamat.maestro.bukkit.annotations.Command
 import com.azuyamat.maestro.bukkit.annotations.SubCommand
-import me.outspending.core.core
-import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
+import me.outspending.core.crates.cratesHandler
+import me.outspending.core.helpers.FormatHelper.Companion.parse
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.command.CommandSender
@@ -25,7 +25,7 @@ class CratesCommand {
         permission = "core.crate.reload"
     )
     fun reload(player: CommandSender) {
-        core.cratesManager.reload()
+        cratesHandler.reload()
         player.sendMessage("<gray>Successfully reloaded the crates!".parse(true))
     }
 
@@ -34,8 +34,8 @@ class CratesCommand {
         permission = "core.crate.particles"
     )
     fun particles(player: CommandSender) {
-        for (crate in core.cratesManager.getCrateNames()) {
-            val c = core.cratesManager.getCrate(crate)!!
+        for (crate in cratesHandler.getCrateNames()) {
+            val c = cratesHandler.getCrate(crate)!!
             c.stopParticles()
         }
         player.sendMessage("<gray>Successfully stopped particles!".parse(true))

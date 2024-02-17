@@ -1,9 +1,19 @@
 package me.outspending.core.config
 
+import me.outspending.core.CoreHandler.core
+import me.outspending.core.config.impl.BroadcastsConfig
+import me.outspending.core.config.impl.DiscordConfig
+import me.outspending.core.config.impl.MessagesConfig
+import me.outspending.core.config.impl.QuestsConfig
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.File
 import kotlin.time.measureTime
+
+val broadcastConfig = BroadcastsConfig(core)
+val discordConfig = DiscordConfig(core)
+val messagesConfig = MessagesConfig(core)
+val questsConfig = QuestsConfig(core)
 
 abstract class ConfigManager(name: String, plugin: JavaPlugin) {
     private val dataFolder = plugin.dataFolder

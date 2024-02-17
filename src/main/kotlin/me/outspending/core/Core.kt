@@ -20,7 +20,7 @@ class Core : JavaPlugin() {
             CommandRegistry.registerAll()
 
             DatabaseManager.setupDatabase()
-            BroadcastHandler.registerAllBroadcasts()
+            // BroadcastHandler.registerAllBroadcasts()
 
             DiscordBot.start()
         }

@@ -1,7 +1,6 @@
 package me.outspending.core.commands.gameplay
 
 import com.azuyamat.maestro.bukkit.annotations.Command
-import me.outspending.core.quests.guis.QuestsGUI
 import org.bukkit.entity.Player
 
 @Command(
@@ -11,6 +10,7 @@ import org.bukkit.entity.Player
 )
 class QuestsCommand {
     fun onCommand(player: Player) {
-        QuestsGUI(player).open()
+        player.sendMessage("Opening quests GUI")
+        // QuestsGUI(player).open()
     }
 }

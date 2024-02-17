@@ -1,9 +1,9 @@
 package me.outspending.core.commands.gameplay
 
 import com.azuyamat.maestro.bukkit.annotations.Command
-import me.outspending.core.Utilities.getData
-import me.outspending.core.core
-import me.outspending.core.storage.data.PlayerData
+import me.outspending.core.config.messagesConfig
+import me.outspending.core.data.Extentions.getData
+import me.outspending.core.data.player.PlayerData
 import org.bukkit.entity.Player
 
 @Command(
@@ -22,7 +22,7 @@ class PrestigeCommand {
                 val levelNeeded = levelAmount - level
 
                 player.sendMessage(
-                    core.messageConfig.getMessageWithArgs(
+                    messagesConfig.getMessageWithArgs(
                         "commands.gameplay.prestige.cannot_prestige",
                         true,
                         levelNeeded
@@ -36,7 +36,7 @@ class PrestigeCommand {
             playerData.prestige += 1
 
             player.sendMessage(
-                core.messageConfig.getMessageWithArgs(
+                messagesConfig.getMessageWithArgs(
                     "commands.gameplay.prestige.success",
                     true,
                     data.prestige

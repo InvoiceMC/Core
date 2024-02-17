@@ -2,10 +2,10 @@ package me.outspending.core.commands.admin
 
 import com.azuyamat.maestro.bukkit.annotations.Command
 import me.outspending.core.Utilities.format
+import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.mining.MineUtils
 import me.outspending.core.mining.shapes.CuboidShape
 import me.outspending.core.misc.WeightedCollection
-import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
 import org.bukkit.Material
 import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player

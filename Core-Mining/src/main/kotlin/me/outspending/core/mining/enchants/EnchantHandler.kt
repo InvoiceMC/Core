@@ -1,7 +1,7 @@
 package me.outspending.core.mining.enchants
 
-import me.outspending.core.Utilities.getConnection
-import me.outspending.core.storage.data.PlayerData
+import me.outspending.core.data.player.PlayerData
+import me.outspending.core.mining.Extentions.getConnection
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
@@ -25,7 +25,7 @@ object EnchantHandler {
         val itemMeta = player.inventory.itemInMainHand.itemMeta
         val dataContainer: PersistentDataContainer = itemMeta.persistentDataContainer
 
-        val connection = player.getConnection()!!
+        val connection = player.getConnection()
         val enchantResult = EnchantResult()
         pickaxeEnchants.forEach { enchant ->
             val enchantmentLevel: Int = enchant.getEnchantmentLevel(dataContainer)

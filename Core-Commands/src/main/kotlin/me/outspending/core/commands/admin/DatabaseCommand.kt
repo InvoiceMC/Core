@@ -2,8 +2,8 @@ package me.outspending.core.commands.admin
 
 import com.azuyamat.maestro.bukkit.annotations.Command
 import com.azuyamat.maestro.bukkit.annotations.SubCommand
-import me.outspending.core.core
-import me.outspending.core.storage.registries.PlayerRegistry
+import me.outspending.core.config.messagesConfig
+import me.outspending.core.data.PlayerRegistry
 import org.bukkit.command.CommandSender
 
 @Command(
@@ -14,11 +14,11 @@ class DatabaseCommand {
     @SubCommand("reload")
     fun reload(player: CommandSender) {
         PlayerRegistry.updateAllPlayerData()
-        player.sendMessage(core.messageConfig.getMessage("commands.admin.database.reload_success"))
+        player.sendMessage(messagesConfig.getMessage("commands.admin.database.reload_success"))
     }
 
     @SubCommand("test")
     fun test(player: CommandSender) {
-        player.sendMessage(core.messageConfig.getMessage("commands.admin.database.test"))
+        player.sendMessage(messagesConfig.getMessage("commands.admin.database.test"))
     }
 }

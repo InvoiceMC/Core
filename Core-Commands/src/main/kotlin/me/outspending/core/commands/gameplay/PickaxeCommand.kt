@@ -1,8 +1,8 @@
 package me.outspending.core.commands.gameplay
 
 import com.azuyamat.maestro.bukkit.annotations.Command
-import me.outspending.core.core
-import me.outspending.core.misc.helpers.FormatHelper.Companion.parse
+import me.outspending.core.config.messagesConfig
+import me.outspending.core.helpers.FormatHelper.Companion.parse
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
@@ -41,6 +41,6 @@ class PickaxeCommand {
         }
 
         player.inventory.addItem(itemStack)
-        player.sendMessage(core.messageConfig.getMessage("commands.gameplay.pickaxe_success"))
+        player.sendMessage(messagesConfig.getMessage("commands.gameplay.pickaxe_success"))
     }
 }

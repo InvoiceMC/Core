@@ -13,7 +13,7 @@ import kotlin.time.measureTime
 //    permission = "core.broadcast",
 //    description = "Manage broadcasts",
 //)
-class BroadcastCommand {
+//class BroadcastCommand {
 //    fun onCommand(sender: CommandSender) {
 //        val broadcasts =
 //            core.broadcastManager.broadcasts.joinToString("") {
@@ -114,4 +114,4 @@ class BroadcastCommand {
 //        core.server.onlinePlayers.forEach { it.sendMessage(message.parse()) }
 //        sender.sendMessage("<gray>Sent message to all players".parse(true))
 //    }
-}
+//}

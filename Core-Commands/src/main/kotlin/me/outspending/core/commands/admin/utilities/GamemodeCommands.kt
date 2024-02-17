@@ -1,7 +1,7 @@
 package me.outspending.core.commands.admin.utilities
 
 import com.azuyamat.maestro.bukkit.annotations.Command
-import me.outspending.core.core
+import me.outspending.core.config.messagesConfig
 import org.bukkit.GameMode
 import org.bukkit.entity.Player
 
@@ -54,21 +54,21 @@ fun setGameMode(executor: Player, gamemode: GameMode, target: Player? = null) {
     target.gameMode = gamemode
 
     if (executor == target) {
-        val message = core.messageConfig.getMessageWithArgs(
+        val message = messagesConfig.getMessageWithArgs(
             "commands.admin.utilities.gamemode.success",
             true,
             gamemode.name.lowercase()
         )
         executor.sendMessage(message)
     } else {
-        val message = core.messageConfig.getMessageWithArgs(
+        val message = messagesConfig.getMessageWithArgs(
             "commands.utilities.gamemode.success_other",
             true,
             target.name.lowercase(),
             gamemode.name.lowercase()
         )
         executor.sendMessage(message)
-        val receiverMessage = core.messageConfig.getMessageWithArgs(
+        val receiverMessage = messagesConfig.getMessageWithArgs(
             "commands.utilities.gamemode.success_other_receiver",
             true,
             executor.name.lowercase(),

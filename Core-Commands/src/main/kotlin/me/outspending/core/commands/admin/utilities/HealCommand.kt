@@ -1,7 +1,7 @@
 package me.outspending.core.commands.admin.utilities
 
 import com.azuyamat.maestro.bukkit.annotations.Command
-import me.outspending.core.core
+import me.outspending.core.config.messagesConfig
 import org.bukkit.attribute.Attribute
 import org.bukkit.entity.Player
 
@@ -19,10 +19,12 @@ class HealCommand {
 
         target.health = maxHealth
         target.foodLevel = MAX_FOOD_LEVEL
-        target.sendMessage(core.messageConfig.getMessageOr(
-            "commands.admin.heal_success",
-            true,
-            "<gray>You have been healed!"
-        ))
+        target.sendMessage(
+            messagesConfig.getMessageOr(
+                "commands.admin.heal_success",
+                true,
+                "<gray>You have been healed!"
+            )
+        )
     }
 }

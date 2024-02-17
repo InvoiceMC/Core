@@ -2,12 +2,12 @@ package me.outspending.core.commands.admin.utilities
 
 import com.azuyamat.maestro.bukkit.annotations.Command
 import com.azuyamat.maestro.bukkit.annotations.SubCommand
-import me.outspending.core.core
-import me.outspending.core.misc.helpers.NumberHelper
+import me.outspending.core.config.messagesConfig
+import me.outspending.core.helpers.NumberHelper
 import org.bukkit.entity.Player
 
 @Command(
-    name  = "speed",
+    name = "speed",
     description = "Set your <main>speed",
     permission = "core.admin.utilities.speed"
 )
@@ -20,7 +20,7 @@ class SpeedCommand {
     fun walk(player: Player, speed: Float) {
         val parsedSpeed = NumberHelper(speed).clamp(-1.0f, 1.0f).toFloat()
         player.walkSpeed = parsedSpeed
-        val message = core.messageConfig.getMessageWithArgs(
+        val message = messagesConfig.getMessageWithArgs(
             "commands.admin.utilities.speed.walk_success",
             true,
             parsedSpeed
@@ -36,7 +36,7 @@ class SpeedCommand {
     fun fly(player: Player, speed: Float) {
         val parsedSpeed = NumberHelper(speed).clamp(-1.0f, 1.0f).toFloat()
         player.flySpeed = parsedSpeed
-        val message = core.messageConfig.getMessageWithArgs(
+        val message = messagesConfig.getMessageWithArgs(
             "commands.admin.utilities.speed.fly_success",
             true,
             parsedSpeed
@@ -52,6 +52,6 @@ class SpeedCommand {
     fun reset(player: Player) {
         player.walkSpeed = 0.2f
         player.flySpeed = 0.1f
-        player.sendMessage(core.messageConfig.getMessage("commands.admin.utilities.speed.reset_success"))
+        player.sendMessage(messagesConfig.getMessage("commands.admin.utilities.speed.reset_success"))
     }
 }

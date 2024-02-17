@@ -10,7 +10,7 @@ import org.bukkit.entity.Entity
 import org.reflections.Reflections
 
 const val CRATES_PACKAGE = "me.outspending.core.gameplay.crates.impl"
-internal val cratesHandler = CratesHandler()
+val cratesHandler = CratesHandler()
 
 class CratesHandler {
 

@@ -9,6 +9,7 @@ plugins {
 
 allprojects {
     apply(plugin = "kotlin")
+    apply(plugin = "com.github.johnrengelman.shadow")
 
     group = "me.outspending"
     version = "0.0.1"
@@ -18,6 +19,7 @@ allprojects {
         mavenCentral()
         maven { url = uri("https://repo.papermc.io/repository/maven-public/") }
         maven { url = uri("https://oss.sonatype.org/content/groups/public/") }
+        maven { url = uri("https://repo.codemc.io/repository/maven-public/") }
         maven { url = uri("https://jitpack.io") }
     }
 
@@ -25,6 +27,7 @@ allprojects {
         compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
         implementation("net.kyori:adventure-text-minimessage:4.14.0")
         implementation("org.reflections:reflections:0.10.2")
+        implementation("de.tr7zw:item-nbt-api:2.12.2")
     }
 }
 
@@ -32,20 +35,20 @@ dependencies {
     compileOnly("net.luckperms:api:5.4") // LuckPerms API
 
     // Modules
-    compileOnly(project(":Core-Bot"))
-    compileOnly(project(":Core-Chat"))
-    compileOnly(project(":Core-Commands"))
-    compileOnly(project(":Core-Configs"))
-    compileOnly(project(":Core-Crates"))
-    compileOnly(project(":Core-Data"))
-    compileOnly(project(":Core-Listeners"))
-    compileOnly(project(":Core-Main"))
-    compileOnly(project(":Core-Quests"))
-    compileOnly(project(":Core-Scoreboard"))
+    implementation(project(":Core-Bot"))
+    implementation(project(":Core-Chat"))
+    implementation(project(":Core-Commands"))
+    implementation(project(":Core-Configs"))
+    implementation(project(":Core-Crates"))
+    implementation(project(":Core-Data"))
+    implementation(project(":Core-Listeners"))
+    implementation(project(":Core-Main"))
+    implementation(project(":Core-Quests"))
+    implementation(project(":Core-Scoreboard"))
 
     // Reobf Modules (These are only modules that contain paperweight)
-    compileOnly(project(path = ":Core-Mining", configuration = "reobf"))
-    compileOnly(project(path = ":Core-Holograms", configuration = "reobf"))
+    implementation(project(path = ":Core-Mining", configuration = "reobf"))
+    implementation(project(path = ":Core-Holograms", configuration = "reobf"))
 
     // JMH
     jmh("commons-io:commons-io:2.7")
