@@ -4,6 +4,7 @@ import com.azuyamat.maestro.bukkit.annotations.Command
 import com.azuyamat.maestro.bukkit.annotations.SubCommand
 import me.outspending.core.data.DataSaver
 import me.outspending.core.data.Extensions.getData
+import me.outspending.core.data.Extensions.savePlayerData
 import me.outspending.core.data.player.playerDataManager
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import org.bukkit.entity.Player
@@ -22,7 +23,7 @@ class SaveCommand {
 //            player.sendMessage("<gray>Cell with id <#7ee37b><u>$cellId</u><gray> does not exist".parse(true))
 //        }
 
-        playerDataManager.savePlayerData(player.uniqueId)
+        player.savePlayerData()
         // CellRegistry.updateCell(cell)
 
         player.sendMessage("<gray>Your data has been saved".parse(true))

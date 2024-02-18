@@ -39,7 +39,7 @@ object DatabaseManager {
     fun stopDatabase() {
         if (!database.isConnected()) return
 
-        val playerData = playerDataManager.getAllPlayerData()
+        val playerData = playerDataManager.getPlayerDataList()
         database.updateAllData(munchPlayerData, playerData)
 
         database.disconnect()

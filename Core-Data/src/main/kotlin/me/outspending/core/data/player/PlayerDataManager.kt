@@ -28,6 +28,8 @@ class PlayerDataManager {
     fun getPlayerData(uuid: UUID): PlayerData =
         playerData[uuid] ?: throw IllegalArgumentException("Player data for $uuid is null")
 
-    fun getAllPlayerData(): List<PlayerData> = playerData.values.toList()
+    fun getPlayerDataList(): List<PlayerData> = playerData.values.toList()
+
+    fun getAllPlayerData(): Map<UUID, PlayerData> = playerData
 
 }

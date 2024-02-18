@@ -4,8 +4,6 @@ import me.outspending.munch.Column
 import me.outspending.munch.ColumnConstraint
 import me.outspending.munch.PrimaryKey
 import me.outspending.munch.Table
-import org.bukkit.Bukkit
-import org.bukkit.entity.Player
 import java.util.*
 
 val playerDataManager = PlayerDataManager()
@@ -22,6 +20,4 @@ data class PlayerData(
     @Column var cellId: String? = null
 ) {
     constructor(uuid: UUID) : this(uuid, 0.0, 0.0, 0, 0, 1.0f, "")
-
-    fun getPlayer(): Player? = Bukkit.getPlayer(uuid)
 }

@@ -4,6 +4,7 @@ import io.netty.channel.ChannelDuplexHandler
 import io.netty.channel.ChannelHandlerContext
 import me.outspending.core.Utilities.toComponent
 import me.outspending.core.data.Extensions.getData
+import me.outspending.core.mining.PickaxeUpdater
 import me.outspending.core.mining.enchants.EnchantHandler
 import me.outspending.core.mining.enchants.EnchantResult
 import me.outspending.core.mining.sync.PacketSync
@@ -85,7 +86,7 @@ class MiningDuplexHandler(
         data.balance += ((blockMoney + result.money) * data.multiplier)
         data.blocksBroken += 1
 
-        val newItem = me.outspending.core.mining.PickaxeUpdater.updatePickaxe(mainHand, result.blocks)
+        val newItem = PickaxeUpdater.updatePickaxe(mainHand, result.blocks)
         player.inventory.setItemInMainHand(newItem)
     }
 }
