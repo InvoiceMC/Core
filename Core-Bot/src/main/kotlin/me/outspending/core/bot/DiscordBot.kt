@@ -14,6 +14,7 @@ internal val discordConfig = DiscordConfig(core)
 
 object DiscordBot {
     internal val logChannel: TextChannel by lazy { getLogChannel() }
+    internal val msgChannel: TextChannel by lazy { getMsgChannel() }
 
     private val jda: JDA = JDABuilder.createDefault(
         discordConfig.getToken()
@@ -32,6 +33,9 @@ object DiscordBot {
     fun getGuild() = jda.getGuildById(discordConfig.getGuildId()) ?: throw IllegalStateException("Guild not found")
     fun getLogChannel() = getGuild().getTextChannelById(discordConfig.getLogChannelId()) ?: throw IllegalStateException(
         "Log channel not found"
+    )
+    fun getMsgChannel() = getGuild().getTextChannelById(discordConfig.getMsgChannelId()) ?: throw IllegalStateException(
+        "Message channel not found"
     )
 
     fun updateActivity() {

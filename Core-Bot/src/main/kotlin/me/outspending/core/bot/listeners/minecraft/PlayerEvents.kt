@@ -7,6 +7,7 @@ import me.outspending.core.bot.factories.EmbedFactory
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
+import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
 import org.bukkit.event.player.PlayerJoinEvent
@@ -53,8 +54,10 @@ class PlayerEvents : Listener {
         DiscordBot.logChannel.sendMessageEmbeds(embed.build()).queue()
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.NORMAL)
     fun onCommand(event: PlayerCommandPreprocessEvent) {
+        if (event.isCancelled) return // Should be cancelled if the command is blacklisted in ChatListeners.kt in Core-Listeners
+
         val player = event.player
         val command = event.message
 
@@ -62,7 +65,7 @@ class PlayerEvents : Listener {
             .setDescription("**${player.name}**: `$command`")
             .setColor("#222222")
 
-        DiscordBot.logChannel.sendMessageEmbeds(embed.build()).queue()
+        DiscordBot.msgChannel.sendMessageEmbeds(embed.build()).queue()
     }
 
     private fun getImage(player: Player) = "https://crafatar.com/avatars/${player.uniqueId}?size=128&overlay"
