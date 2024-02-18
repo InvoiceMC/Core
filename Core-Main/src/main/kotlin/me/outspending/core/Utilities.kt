@@ -16,7 +16,7 @@ import java.util.concurrent.Executors
 
 object Utilities {
     @PublishedApi
-    internal val THREAD_EXECUTOR: ExecutorService = Executors.newSingleThreadExecutor()
+    internal val THREAD_EXECUTOR: ExecutorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1)
     @PublishedApi internal val scheduler: BukkitScheduler = Bukkit.getScheduler()
 
     /** Strings */

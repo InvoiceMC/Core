@@ -5,11 +5,11 @@ import me.outspending.core.Utilities.fix
 import me.outspending.core.Utilities.format
 import me.outspending.core.Utilities.progressBar
 import me.outspending.core.Utilities.runTaskTimer
-import me.outspending.core.data.Extentions.getData
-import me.outspending.core.data.PlayerRegistry
+import me.outspending.core.data.Extensions.getData
 import me.outspending.core.data.player.PlayerData
 import me.outspending.core.helpers.FormatHelper
 import me.outspending.core.helpers.FormatHelper.Companion.parse
+import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
 
@@ -23,22 +23,22 @@ class ScoreboardHandler {
             "         <gray>ꜱᴇᴀꜱᴏɴ 1",
             "",
             "<main><bold>%player%",
-            " <second><b>|</b> <gray>Prestige: <dark_gray>[%prestige%<dark_gray>]",
-            " <second><b>|</b> <gray>Level: <white>%level%",
+            " <second><b>|</b> <gray>ᴘʀᴇꜱᴛɪɢᴇ: <dark_gray>[%prestige%<dark_gray>]",
+            " <second><b>|</b> <gray>ʟᴇᴠᴇʟ: <white>%level%",
             " <second><b>|</b> <dark_gray>- %progress%",
             "",
             "<main><bold>ʙᴀʟᴀɴᴄᴇꜱ",
-            " <second><b>|</b> <gray>Balance: <green>$%balance%",
-            " <second><b>|</b> <gray>Gold: <yellow>⛁%gold%",
-            " <second><b>|</b> <gray>Mined: ⛏%blocks%",
+            " <second><b>|</b> <gray>ʙᴀʟᴀɴᴄᴇ: <green>$%balance%",
+            " <second><b>|</b> <gray>ɢᴏʟᴅ: <yellow>⛁%gold%",
+            " <second><b>|</b> <gray>ᴍɪɴᴇᴅ: ⛏%blocks%",
             "",
             "<white><u>Invoice</u>.minehut.gg     "
         )
 
     init {
         runTaskTimer(REFRESH_RATE, REFRESH_RATE, true) {
-            PlayerRegistry.playerData.keys.forEach { uuid ->
-                val scoreboard: FastBoard = scoreboardMap[uuid] ?: return@forEach
+            Bukkit.getOnlinePlayers().forEach { player ->
+                val scoreboard = scoreboardMap[player.uniqueId] ?: return@forEach
 
                 updateScoreboard(scoreboard)
             }
@@ -46,20 +46,18 @@ class ScoreboardHandler {
     }
 
     fun createScoreboard(player: Player) {
-        val uuid: UUID = player.uniqueId
         val scoreboard = FastBoard(player)
 
-        scoreboardMap[uuid] = scoreboard
+        scoreboardMap[player.uniqueId] = scoreboard
         updateScoreboard(scoreboard)
     }
 
     fun removeScoreboard(player: Player) {
         val uuid: UUID = player.uniqueId
+        val scoreboard: FastBoard = scoreboardMap[uuid] ?: return
 
-        scoreboardMap[uuid]?.let { scoreboard ->
-            scoreboard.delete()
-            scoreboardMap.remove(uuid)
-        }
+        scoreboard.delete()
+        scoreboardMap.remove(uuid)
     }
 
     private fun parseLine(
@@ -81,22 +79,25 @@ class ScoreboardHandler {
     }
 
     private fun updateScoreboard(board: FastBoard) {
-        val player: Player = board.player
+        val player = board.player
+        val data = player.getData()
 
-        player.getData()?.let { playerData ->
-            board.updateTitle("<main><b>ɪɴᴠᴏɪᴄᴇ</b>".parse())
-            board.updateLines(
-                scoreboardFormat.map { toSmallCaps(parseLine(player, it, playerData)).parse(false) }
+        board.apply {
+            updateTitle("<main><b>ɪɴᴠᴏɪᴄᴇ</b>".parse())
+            updateLines(
+                scoreboardFormat.map { parseLine(player, it, data).parse() }
             )
         }
     }
 
     // Replace all text with small caps (except if they are in a tag)
+    @Deprecated("This method is not used anymore")
     private fun toSmallCaps(string: String): String {
         val regex = Regex("(?s)(?<=^|>)(?!@)[^<>]*(?=<|$)")
         val regex2 = Regex("@\\w+")
-        return string.replace(regex) { matchResult -> FormatHelper(matchResult.value).toSmallCaps() }.replace(regex2) {
-            matchResult -> matchResult.value.replace("@", "")
-        }
+        return string.replace(regex) { matchResult -> FormatHelper(matchResult.value).toSmallCaps() }
+            .replace(regex2) { matchResult ->
+                matchResult.value.replace("@", "")
+            }
     }
 }

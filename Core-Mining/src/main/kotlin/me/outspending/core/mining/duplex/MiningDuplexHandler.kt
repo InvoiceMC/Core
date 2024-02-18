@@ -3,7 +3,7 @@ package me.outspending.core.mining.duplex
 import io.netty.channel.ChannelDuplexHandler
 import io.netty.channel.ChannelHandlerContext
 import me.outspending.core.Utilities.toComponent
-import me.outspending.core.data.Extentions.getData
+import me.outspending.core.data.Extensions.getData
 import me.outspending.core.mining.enchants.EnchantHandler
 import me.outspending.core.mining.enchants.EnchantResult
 import me.outspending.core.mining.sync.PacketSync
@@ -62,30 +62,30 @@ class MiningDuplexHandler(
         // blocks are "mine able"
         if ((mainHand.type != Material.DIAMOND_PICKAXE)) return
 
-        // Check if the player has data and if it is, keep executing the code
-        player.getData()?.let { data ->
-            // Execute all the enchants that the player has on their pickaxe
-            val result: EnchantResult = EnchantHandler.executeAllEnchants(player, data, location, random)
+        // Grab the player's data
+        val data = player.getData()
 
-            // Some other things
-            if (player.level >= (100 + (25 * data.prestige))) {
-                player.sendActionBar(
-                    "<red>You are at the max level, use <dark_red>/ᴘʀᴇꜱᴛɪɢᴇ".toComponent(),
-                )
-            } else {
-                player.giveExp(1 + result.xp)
-            }
+        // Execute all the enchants that the player has on their pickaxe
+        val result: EnchantResult = EnchantHandler.executeAllEnchants(player, data, location, random)
 
-            val blockMoney = random.nextDouble(5.0, 15.0)
-            val blockGold = blockMoney / 5
-
-            // Add to the player's data
-            data.gold += ((blockGold + result.gold) * data.multiplier).toInt()
-            data.balance += ((blockMoney + result.money) * data.multiplier)
-            data.blocksBroken += 1
-
-            val newItem = me.outspending.core.mining.PickaxeUpdater.updatePickaxe(mainHand, result.blocks)
-            player.inventory.setItemInMainHand(newItem)
+        // Some other things
+        if (player.level >= (100 + (25 * data.prestige))) {
+            player.sendActionBar(
+                "<red>You are at the max level, use <dark_red>/ᴘʀᴇꜱᴛɪɢᴇ".toComponent(),
+            )
+        } else {
+            player.giveExp(1 + result.xp)
         }
+
+        val blockMoney = random.nextDouble(5.0, 15.0)
+        val blockGold = blockMoney / 5
+
+        // Add to the player's data
+        data.gold += ((blockGold + result.gold) * data.multiplier).toInt()
+        data.balance += ((blockMoney + result.money) * data.multiplier)
+        data.blocksBroken += 1
+
+        val newItem = me.outspending.core.mining.PickaxeUpdater.updatePickaxe(mainHand, result.blocks)
+        player.inventory.setItemInMainHand(newItem)
     }
 }

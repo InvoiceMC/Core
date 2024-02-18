@@ -3,7 +3,7 @@ package me.outspending.core.mining.enchants.gui
 import me.outspending.core.CoreHandler.core
 import me.outspending.core.Utilities.format
 import me.outspending.core.Utilities.toUpperCase
-import me.outspending.core.data.Extentions.getData
+import me.outspending.core.data.Extensions.getData
 import me.outspending.core.data.player.PlayerData
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.mining.enchants.PickaxeEnchant
@@ -64,7 +64,7 @@ class EnchantUpgradeGUI(private val player: Player, private val enchant: Pickaxe
 
             val heldItem = player.inventory.itemInMainHand
             val meta = heldItem.itemMeta
-            val playerData = player.getData() ?: return@gui
+            val playerData = player.getData()
             val data = meta.persistentDataContainer
 
             val enchantLevel = enchant.getEnchantmentLevel(data)

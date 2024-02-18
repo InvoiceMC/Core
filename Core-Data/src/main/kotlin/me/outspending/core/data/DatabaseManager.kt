@@ -3,12 +3,12 @@ package me.outspending.core.data
 import me.outspending.core.CoreHandler.core
 import me.outspending.core.Utilities.runTaskTimer
 import me.outspending.core.data.player.PlayerData
+import me.outspending.core.data.player.playerDataManager
 import me.outspending.munch.Munch
 import me.outspending.munch.connection.MunchConnection
 import me.outspending.munch.serializer.Serializer
 import me.outspending.munch.serializer.SerializerFactory
 import org.reflections.Reflections
-import org.reflections.scanners.SubTypesScanner
 import java.util.*
 
 private const val SERIALIZER_PACKAGE = "me.outspending.core.data.serializers"
@@ -32,14 +32,14 @@ object DatabaseManager {
             }
 
         runTaskTimer(DATABASE_UPDATE_INTERVAL, DATABASE_UPDATE_INTERVAL, true) {
-            DataHandler.updateAllData()
+            DataSaver.updateAllData()
         }
     }
 
     fun stopDatabase() {
         if (!database.isConnected()) return
 
-        val playerData = PlayerRegistry.playerData.values.toList()
+        val playerData = playerDataManager.getAllPlayerData()
         database.updateAllData(munchPlayerData, playerData)
 
         database.disconnect()

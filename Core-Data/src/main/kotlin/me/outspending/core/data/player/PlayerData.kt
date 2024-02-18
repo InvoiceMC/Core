@@ -8,6 +8,8 @@ import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
 
+val playerDataManager = PlayerDataManager()
+
 @Table
 data class PlayerData(
     @PrimaryKey val uuid: UUID,

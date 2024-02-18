@@ -2,7 +2,7 @@ package me.outspending.core.commands.gameplay
 
 import com.azuyamat.maestro.bukkit.annotations.Command
 import me.outspending.core.config.messagesConfig
-import me.outspending.core.data.Extentions.getData
+import me.outspending.core.data.Extensions.getData
 import me.outspending.core.data.player.PlayerData
 import org.bukkit.entity.Player
 
