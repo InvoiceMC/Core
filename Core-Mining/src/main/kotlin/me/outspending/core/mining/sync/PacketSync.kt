@@ -20,7 +20,7 @@ object PacketSync {
      * ChunkSectionChanges
      */
     private fun sendChanges(
-        players: MutableList<Player>,
+        players: List<Player>,
         changes: MutableMap<Location, BlockData>
     ) = players.forEach { it.sendMultiBlockChange(changes) }
 

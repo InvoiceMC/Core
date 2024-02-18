@@ -86,17 +86,18 @@ class EnchantUpgradeGUI(private val player: Player, private val enchant: Pickaxe
                                 if (isMaxed) {
                                     listOf(
                                             "",
-                                            "<red>You cannot upgrade this many levels!",
-                                            "<red>It's already at the maximum level!",
+                                            "<red><b>ᴇʀʀᴏʀ",
+                                            " <red>You cannot upgrade this many levels!",
+                                            " <red>It's already at the maximum level!",
                                             ""
                                         )
                                         .map { it.parse() }
                                 } else {
                                     listOf(
                                             "",
-                                            "<main>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ",
-                                            "<main><b>|</b> <gray>ᴄᴜʀʀᴇɴᴛ ʟᴇᴠᴇʟ: <white>${enchantLevel}",
-                                            "<main><b>|</b> <gray>ᴄᴏꜱᴛ: <yellow>⛁${enchantCost.format()}",
+                                            "<main><b>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ</b>",
+                                            " <second><b>|</b> <gray>ᴄᴜʀʀᴇɴᴛ ʟᴇᴠᴇʟ: <white>${enchantLevel}",
+                                            " <second><b>|</b> <gray>ᴄᴏꜱᴛ: <yellow>⛁${enchantCost.format()}",
                                             "",
                                             if (hasEnough) "<green><i>Click to upgrade"
                                             else "<red><i>Not Enough Gold!"
@@ -140,15 +141,15 @@ class EnchantUpgradeGUI(private val player: Player, private val enchant: Pickaxe
 
                 item =
                     item(Material.GOLD_BLOCK) {
-                        name = "<yellow><u>Max".parse()
+                        name = "<yellow><u>Enchant Max".parse()
                         lore =
                             if (hasEnough) {
                                 listOf(
                                         "",
-                                        "<main>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ",
-                                        "<main><b>|</b> <gray>ᴄᴜʀʀᴇɴᴛ ʟᴇᴠᴇʟ: <white>${enchantLevel} <gray>→ <white>${level}",
-                                        "<main><b>|</b> <gray>ᴛᴏᴛᴀʟ: <white>${level - enchantLevel}",
-                                        "<main><b>|</b> <gray>ᴄᴏꜱᴛ: <yellow>⛁${cost.format()}",
+                                        "<main><b>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ",
+                                        " <second><b>|</b> <gray>ᴄᴜʀʀᴇɴᴛ ʟᴇᴠᴇʟ: <main>${enchantLevel} <dark_gray>→ <second>${level}",
+                                        " <second><b>|</b> <gray>ᴛᴏᴛᴀʟ: <white>${level - enchantLevel}",
+                                        " <second><b>|</b> <gray>ᴄᴏꜱᴛ: <yellow>⛁${cost.format()}",
                                         "",
                                         "<green><i>Click to upgrade"
                                     )
@@ -156,8 +157,9 @@ class EnchantUpgradeGUI(private val player: Player, private val enchant: Pickaxe
                             } else {
                                 listOf(
                                         "",
-                                        "<red>You don't have enough gold to upgrade this enchant!",
-                                        "<red>Come back when you have enough!",
+                                        "<red><b>ᴇʀʀᴏʀ",
+                                        " <red>You don't have enough gold to upgrade this enchant!",
+                                        " <red>Come back when you have enough!",
                                         ""
                                     )
                                     .map { it.parse() }
@@ -183,7 +185,7 @@ class EnchantUpgradeGUI(private val player: Player, private val enchant: Pickaxe
             slot(9, 3) {
                 item =
                     item(Material.DARK_OAK_DOOR) {
-                        name = "<red>Back".parse()
+                        name = "<red><u>Go Back".parse()
                         lore = listOf("", "<red>Click to go back.").map { it.parse() }
                         glowing = true
                         onClick { MainEnchantGUI(player).open() }

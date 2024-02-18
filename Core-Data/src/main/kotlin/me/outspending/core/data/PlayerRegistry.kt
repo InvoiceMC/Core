@@ -10,17 +10,6 @@ import java.util.*
 import kotlin.time.measureTime
 
 object PlayerRegistry {
-
-    private val BROADCAST_MESSAGE: String =
-        listOf(
-                "",
-                "<#7ee37b><b>ᴘʟᴀʏᴇʀᴅᴀᴛᴀ</b>",
-                "  <gray>Successfully saved <#7ee37b><u>%s</u><gray> player(s)",
-                "  <gray>data in <#7ee37b><u>%s</u><gray>!",
-                ""
-            )
-            .joinToString("\n")
-
     val playerData: MutableMap<UUID, PlayerData> = mutableMapOf()
 
     fun addPlayer(uuid: UUID, playerData: PlayerData) {
@@ -33,22 +22,5 @@ object PlayerRegistry {
 
     fun updatePlayerData(uuid: UUID, playerData: PlayerData) {
         database.updateData(munchPlayerData, playerData, uuid)
-    }
-
-    fun updateAllPlayerData() {
-        runAsync {
-            val time = measureTime {
-                database.updateAllData(munchPlayerData, playerData.values.toList())
-            }
-
-            val players = Bukkit.getOnlinePlayers()
-            players.forEach { player ->
-                player.playSound(
-                    Sound.sound(Key.key("block.note_block.bit"), Sound.Source.PLAYER, .5f, 1.5f)
-                )
-            }
-
-            Bukkit.broadcast(BROADCAST_MESSAGE.format(players.size, time).toComponent())
-        }
     }
 }

@@ -32,7 +32,7 @@ object PickaxeUpdater {
         val lore: MutableList<Component> = (meta.lore() ?: return).toMutableList()
 
         val blocksBroken = data.getOrDefault(brokenKey, PersistentDataType.INTEGER, 0)
-        lore[3] = "<main><b>|</b> <gray>ʙʟᴏᴄᴋꜱ ʙʀᴏᴋᴇɴ: <white>${blocksBroken.format()}".parse()
+        lore[4] = " <second><b>|</b> <gray>ʙʟᴏᴄᴋꜱ ʙʀᴏᴋᴇɴ: <white>${blocksBroken.format()}".parse()
 
         data.set(updateKey, PersistentDataType.INTEGER, 0)
 

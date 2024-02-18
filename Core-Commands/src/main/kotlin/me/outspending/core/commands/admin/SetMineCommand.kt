@@ -37,10 +37,10 @@ class SetMineCommand {
 
                         val amount =
                             MineUtils.setBlocks(player, player.location, shape, collection, true)
-                        player.sendMessage("Changed: <yellow>${amount.format()}".parse(true))
+                        player.sendMessage("Changed: <second>${amount.format()}".parse(true))
                     }
 
-                    player.sendMessage("Done: <yellow>$time".parse(true))
+                    player.sendMessage("Done: <second>$time".parse(true))
                 }
             }
             .start()

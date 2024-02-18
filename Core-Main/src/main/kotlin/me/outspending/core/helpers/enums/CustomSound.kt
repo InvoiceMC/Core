@@ -10,7 +10,7 @@ open class CustomSound {
 
     data class Levelup(val volume: Float = 1F, val pitch: Float = 1F) : CoreSound {
         override fun playSound(player: Player) {
-            player.playSound(player.location, Sound.ENTITY_PLAYER_LEVELUP, volume, pitch)
+            player.playSound(player.location, Sound.ITEM_TRIDENT_HIT, volume, pitch)
         }
     }
 
@@ -28,7 +28,7 @@ open class CustomSound {
 
     data class Ping(val volume: Float = 1F, val pitch: Float = 1F) : CoreSound {
         override fun playSound(player: Player) {
-            player.playSound(player.location, Sound.BLOCK_NOTE_BLOCK_PLING, volume, pitch)
+            player.playSound(player.location, Sound.BLOCK_NOTE_BLOCK_CHIME, volume, pitch)
         }
     }
 
@@ -38,4 +38,9 @@ open class CustomSound {
         }
     }
 
+    data class DataSave(val volume: Float = 1F, val pitch: Float = 1F) : CoreSound {
+        override fun playSound(player: Player) {
+            player.playSound(player.location, Sound.ENTITY_ENDER_DRAGON_FLAP, volume, pitch)
+        }
+    }
 }

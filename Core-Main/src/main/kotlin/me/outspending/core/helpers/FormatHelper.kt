@@ -8,6 +8,7 @@ import me.outspending.core.helpers.FormatHelper.Companion.secondColorResolver
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.format.NamedTextColor
 import net.kyori.adventure.text.format.TextColor
+import net.kyori.adventure.text.format.TextDecoration
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.Tag
 import net.kyori.adventure.text.minimessage.tag.resolver.ArgumentQueue
@@ -55,7 +56,7 @@ val small_caps = mapOf(
     "y" to "ʏ",
     "z" to "ᴢ"
 )
-val prefixComponent = "<main><bold>INVOICE<reset> <dark_gray>» <gray>".parse()
+val prefixComponent = "<main><bold>ɪɴᴠᴏɪᴄᴇ<reset> <dark_gray>→ <gray>".parse()
 
 class FormatHelper(private val text: String) {
 
@@ -65,6 +66,8 @@ class FormatHelper(private val text: String) {
     // Parse text to MiniMessage component
     fun parse(prefix: Boolean = false): Component {
         val message = miniMessage.deserialize(text)
+            .decorationIfAbsent(TextDecoration.ITALIC, TextDecoration.State.FALSE) // NOTE: This is a workaround for things being italic by default
+
         return if (prefix) prefixComponent.append(message)
         else message
     }

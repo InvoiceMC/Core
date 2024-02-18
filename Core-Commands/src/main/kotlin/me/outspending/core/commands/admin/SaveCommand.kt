@@ -2,6 +2,7 @@ package me.outspending.core.commands.admin
 
 import com.azuyamat.maestro.bukkit.annotations.Command
 import com.azuyamat.maestro.bukkit.annotations.SubCommand
+import me.outspending.core.data.DataHandler
 import me.outspending.core.data.Extentions.getData
 import me.outspending.core.data.PlayerRegistry
 import me.outspending.core.helpers.FormatHelper.Companion.parse
@@ -36,8 +37,7 @@ class SaveCommand {
         description = "Save all player data"
     )
     fun all(player: Player) {
-        // CellRegistry.updateAllCells()
-        PlayerRegistry.updateAllPlayerData()
+        DataHandler.updateAllData()
 
         player.sendMessage("<gray>All player data has been saved".parse(true))
     }

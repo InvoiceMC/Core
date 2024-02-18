@@ -30,7 +30,7 @@ object PickaxeEnchanter {
         data.set(enchantKey, PersistentDataType.INTEGER, (enchantValue + add))
 
         lore[enchantLore] =
-            "<main><b>|</b> <gray>${pickaxeEnchant.toTinyString()}: <white>${(enchantValue + add).regex()}"
+            " <second><b>|</b> <gray>${pickaxeEnchant.toTinyString()}: <white>${(enchantValue + add).regex()}"
                 .parse()
 
         meta.lore(lore)
@@ -50,7 +50,7 @@ object PickaxeEnchanter {
         data.set(NamespacedKey("lore", pickaxeEnchant), PersistentDataType.INTEGER, index)
 
         lore[index] =
-            "<main><b>|</b> <gray>${pickaxeEnchant.toTinyString()}: <white>${level.regex()}".parse()
+            " <second><b>|</b> <gray>${pickaxeEnchant.toTinyString()}: <white>${level.regex()}".parse()
         lore.add("".parse())
 
         meta.lore(lore)

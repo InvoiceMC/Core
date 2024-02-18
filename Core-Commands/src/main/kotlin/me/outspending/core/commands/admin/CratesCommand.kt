@@ -7,6 +7,7 @@ import me.outspending.core.helpers.FormatHelper.Companion.parse
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 
 @Command(
     name = "crate",
@@ -15,7 +16,7 @@ import org.bukkit.command.CommandSender
 class CratesCommand {
 
     fun onCommand(player: CommandSender) {
-        if (player !is org.bukkit.entity.Player) return
+        if (player !is Player) return
         player.teleport(Location(Bukkit.getWorld("world"), 0.0, 100.0, 0.0))
         player.sendMessage("<gray>You have been teleported to the crates!".parse(true))
     }

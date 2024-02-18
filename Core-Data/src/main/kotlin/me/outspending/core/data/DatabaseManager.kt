@@ -11,8 +11,9 @@ import org.reflections.Reflections
 import org.reflections.scanners.SubTypesScanner
 import java.util.*
 
-const val SERIALIZER_PACKAGE = "me.outspending.core.data.serializers"
-const val DATABASE_NAME = "database.db"
+private const val SERIALIZER_PACKAGE = "me.outspending.core.data.serializers"
+private const val DATABASE_NAME = "database.db"
+private const val DATABASE_UPDATE_INTERVAL = 6000L
 
 val munchPlayerData = Munch.create(PlayerData::class).process<UUID>()
 val database = MunchConnection.global()
@@ -30,7 +31,9 @@ object DatabaseManager {
                 SerializerFactory.registerSerializer(serializer)
             }
 
-        updateAllData()
+        runTaskTimer(DATABASE_UPDATE_INTERVAL, DATABASE_UPDATE_INTERVAL, true) {
+            DataHandler.updateAllData()
+        }
     }
 
     fun stopDatabase() {
@@ -40,11 +43,5 @@ object DatabaseManager {
         database.updateAllData(munchPlayerData, playerData)
 
         database.disconnect()
-    }
-
-    private fun updateAllData() {
-        runTaskTimer(6000, 6000) {
-            PlayerRegistry.updateAllPlayerData()
-        }
     }
 }

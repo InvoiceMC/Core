@@ -71,7 +71,7 @@ object ChatHandler {
 
                 newComponent = message.replaceText(replacement)
 
-                CustomSound.Ping().playSound(it)
+                CustomSound.Ping(0.5f, 1.25f).playSound(it)
                 it.sendActionBar("<main><u>@${sender.name}</u> <gray>has pinged you!".parse(true))
             }
 

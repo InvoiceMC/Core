@@ -38,11 +38,14 @@ class MainEnchantGUI(private val player: Player): EnchantGUI {
                     item = item(enchantItem) {
                         name = "<main>${enchantName.toUpperCase()}".parse()
                         lore = listOf(
-                            "<dark_gray><i>ᴇɴᴄʜᴀɴᴛ",
+                            "<dark_gray>ᴇɴᴄʜᴀɴᴛ",
                             "",
-                            "<second>${enchant.getDescription()}",
+                            "<main><b>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ</b></main>",
+                            " <second><b>|</b> <white>${enchant.getDescription()}",
                             "",
-                            "<second>${enchantLevel}<gray>/<second>${maxLevel} <gray>($chance%)",
+                            "<main><b>ᴇɴᴄʜᴀɴᴛ</b></main>",
+                            " <second><b>|</b> <white>Level: <main>${enchantLevel}<gray>/<second>${maxLevel}",
+                            " <second><b>|</b> <white>Chance: <main>${"%.4f".format(chance)}%",
                             "",
                             "<green>Click to upgrade this enchant."
                         ).map { it.parse() }

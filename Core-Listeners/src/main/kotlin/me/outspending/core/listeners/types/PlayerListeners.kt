@@ -77,8 +77,10 @@ class PlayerListeners : Listener {
         e.quitMessage(null)
 
         runAsync {
+            println("Removing data for $uuid")
             map[uuid]?.let {
-                DataHandler.removeData(uuid)
+                DataHandler.updateDataThenDelete(uuid)
+                println("Removed data for $uuid")
             }
 
             // Remove Scoreboard & Packet Listener (DuplexChannel)

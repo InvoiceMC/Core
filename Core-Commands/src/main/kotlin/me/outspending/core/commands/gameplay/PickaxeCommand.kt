@@ -23,12 +23,13 @@ class PickaxeCommand {
             )
             meta.lore(
                 listOf(
+                    "<dark_gray>ᴘɪᴄᴋᴀxᴇ",
                     "",
-                    "<main>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ</main>",
-                    "<main><b>|</b> <gray>ᴏᴡɴᴇʀ: <white>${player.name}",
-                    "<main><b>|</b> <gray>ʙʟᴏᴄᴋꜱ ʙʀᴏᴋᴇɴ: <white>0",
+                    "<main><b>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ</b></main>",
+                    " <second><b>|</b> <gray>ᴏᴡɴᴇʀ: <white>${player.name}",
+                    " <second><b>|</b> <gray>ʙʟᴏᴄᴋꜱ ʙʀᴏᴋᴇɴ: <white>0",
                     "",
-                    "<main>ᴇɴᴄʜᴀɴᴛꜱ</main>",
+                    "<main><b>ᴇɴᴄʜᴀɴᴛꜱ</b></main>",
                     "",
                 )
                     .map { it.parse() }
