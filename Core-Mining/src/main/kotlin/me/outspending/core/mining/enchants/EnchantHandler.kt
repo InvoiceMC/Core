@@ -1,7 +1,7 @@
 package me.outspending.core.mining.enchants
 
 import me.outspending.core.data.player.PlayerData
-import me.outspending.core.mining.Extentions.getConnection
+import me.outspending.core.mining.Extensions.getConnection
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer

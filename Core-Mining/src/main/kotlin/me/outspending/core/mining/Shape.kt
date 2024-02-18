@@ -63,21 +63,7 @@ interface Shape {
     }
 }
 
-internal inline fun runXZ(
-    blockVector3D: Shape.BlockVector3D,
-    run: (Int, Int, Int, MutableMap<Location, BlockData>) -> Unit
-): MutableMap<Location, BlockData> {
-    val (minX, minY, minZ, maxX, _, maxZ) = blockVector3D
-    val updateBlocks: MutableMap<Location, BlockData> = mutableMapOf()
 
-    for (x in minX..maxX) {
-        for (z in minZ..maxZ) {
-            run(x, minY, z, updateBlocks)
-        }
-    }
-
-    return updateBlocks
-}
 
 internal inline fun runXYZ(
     blockVector3D: Shape.BlockVector3D,
