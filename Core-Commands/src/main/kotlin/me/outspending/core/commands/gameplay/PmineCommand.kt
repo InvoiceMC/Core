@@ -2,6 +2,7 @@ package me.outspending.core.commands.gameplay
 
 import com.azuyamat.maestro.bukkit.annotations.Command
 import com.azuyamat.maestro.bukkit.annotations.SubCommand
+import me.outspending.core.data.Extensions.getData
 import me.outspending.core.pmines.data.pmineDataManager
 import me.outspending.core.misc.WeightedCollection
 import me.outspending.core.pmines.Mine
@@ -33,9 +34,10 @@ class PmineCommand {
             .add(75.0, Material.STONE.createBlockData())
             .add(25.0, Material.COBBLESTONE.createBlockData())
 
+        val data = player.getData()
         val mine = Mine(loc1, loc2, collection)
         val pmine = PrivateMine.createMine(player, name, player.location, mine) ?: return
-        pmineDataManager.createPmineData(player.uniqueId.toString(), pmine)
-
+        pmineDataManager.createPmineData(name, pmine)
+        data.pmineName = name
     }
 }

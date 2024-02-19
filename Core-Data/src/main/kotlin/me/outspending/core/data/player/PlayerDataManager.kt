@@ -17,6 +17,7 @@ class PlayerDataManager {
 
     fun unloadPlayerData(uuid: UUID) {
         val playerData: PlayerData? = playerData.remove(uuid)
+        println(playerData)
         require(playerData != null) { "Player data for $uuid is null" }
 
         persistenceHandler.save(uuid, playerData)
