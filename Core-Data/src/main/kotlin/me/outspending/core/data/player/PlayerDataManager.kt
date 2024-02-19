@@ -3,6 +3,8 @@ package me.outspending.core.data.player
 import me.outspending.core.data.DataPersistenceHandler
 import java.util.*
 
+val playerDataManager = PlayerDataManager()
+
 class PlayerDataManager {
 
     private val playerData: MutableMap<UUID, PlayerData> = mutableMapOf()

@@ -4,7 +4,6 @@ import me.outspending.core.bot.DiscordBot
 import me.outspending.core.commands.CommandRegistry
 import me.outspending.core.data.DatabaseManager
 import me.outspending.core.listeners.ListenerRegistry
-import me.outspending.core.misc.broadcaster.BroadcastHandler
 import org.bukkit.plugin.java.JavaPlugin
 import kotlin.time.measureTime
 

@@ -53,6 +53,7 @@ dependencies {
     implementation(project(":Core-Main"))
     implementation(project(":Core-Quests"))
     implementation(project(":Core-Scoreboard"))
+    implementation(project(":Core-PMines"))
 
     // Reobf Modules (These are only modules that contain paperweight)
     implementation(project(path = ":Core-Mining", configuration = "reobf"))

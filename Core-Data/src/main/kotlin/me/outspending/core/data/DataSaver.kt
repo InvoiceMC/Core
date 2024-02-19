@@ -19,7 +19,7 @@ object DataSaver {
             .joinToString("\n")
 
     fun updateAllData() {
-        val data = playerDataManager.getAllPlayerData()
+        val data = playerDataManager.getPlayerDataList()
         val time = measureTime {
             database.updateAllData(munchPlayerData, data)
         }

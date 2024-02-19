@@ -11,3 +11,4 @@ authors:
 
 depend:
   - LuckPerms
+  - FastAsyncWorldEdit # For Private Mines (Schematics)

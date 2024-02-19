@@ -6,8 +6,6 @@ import me.outspending.munch.PrimaryKey
 import me.outspending.munch.Table
 import java.util.*
 
-val playerDataManager = PlayerDataManager()
-
 @Table
 data class PlayerData(
     @PrimaryKey val uuid: UUID,

@@ -1,5 +1,6 @@
 package me.outspending.core.mining
 
+import me.outspending.core.mining.shapes.CuboidShape
 import me.outspending.core.mining.sync.PacketSync
 import me.outspending.core.misc.WeightedCollection
 import org.bukkit.Location
@@ -56,6 +57,20 @@ object MineUtils {
     ): Int {
         val (num, blocks) = shape.run(blockLocation, weightedCollection)
         setBlock(player, blockLocation, blocks, syncPackets)
+
+        return num
+    }
+
+    fun setBlocksBetween(
+        player: Player,
+        minLocation: Location,
+        maxLocation: Location,
+        weightedCollection: WeightedCollection<BlockData>,
+        syncPackets: Boolean = false
+    ): Int {
+        val plrLocation = player.location
+        val (num, blocks) = CuboidShape(minLocation, maxLocation).run(plrLocation, weightedCollection)
+        setBlock(player, plrLocation, blocks, syncPackets)
 
         return num
     }
