@@ -4,6 +4,7 @@ import me.outspending.core.crates.types.IReward
 import me.outspending.core.misc.items.ItemCreator
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 
 class TestReward : IReward {
 
@@ -18,4 +19,5 @@ class TestReward : IReward {
     }
 
     override fun getChance(): Double = 0.50
+    override fun getItem(): ItemStack = item
 }

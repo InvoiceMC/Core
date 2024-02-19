@@ -4,6 +4,7 @@ import me.outspending.core.crates.types.IReward
 import me.outspending.core.misc.items.ItemCreator
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 
 class CommonReward : IReward {
 
@@ -13,9 +14,8 @@ class CommonReward : IReward {
         p.inventory.addItem(item)
     }
 
-    override fun getName(): String {
-        return "<light_purple>Common Rank"
-    }
+    override fun getName(): String = "<light_purple>Common Rank"
 
     override fun getChance(): Double = 0.80
+    override fun getItem(): ItemStack = item
 }

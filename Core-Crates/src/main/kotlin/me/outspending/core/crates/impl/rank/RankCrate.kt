@@ -23,12 +23,14 @@ class RankCrate() : ICrate {
     override fun getLocation(): Location = location
 
     override fun setupCrate() {
-        setupRewards("me.outspending.core.gameplay.crates.impl.rank.rewards")
+        setupRewards("rank")
         location.clone().block.type = Material.WHITE_STAINED_GLASS
         location.clone().add(0.0, -1.0, 0.0).block.type = Material.END_ROD
         NBTBlock(location.block).data.setString("crate", name)
         startParticles(Particle.DustOptions(Color.fromRGB(255, 255, 255), 1f))
     }
+
+    override fun getRewards(): WeightedCollection<IReward> = rewards
 
     override fun unload() {
         location.clone().block.type = Material.AIR

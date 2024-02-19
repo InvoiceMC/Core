@@ -54,13 +54,17 @@ interface ICrate {
     }
 
     fun setupRewards(path: String) {
+        val pkg = "me.outspending.core.crates.impl.${path}.rewards"
         val collection = WeightedCollection<IReward>()
-        Reflections(path).getSubTypesOf(IReward::class.java).forEach {
-            val reward = it.newInstance()
+        Reflections(pkg).getSubTypesOf(IReward::class.java).forEach {
+            val reward = it.getDeclaredConstructor().newInstance() as IReward
+            println("Found reward: ${reward.getName()}")
             collection.add(reward.getChance(), reward)
         }
         setRewards(collection)
     }
+
+    fun getRewards(): WeightedCollection<IReward>
 
     fun startParticles(options: DustOptions) {
         cratesHandler.tasks[getDisplayName()] = mutableListOf()

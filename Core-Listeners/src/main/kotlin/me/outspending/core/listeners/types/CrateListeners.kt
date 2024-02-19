@@ -1,25 +1,27 @@
-package me.outspending.core.crates.listeners
+package me.outspending.core.listeners.types
 
-import de.tr7zw.changeme.nbtapi.NBTBlock
-import me.outspending.core.crates.cratesHandler
-import me.outspending.core.helpers.FormatHelper.Companion.parse
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
+import org.bukkit.event.player.PlayerInteractEvent
+import de.tr7zw.changeme.nbtapi.NBTBlock
+import me.outspending.core.crates.cratesHandler
+import me.outspending.core.crates.gui.PreviewCrateGUI
+import me.outspending.core.helpers.FormatHelper.Companion.parse
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
-import org.bukkit.event.player.PlayerInteractEvent
+import org.bukkit.inventory.EquipmentSlot
 
 class CrateListeners : Listener {
 
     @EventHandler
     fun onCrateClick(e: PlayerInteractEvent) {
         if (e.clickedBlock == null) return
-        if (e.hand == org.bukkit.inventory.EquipmentSlot.OFF_HAND) return
+        if (e.hand == EquipmentSlot.OFF_HAND) return
         val crateID = NBTBlock(e.clickedBlock).data.getString("crate") ?: return
         val crate = cratesHandler.getCrate(crateID) ?: return
         e.isCancelled = true
         if (e.action == Action.LEFT_CLICK_BLOCK || e.action == Action.LEFT_CLICK_AIR) {
-            // open rewards
+            PreviewCrateGUI(e.player, crate, 1).open()
             return
         }
         if (e.player.inventory.itemInMainHand.isSimilar(crate.getItemKey())) {

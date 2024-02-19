@@ -44,7 +44,7 @@ class MiningDuplexHandler(
                 }
             }
         } else if (packet is ServerboundUseItemOnPacket) {
-            return
+//            return //this stops me from placing blocks (ghost blocks), so only return when u want to cancel inside the mine
         }
 
         super.channelRead(channelHandlerContext, packet)

@@ -7,10 +7,11 @@ import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.holograms.Hologram
 import org.bukkit.Bukkit
 import org.bukkit.entity.Entity
+import org.bukkit.entity.TextDisplay
 import org.reflections.Reflections
 
-const val CRATES_PACKAGE = "me.outspending.core.gameplay.crates.impl"
-val cratesHandler = CratesHandler()
+const val CRATES_PACKAGE = "me.outspending.core.crates.impl"
+val cratesHandler: CratesHandler = CratesHandler().load()
 
 class CratesHandler {
 
@@ -18,20 +19,24 @@ class CratesHandler {
     val tasks: MutableMap<String, MutableList<SpiralParticles>> = mutableMapOf()
     val billboards: MutableMap<String, Entity> = mutableMapOf()
 
-    init {
-        load()
-    }
-
     fun reload() {
         Bukkit.broadcast("<gray>Reloading crates...".parse(true))
         unregisterAllCrates()
         load()
     }
 
-    private fun load() {
+    fun load(): CratesHandler {
         delay(20L) {
+            println("This has been reloadedaa?")
+            for (entity in Bukkit.getWorld("world")?.entities!!) {
+                if (entity !is TextDisplay) {
+                    continue
+                }
+                if (entity.text().contains("Right click to open".parse()))
+                    entity.remove()
+            }
             Reflections(CRATES_PACKAGE).getSubTypesOf(ICrate::class.java).forEach {
-                val crate = it.newInstance()
+                val crate = it.getDeclaredConstructor().newInstance() as ICrate
                 println("Found crate: ${crate.getDisplayName()}")
                 registerCrate(crate.getDisplayName(), crate)
             }
@@ -39,9 +44,10 @@ class CratesHandler {
                 val crate = crates[name]!!
                 println("Setting up crate: $name")
                 crate.setupCrate()
-                cratesHandler.billboards[name] = Hologram.createServerSideHologram(crate.getLocation().clone().add(0.5, 1.5, 0.5), listOf("<main>${crate.getDisplayName()} Crate", "<gray>Right click to open", "<gray>Left click to preview rewards"))
+                billboards[name] = Hologram.createServerSideHologram(crate.getLocation().clone().add(0.5, 1.5, 0.5), listOf("<main>${crate.getDisplayName()}", "<gray>Right click to open", "<gray>Left click to preview rewards"))
             }
         }
+        return this
     }
 
     private fun registerCrate(name: String, crate: ICrate) {
@@ -61,10 +67,10 @@ class CratesHandler {
         crates.remove(name)
     }
 
-    private fun unregisterAllCrates() {
+    fun unregisterAllCrates() {
         for (crate in crates) {
             crate.value.unload()
-            cratesHandler.billboards[crate.key]?.remove()
+            billboards[crate.key]?.remove()
         }
         crates.clear()
     }
@@ -72,7 +78,4 @@ class CratesHandler {
     fun getCrates(): MutableCollection<ICrate> {
         return crates.values
     }
-
-
-
 }

@@ -10,7 +10,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 
 class RareReward : IReward {
-    private val item: ItemStack = ItemCreator(Material.PAPER).name("<main>Rare Reward").create()
+    private val item: ItemStack = ItemCreator(Material.PAPER).name("<main>Rare Reward").lore(listOf("<dark_gray>Reward", "", "<gray><u>test")).create()
 
     override fun giveReward(p: Player) {
         p.inventory.addItem(item)
@@ -20,4 +20,5 @@ class RareReward : IReward {
 
     override fun getName(): String = "<yellow>Rare Rank"
     override fun getChance(): Double = 0.20
+    override fun getItem(): ItemStack = item
 }
