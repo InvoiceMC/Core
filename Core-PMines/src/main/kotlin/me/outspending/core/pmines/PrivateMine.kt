@@ -1,5 +1,6 @@
 package me.outspending.core.pmines
 
+import me.outspending.core.data.Extensions.getData
 import org.bukkit.Location
 import org.bukkit.entity.Player
 
@@ -10,6 +11,9 @@ interface PrivateMine {
             // TODO: Update these to be correct
             val defaultMine = Mine.default() ?: throw NullPointerException("Default mine is null")
             val location = owner.location
+
+            val data = owner.getData()
+            data.pmineName = name
 
             return PrivateMineImpl(name, owner, mutableListOf(), location, defaultMine)
         }
