@@ -82,6 +82,8 @@ tasks {
     }
 
     shadowJar {
+        archiveFileName.set("${project.name}.jar")
+
         relocate("fr.mrmicky.fastboard", "me.outspending.core.relocations.fastboard")
         relocate("de.tr7zw.changeme.nbtapi", "me.outspending.core.relocations.nbtapi")
 
