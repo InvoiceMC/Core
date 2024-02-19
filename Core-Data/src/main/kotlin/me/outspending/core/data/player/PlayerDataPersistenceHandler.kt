@@ -8,11 +8,11 @@ import java.util.*
 class PlayerDataPersistenceHandler : DataPersistenceHandler<PlayerData, UUID> {
 
     override fun save(value: UUID, data: PlayerData?) {
-        data?.let {
-            database.hasData(munchPlayerData, value).thenAccept { hasData ->
-                if (hasData!!) database.updateData(munchPlayerData, it, value)
-                else database.addData(munchPlayerData, it)
-            }
+        requireNotNull(data) { "Player data for $value is null" }
+
+        database.hasData(munchPlayerData, value).thenAcceptAsync { hasData ->
+            if (hasData!!) database.updateData(munchPlayerData, data, value)
+            else database.addData(munchPlayerData, data)
         }
     }
 
