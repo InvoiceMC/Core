@@ -23,7 +23,10 @@ interface Mine {
     fun getTopLocation(): Location
     fun getRegion(): BoundingBox
 
-    fun reset()
+    fun removeBlock(location: Location)
+    fun removeBlocks(locations: List<Location>)
+
+    fun reset(): Int
     fun expand(size: Int)
     fun increaseBlocks(amount: Int)
 }

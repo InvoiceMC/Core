@@ -15,14 +15,15 @@ interface PrivateMine {
             return PrivateMineImpl(name, owner, mutableListOf(), location, defaultMine)
         }
 
-        fun createMine(name: String, owner: Player, members: MutableList<UUID>, spawn: Location, mine: Mine): PrivateMine {
+        fun createMine(name: String, owner: Player, members: MutableList<Player>, spawn: Location, mine: Mine): PrivateMine {
             return PrivateMineImpl(name, owner, members, spawn, mine)
         }
     }
 
     fun getMineName(): String
     fun getMineOwner(): Player
-    fun getMineMembers(): MutableList<UUID>
+    fun getAllMembers(): MutableList<Player>
+    fun getMineMembers(): MutableList<Player>
     fun getMineSpawn(): Location
     fun getMine(): Mine
 
@@ -41,7 +42,8 @@ interface PrivateMine {
     fun updatePackets(player: Player) // Used for when the player does /pmine home
     fun updateMine() // This will update the bedrock and mine
 
-    fun isMember(player: UUID): Boolean
-    fun isOwner(player: UUID): Boolean
+    fun isInMine(player: Player): Boolean
+    fun isMember(player: Player): Boolean
+    fun isOwner(player: Player): Boolean
 
 }

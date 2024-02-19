@@ -6,29 +6,42 @@ import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.util.*
 
+private val RESET_MESSAGE: String = listOf(
+    "",
+    "<main><b>ᴘᴍɪɴᴇꜱ",
+    " <second><b>|</b> %1 <gray>has just reset the mine!",
+    "  <gray>Total Blocks Reset: <second>%2",
+    ""
+).joinToString("\n")
+
 class PrivateMineImpl internal constructor(
     val name: String,
     val owner: Player,
-    val members: MutableList<UUID>,
+    val members: MutableList<Player>,
     val spawn: Location,
     val mine: Mine
 ) : PrivateMine {
     override fun getMineName(): String = name
     override fun getMineOwner(): Player = owner
-    override fun getMineMembers(): MutableList<UUID> = members
+    override fun getAllMembers(): MutableList<Player> {
+        val allMembers = mutableListOf(owner)
+        allMembers.addAll(members)
+
+        return allMembers
+    }
+
+    override fun getMineMembers(): MutableList<Player> = members
     override fun getMineSpawn(): Location = spawn
     override fun getMine(): Mine = mine
 
     private fun hasPmine(player: Player): Boolean = player.getData().pmineName != null
 
     override fun addMember(executedPlayer: Player, newMember: Player) {
-        val executedPlayerUUID = executedPlayer.uniqueId
-        val playerUUID = newMember.uniqueId
-        if (!isOwner(executedPlayerUUID)) {
+        if (!isOwner(executedPlayer)) {
             executedPlayer.sendMessage("<red>You are not the owner of this mine!".parse(true))
             return
         }
-        if (isMember(playerUUID)) {
+        if (isMember(newMember)) {
             executedPlayer.sendMessage("<red>${newMember.name} is already a member of this mine!".parse(true))
             return
         }
@@ -37,7 +50,7 @@ class PrivateMineImpl internal constructor(
             return
         }
 
-        members.add(playerUUID) // TODO: This is temporary
+        members.add(newMember) // TODO: This is temporary
         executedPlayer.sendMessage("<green>${newMember.name} has been added to your mine!".parse(true))
     }
 
@@ -61,7 +74,17 @@ class PrivateMineImpl internal constructor(
         TODO("Not yet implemented")
     }
 
-    override fun resetMine() = mine.reset()
+    override fun resetMine() {
+        val changedBlocks = mine.reset()
+
+        val message = RESET_MESSAGE.format(name, changedBlocks)
+        getAllMembers()
+            .filter { isInMine(it) }
+            .forEach {
+                it.sendMessage(message)
+            }
+    }
+
     override fun increaseMineSize(size: Int) = mine.expand(size)
     override fun updatePackets(player: Player) = player.sendMultiBlockChange(mine.getBlocks())
 
@@ -69,7 +92,8 @@ class PrivateMineImpl internal constructor(
         TODO("Not yet implemented")
     }
 
-    override fun isMember(player: UUID): Boolean = members.contains(player)
-    override fun isOwner(player: UUID): Boolean = owner.uniqueId == player
+    override fun isInMine(player: Player): Boolean = player.world.name == "pmines"
+    override fun isMember(player: Player): Boolean = members.contains(player)
+    override fun isOwner(player: Player): Boolean = owner.uniqueId == player.uniqueId
 
 }
