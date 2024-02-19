@@ -16,10 +16,10 @@ private val RESET_MESSAGE: String = listOf(
 
 class PrivateMineImpl internal constructor(
     val name: String,
-    val owner: Player,
-    val members: MutableList<Player>,
-    val spawn: Location,
-    val mine: Mine
+    private val owner: Player,
+    private val members: MutableList<Player>,
+    private val spawn: Location,
+    private val mine: Mine
 ) : PrivateMine {
     override fun getMineName(): String = name
     override fun getMineOwner(): Player = owner
@@ -67,6 +67,17 @@ class PrivateMineImpl internal constructor(
     }
 
     override fun disbandMine() {
+        getAllMembers().forEach {
+            val data = it.getData()
+            data.pmineName = null
+
+//            if (isInMine(it)) {
+//                // TODO: Teleport player to spawn
+//            }
+
+            it.sendMessage("<red>Your mine has been disbanded!".parse(true))
+        }
+
         TODO("Not yet implemented")
     }
 

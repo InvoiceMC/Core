@@ -2,7 +2,6 @@ package me.outspending.core.pmines
 
 import org.bukkit.Location
 import org.bukkit.entity.Player
-import java.util.UUID
 
 interface PrivateMine {
 
@@ -15,7 +14,13 @@ interface PrivateMine {
             return PrivateMineImpl(name, owner, mutableListOf(), location, defaultMine)
         }
 
-        fun createMine(name: String, owner: Player, members: MutableList<Player>, spawn: Location, mine: Mine): PrivateMine {
+        fun createMine(
+            name: String,
+            owner: Player,
+            members: MutableList<Player>,
+            spawn: Location,
+            mine: Mine
+        ): PrivateMine {
             return PrivateMineImpl(name, owner, members, spawn, mine)
         }
     }

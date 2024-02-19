@@ -4,7 +4,11 @@ import org.bukkit.Location
 import org.bukkit.block.data.BlockData
 import org.bukkit.util.BoundingBox
 
-class MineImpl internal constructor(val bottom: Location, val top: Location, val region: BoundingBox) : Mine {
+class MineImpl internal constructor(
+    private val bottom: Location,
+    private val top: Location,
+    private val region: BoundingBox
+) : Mine {
     private var blocks: MutableMap<Location, BlockData> = mutableMapOf()
 
     override fun getBlocks(): Map<Location, BlockData> = blocks
