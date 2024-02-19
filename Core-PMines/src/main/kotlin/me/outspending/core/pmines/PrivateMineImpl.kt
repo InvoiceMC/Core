@@ -63,10 +63,7 @@ class PrivateMineImpl internal constructor(
 
     override fun resetMine() = mine.reset()
     override fun increaseMineSize(size: Int) = mine.expand(size)
-
-    override fun updatePackets(player: Player) {
-        TODO("Not yet implemented")
-    }
+    override fun updatePackets(player: Player) = player.sendMultiBlockChange(mine.getBlocks())
 
     override fun updateMine() {
         TODO("Not yet implemented")

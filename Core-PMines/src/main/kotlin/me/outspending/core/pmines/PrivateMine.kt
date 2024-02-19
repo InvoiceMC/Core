@@ -3,7 +3,6 @@ package me.outspending.core.pmines
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import java.util.UUID
-import kotlin.reflect.jvm.internal.impl.descriptors.Visibilities.Private
 
 interface PrivateMine {
 

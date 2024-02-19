@@ -1,6 +1,7 @@
 package me.outspending.core.pmines
 
 import org.bukkit.Location
+import org.bukkit.block.data.BlockData
 import org.bukkit.util.BoundingBox
 
 interface Mine {
@@ -17,6 +18,7 @@ interface Mine {
         }
     }
 
+    fun getBlocks(): Map<Location, BlockData>
     fun getBottomLocation(): Location
     fun getTopLocation(): Location
     fun getRegion(): BoundingBox
