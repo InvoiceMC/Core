@@ -10,6 +10,7 @@ import me.outspending.core.pmines.Extensions.getPmine
 import me.outspending.core.pmines.Extensions.hasPmine
 import me.outspending.core.pmines.Mine
 import me.outspending.core.pmines.PrivateMine
+import net.kyori.adventure.title.Title
 import org.bukkit.Material
 import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
@@ -37,8 +38,14 @@ class PmineCommand {
         name = "create",
         description = "Create a pmine"
     )
-    fun createPmine(player: Player, name: String) {
-        if (checkPmine(player)) return
+    fun createPmine(player: Player, name: String?) {
+        println("Creating Pmine...")
+        if (!checkPmine(player)) return
+
+        if (name == null) {
+            player.sendMessage("<red>You need to specify a name for the pmine!".parse(true))
+            return
+        }
 
         if (name.length > 12) {
             player.sendMessage("<red>The name of the pmine can't be longer than 12 characters!".parse(true))
@@ -50,6 +57,13 @@ class PmineCommand {
             return
         }
 
+        player.showTitle(
+            Title.title(
+                "<main>ᴘᴍɪɴᴇ".parse(),
+                "<gray>Creating Pmine named <second>$name".parse()
+            )
+        )
+
         val privateMine = PrivateMine.createMine(name, player)
         pmineDataManager.savePmine(privateMine)
     }
@@ -59,7 +73,7 @@ class PmineCommand {
         description = "Get info about your pmine"
     )
     fun pmineInfo(player: Player) {
-        if (!checkPmine(player)) return
+        if (checkPmine(player)) return
 
         val pmine = player.getPmine()
         pmine.showInfo(player)
