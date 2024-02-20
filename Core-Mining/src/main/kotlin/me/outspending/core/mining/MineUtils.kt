@@ -1,12 +1,15 @@
 package me.outspending.core.mining
 
 import me.outspending.core.mining.shapes.CuboidShape
-import me.outspending.core.mining.sync.PacketSync
 import me.outspending.core.misc.WeightedCollection
+import me.outspending.core.pmines.Extensions.getPmine
+import me.outspending.core.pmines.Mine
+import me.outspending.core.pmines.sync.PacketSync
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
+import org.bukkit.util.BoundingBox
 
 object MineUtils {
 
@@ -18,8 +21,9 @@ object MineUtils {
         blocks: MutableMap<Location, BlockData>,
         syncPackets: Boolean
     ) {
+        val pmine = player.getPmine()
         if (syncPackets) {
-            PacketSync.syncBlocks(blockLocation, blocks)
+            PacketSync.syncBlocks(pmine, blockLocation, blocks)
             return
         }
 
@@ -37,12 +41,13 @@ object MineUtils {
      */
     fun setBlocks(
         player: Player,
+        region: BoundingBox,
         blockLocation: Location,
         shape: Shape,
         blockData: BlockData = NULLBLOCK,
         syncPackets: Boolean = false
     ): Int {
-        val (num, blocks) = shape.run(blockLocation, blockData)
+        val (num, blocks) = shape.run(region, blockLocation, blockData)
         setBlock(player, blockLocation, blocks, syncPackets)
 
         return num
@@ -50,28 +55,15 @@ object MineUtils {
 
     fun setBlocks(
         player: Player,
+        region: BoundingBox,
         blockLocation: Location,
         shape: Shape,
         weightedCollection: WeightedCollection<BlockData>,
         syncPackets: Boolean = false
     ): Int {
-        val (num, blocks) = shape.run(blockLocation, weightedCollection)
+        val (num, blocks) = shape.run(region, blockLocation, weightedCollection)
         setBlock(player, blockLocation, blocks, syncPackets)
 
         return num
-    }
-
-    fun setBlocksBetween(
-        player: Player,
-        minLocation: Location,
-        maxLocation: Location,
-        weightedCollection: WeightedCollection<BlockData>,
-        syncPackets: Boolean = false
-    ): Pair<Int, MutableMap<Location, BlockData>> {
-        val plrLocation = player.location
-        val (num, blocks) = CuboidShape(minLocation, maxLocation).run(plrLocation, weightedCollection)
-        setBlock(player, plrLocation, blocks, syncPackets)
-
-        return (num to blocks)
     }
 }

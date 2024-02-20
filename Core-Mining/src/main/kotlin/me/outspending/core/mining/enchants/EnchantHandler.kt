@@ -2,9 +2,11 @@ package me.outspending.core.mining.enchants
 
 import me.outspending.core.data.player.PlayerData
 import me.outspending.core.mining.Extensions.getConnection
+import me.outspending.core.pmines.Mine
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
+import org.bukkit.util.BoundingBox
 import org.reflections.Reflections
 import kotlin.random.Random
 
@@ -20,6 +22,7 @@ object EnchantHandler {
         player: Player,
         playerData: PlayerData,
         blockLocation: Location,
+        region: BoundingBox,
         random: Random
     ): EnchantResult {
         val itemMeta = player.inventory.itemInMainHand.itemMeta
@@ -38,6 +41,7 @@ object EnchantHandler {
                         dataContainer,
                         enchantmentLevel,
                         blockLocation,
+                        region,
                         random
                     )
 

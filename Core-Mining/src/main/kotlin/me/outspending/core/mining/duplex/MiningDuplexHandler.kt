@@ -7,7 +7,9 @@ import me.outspending.core.data.Extensions.getData
 import me.outspending.core.mining.PickaxeUpdater
 import me.outspending.core.mining.enchants.EnchantHandler
 import me.outspending.core.mining.enchants.EnchantResult
-import me.outspending.core.mining.sync.PacketSync
+import me.outspending.core.pmines.Extensions.getPmine
+import me.outspending.core.pmines.Mine
+import me.outspending.core.pmines.sync.PacketSync
 import net.minecraft.core.BlockPos
 import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket
@@ -17,6 +19,7 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import org.bukkit.util.BoundingBox
 import kotlin.random.Random
 
 class MiningDuplexHandler(
@@ -34,17 +37,23 @@ class MiningDuplexHandler(
             if (packet.action == ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK) {
                 val mainHand = player.inventory.itemInMainHand
                 if (mainHand.type == Material.DIAMOND_PICKAXE) {
+                    val pmine = player.getPmine()
+                    val mine = pmine.getMine()
+                    val region = mine.getRegion()
+
                     val pos: BlockPos = packet.pos
                     val location = toLocation(pos)
 
-                    connection.send(ClientboundBlockDestructionPacket(player.entityId, pos, -1))
-                    PacketSync.syncBlock(location, airBlock)
+                    if (region.contains(location.toVector())) {
+                        connection.send(ClientboundBlockDestructionPacket(player.entityId, pos, -1))
+                        PacketSync.syncBlock(pmine, location, airBlock)
 
-                    prisonBreak(player, location, mainHand)
+                        prisonBreak(player, location, mainHand, region)
+                    }
                 }
             }
         } else if (packet is ServerboundUseItemOnPacket) {
-//            return //this stops me from placing blocks (ghost blocks), so only return when u want to cancel inside the mine
+            return
         }
 
         super.channelRead(channelHandlerContext, packet)
@@ -58,6 +67,7 @@ class MiningDuplexHandler(
         player: Player,
         location: Location,
         mainHand: ItemStack,
+        region: BoundingBox
     ) {
         // TODO: Add a list per block material and check, right now it doesn't check therefore all
         // blocks are "mine able"
@@ -67,7 +77,7 @@ class MiningDuplexHandler(
         val data = player.getData()
 
         // Execute all the enchants that the player has on their pickaxe
-        val result: EnchantResult = EnchantHandler.executeAllEnchants(player, data, location, random)
+        val result: EnchantResult = EnchantHandler.executeAllEnchants(player, data, location, region, random)
 
         // Some other things
         if (player.level >= (100 + (25 * data.prestige))) {

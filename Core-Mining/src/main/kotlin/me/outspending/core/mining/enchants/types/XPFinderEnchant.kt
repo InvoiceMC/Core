@@ -10,6 +10,7 @@ import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
+import org.bukkit.util.BoundingBox
 import kotlin.random.Random
 
 class XPFinderEnchant : PickaxeEnchant {
@@ -29,6 +30,7 @@ class XPFinderEnchant : PickaxeEnchant {
         dataContainer: PersistentDataContainer,
         enchantmentLevel: Int,
         blockLocation: Location,
+        region: BoundingBox,
         random: Random
     ): EnchantResult {
         if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()

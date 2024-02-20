@@ -92,7 +92,7 @@ class PrivateMineImpl internal constructor(
 
     override fun resetMine(player: Player) {
         runAsync {
-            val changedBlocks: Int = mine.reset(player)
+            val changedBlocks: Int = mine.reset(player, this)
 
             val message = RESET_MESSAGE.format(name, changedBlocks.format()).parse()
             getAllMembers()

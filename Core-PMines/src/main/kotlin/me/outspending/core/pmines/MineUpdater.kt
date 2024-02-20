@@ -1,9 +1,9 @@
 package me.outspending.core.pmines
 
+import me.outspending.core.BlockVector3D
 import me.outspending.core.Utilities
-import me.outspending.core.mining.Shape
-import me.outspending.core.mining.sync.PacketSync
 import me.outspending.core.misc.WeightedCollection
+import me.outspending.core.pmines.sync.PacketSync
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.block.data.BlockData
@@ -14,12 +14,13 @@ object MineUpdater {
         .add(0.75, Material.STONE.createBlockData())
         .add(0.25, Material.COBBLESTONE.createBlockData())
 
-    fun resetMine(player: Player, mine: Mine): Pair<Int, MutableMap<Location, BlockData>> {
+    fun resetMine(player: Player, privateMine: PrivateMine): Pair<Int, MutableMap<Location, BlockData>> {
+        val mine = privateMine.getMine()
         val bottom = mine.getBottomLocation()
         val top = mine.getTopLocation()
         val world = player.world
 
-        val vector = Shape.BlockVector3D(bottom, top)
+        val vector = BlockVector3D(bottom, top)
         val min = vector.getMin(world)
         val max = vector.getMax(world)
 
@@ -33,7 +34,7 @@ object MineUpdater {
             }
         }
 
-        PacketSync.syncBlocks(min, blocks)
+        PacketSync.syncBlocks(privateMine, min, blocks)
         return (blocks.size to blocks)
     }
 }

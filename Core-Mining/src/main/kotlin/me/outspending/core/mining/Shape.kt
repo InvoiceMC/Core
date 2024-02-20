@@ -1,10 +1,13 @@
 package me.outspending.core.mining
 
+import me.outspending.core.BlockVector3D
 import me.outspending.core.Utilities
 import me.outspending.core.misc.WeightedCollection
+import me.outspending.core.pmines.Mine
 import org.bukkit.Location
 import org.bukkit.World
 import org.bukkit.block.data.BlockData
+import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 import kotlin.math.max
 import kotlin.math.min
@@ -12,16 +15,19 @@ import kotlin.math.min
 interface Shape {
 
     fun run(
+        region: BoundingBox,
         blockLocation: Location,
         blockData: BlockData
     ): Pair<Int, MutableMap<Location, BlockData>>
 
     fun run(
+        region: BoundingBox,
         blockLocation: Location,
         weightedCollection: WeightedCollection<BlockData>
     ): Pair<Int, MutableMap<Location, BlockData>>
 
     fun runInternal(
+        region: BoundingBox,
         blockLocation: Location,
         vec1: Vector,
         vec2: Vector,
@@ -33,56 +39,20 @@ interface Shape {
         var num = 0
         val blocks = runXYZ(blockVector) { x, y, z, blockChanges ->
             val location = Utilities.toLocation(world, x, y, z)
-            blockProcessor(location, blockChanges)
-
-            num++
+            if (region.contains(location.toVector())) {
+                blockProcessor(location, blockChanges)
+                num++
+            }
         }
 
         return (num to blocks)
-    }
-
-    data class BlockVector3D(
-        val minX: Int,
-        val minY: Int,
-        val minZ: Int,
-        val maxX: Int,
-        val maxY: Int,
-        val maxZ: Int
-    ) {
-        constructor(
-            blockLocation: Location,
-            vec1: Vector,
-            vec2: Vector
-        ) : this(
-            min(blockLocation.blockX - vec1.blockX, blockLocation.blockX - vec2.blockX),
-            min(blockLocation.blockY - vec1.blockY, blockLocation.blockY - vec2.blockY),
-            min(blockLocation.blockZ - vec1.blockZ, blockLocation.blockZ - vec2.blockZ),
-            max(blockLocation.blockX - vec1.blockX, blockLocation.blockX - vec2.blockX),
-            max(blockLocation.blockY - vec1.blockY, blockLocation.blockY - vec2.blockY),
-            max(blockLocation.blockZ - vec1.blockZ, blockLocation.blockZ - vec2.blockZ)
-        )
-
-        constructor(
-            bottomLocation: Location,
-            topLocation: Location
-        ) : this(
-            min(bottomLocation.blockX, topLocation.blockX),
-            min(bottomLocation.blockY, topLocation.blockY),
-            min(bottomLocation.blockZ, topLocation.blockZ),
-            max(bottomLocation.blockX, topLocation.blockX),
-            max(bottomLocation.blockY, topLocation.blockY),
-            max(bottomLocation.blockZ, topLocation.blockZ)
-        )
-
-        fun getMin(world: World) = Utilities.toLocation(world, minX, minY, minZ)
-        fun getMax(world: World) = Utilities.toLocation(world, maxX, maxY, maxZ)
     }
 }
 
 
 
 internal inline fun runXYZ(
-    blockVector3D: Shape.BlockVector3D,
+    blockVector3D: BlockVector3D,
     run: (Int, Int, Int, MutableMap<Location, BlockData>) -> Unit
 ): MutableMap<Location, BlockData> {
     val (minX, minY, minZ, maxX, maxY, maxZ) = blockVector3D

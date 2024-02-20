@@ -1,6 +1,7 @@
 package me.outspending.core.mining.enchants
 
 import me.outspending.core.data.player.PlayerData
+import me.outspending.core.pmines.Mine
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
 import org.bukkit.Material
@@ -8,6 +9,7 @@ import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
+import org.bukkit.util.BoundingBox
 import kotlin.random.Random
 
 interface PickaxeEnchant {
@@ -35,6 +37,7 @@ interface PickaxeEnchant {
         dataContainer: PersistentDataContainer,
         enchantmentLevel: Int,
         blockLocation: Location,
+        region: BoundingBox,
         random: Random
     ): EnchantResult
 }
