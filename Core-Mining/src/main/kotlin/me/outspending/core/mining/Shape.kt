@@ -3,6 +3,7 @@ package me.outspending.core.mining
 import me.outspending.core.Utilities
 import me.outspending.core.misc.WeightedCollection
 import org.bukkit.Location
+import org.bukkit.World
 import org.bukkit.block.data.BlockData
 import org.bukkit.util.Vector
 import kotlin.math.max
@@ -60,6 +61,21 @@ interface Shape {
             max(blockLocation.blockY - vec1.blockY, blockLocation.blockY - vec2.blockY),
             max(blockLocation.blockZ - vec1.blockZ, blockLocation.blockZ - vec2.blockZ)
         )
+
+        constructor(
+            bottomLocation: Location,
+            topLocation: Location
+        ) : this(
+            min(bottomLocation.blockX, topLocation.blockX),
+            min(bottomLocation.blockY, topLocation.blockY),
+            min(bottomLocation.blockZ, topLocation.blockZ),
+            max(bottomLocation.blockX, topLocation.blockX),
+            max(bottomLocation.blockY, topLocation.blockY),
+            max(bottomLocation.blockZ, topLocation.blockZ)
+        )
+
+        fun getMin(world: World) = Utilities.toLocation(world, minX, minY, minZ)
+        fun getMax(world: World) = Utilities.toLocation(world, maxX, maxY, maxZ)
     }
 }
 

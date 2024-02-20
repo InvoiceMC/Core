@@ -1,6 +1,7 @@
 package me.outspending.core.pmines
 
 import me.outspending.core.data.Extensions.getData
+import me.outspending.core.pmines.data.pmineDataManager
 import org.bukkit.Location
 import org.bukkit.entity.Player
 
@@ -9,8 +10,8 @@ interface PrivateMine {
     companion object {
         fun createMine(name: String, owner: Player): PrivateMine {
             // TODO: Update these to be correct
-            val defaultMine = Mine.default() ?: throw NullPointerException("Default mine is null")
-            val location = owner.location
+            val defaultMine = Mine.default()
+            val location = Location(owner.world, 271.5, 33.0, -851.5, 90f, 0f)
 
             val data = owner.getData()
             data.pmineName = name
@@ -43,8 +44,10 @@ interface PrivateMine {
     fun leaveMine(player: Player)
     fun disbandMine()
 
+    fun teleportToMine(player: Player)
+
     fun showInfo(player: Player)
-    fun resetMine()
+    fun resetMine(player: Player)
 
     fun increaseMineSize(size: Int)
 

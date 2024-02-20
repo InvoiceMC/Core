@@ -1,7 +1,9 @@
 package me.outspending.core.pmines
 
+import me.outspending.core.mining.Shape
 import org.bukkit.Location
 import org.bukkit.block.data.BlockData
+import org.bukkit.entity.Player
 import org.bukkit.util.BoundingBox
 
 class MineImpl internal constructor(
@@ -24,8 +26,8 @@ class MineImpl internal constructor(
         locations.forEach { blocks.remove(it) }
     }
 
-    override fun reset(): Int {
-        val (num, newBlocks) = MineUpdater.resetMine(this)
+    override fun reset(player: Player): Int {
+        val (num, newBlocks) = MineUpdater.resetMine(player, this)
         blocks = newBlocks
 
         return num

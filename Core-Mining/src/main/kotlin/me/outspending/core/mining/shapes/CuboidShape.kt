@@ -22,6 +22,20 @@ class CuboidShape(private val vec1: Vector, private val vec2: Vector) : Shape {
         weightedCollection: WeightedCollection<BlockData>
     ): Pair<Int, MutableMap<Location, BlockData>> =
         runInternal(blockLocation, vec1, vec2) { location, blockChanges ->
+            println("Setting block at: $location")
             blockChanges[location] = weightedCollection.next()
         }
+
+    fun runBetween(
+        loc1: Location,
+        loc2: Location,
+        weightedCollection: WeightedCollection<BlockData>
+    ): Pair<Int, MutableMap<Location, BlockData>> {
+        val vec1 = loc1.toVector()
+        val vec2 = loc2.toVector()
+
+        return runInternal(loc1, vec1, vec2) { location, blockChanges ->
+            blockChanges[location] = weightedCollection.next()
+        }
+    }
 }

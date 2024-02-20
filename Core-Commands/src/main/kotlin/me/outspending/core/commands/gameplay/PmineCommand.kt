@@ -5,15 +5,19 @@ import com.azuyamat.maestro.bukkit.annotations.SubCommand
 import me.outspending.core.data.Extensions.getData
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.pmines.data.pmineDataManager
-import me.outspending.core.misc.WeightedCollection
 import me.outspending.core.pmines.Extensions.getPmine
 import me.outspending.core.pmines.Extensions.hasPmine
-import me.outspending.core.pmines.Mine
 import me.outspending.core.pmines.PrivateMine
 import net.kyori.adventure.title.Title
-import org.bukkit.Material
-import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
+
+private fun checkPmine(player: Player): Boolean {
+    if (!player.hasPmine()) {
+        player.sendMessage("<red>You don't have a pmine!".parse(true))
+        return false
+    }
+    return true
+}
 
 @Command(
     name = "pmine",
@@ -22,25 +26,16 @@ import org.bukkit.entity.Player
 )
 class PmineCommand {
 
-    private fun checkPmine(player: Player): Boolean {
-        if (!player.hasPmine()) {
-            player.sendMessage("<red>You don't have a pmine!".parse(true))
-            return false
-        }
-        return true
-    }
-
     fun onCommand(player: Player) {
         player.sendMessage("Pmines!")
     }
 
-    @SubCommand(
-        name = "create",
-        description = "Create a pmine"
-    )
-    fun createPmine(player: Player, name: String?) {
-        println("Creating Pmine...")
-        if (!checkPmine(player)) return
+    @SubCommand("create")
+    fun create(player: Player, name: String?) {
+        if (checkPmine(player)) {
+            player.sendMessage("<red>You already have a pmine!".parse(true))
+            return
+        }
 
         if (name == null) {
             player.sendMessage("<red>You need to specify a name for the pmine!".parse(true))
@@ -65,17 +60,40 @@ class PmineCommand {
         )
 
         val privateMine = PrivateMine.createMine(name, player)
-        pmineDataManager.savePmine(privateMine)
+        pmineDataManager.addPmine(privateMine)
+        println(pmineDataManager.getPmineNames())
+        privateMine.resetMine(player)
     }
 
-    @SubCommand(
-        name = "info",
-        description = "Get info about your pmine"
-    )
-    fun pmineInfo(player: Player) {
-        if (checkPmine(player)) return
+    @SubCommand("info")
+    fun info(player: Player) {
+        if (!checkPmine(player)) return
 
         val pmine = player.getPmine()
         pmine.showInfo(player)
+    }
+
+    @SubCommand("home")
+    fun home(player: Player) {
+        if (!checkPmine(player)) return
+
+        val pmine = player.getPmine()
+        pmine.teleportToMine(player)
+    }
+
+    @SubCommand("test")
+    fun test(player: Player) {
+        if (!checkPmine(player)) return
+
+        val data = player.getData()
+        data.pmineName = null
+    }
+
+    @SubCommand("reset")
+    fun reset(player: Player) {
+        if (!checkPmine(player)) return
+
+        val pmine = player.getPmine()
+        pmine.resetMine(player)
     }
 }

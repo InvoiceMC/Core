@@ -1,16 +1,17 @@
 package me.outspending.core.pmines
 
+import me.outspending.core.Utilities.format
+import me.outspending.core.Utilities.runAsync
 import me.outspending.core.data.Extensions.getData
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import org.bukkit.Location
 import org.bukkit.entity.Player
-import java.util.*
 
 private val RESET_MESSAGE: String = listOf(
     "",
     "<main><b>ᴘᴍɪɴᴇꜱ",
-    " <second><b>|</b> %1 <gray>has just reset the mine!",
-    "  <gray>Total Blocks Reset: <second>%2",
+    " <second><b>|<reset> <second>%s <gray>has just reset the mine!",
+    "  <gray>Total Blocks Reset: <second>%s",
     ""
 ).joinToString("\n")
 
@@ -81,19 +82,24 @@ class PrivateMineImpl internal constructor(
         TODO("Not yet implemented")
     }
 
+    override fun teleportToMine(player: Player) {
+        player.teleport(spawn)
+    }
+
     override fun showInfo(player: Player) {
         TODO("Not yet implemented")
     }
 
-    override fun resetMine() {
-        val changedBlocks = mine.reset()
+    override fun resetMine(player: Player) {
+        runAsync {
+            val changedBlocks: Int = mine.reset(player)
 
-        val message = RESET_MESSAGE.format(name, changedBlocks)
-        getAllMembers()
-            .filter { isInMine(it) }
-            .forEach {
-                it.sendMessage(message)
-            }
+            val message = RESET_MESSAGE.format(name, changedBlocks.format()).parse()
+            getAllMembers()
+                .forEach {
+                    it.sendMessage(message)
+                }
+        }
     }
 
     override fun increaseMineSize(size: Int) = mine.expand(size)

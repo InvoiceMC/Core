@@ -21,7 +21,9 @@ class PmineDataManager {
         return pmine
     }
 
-    fun addPmine(mine: PrivateMine) = pmineData[mine.getMineName()] == mine
+    fun addPmine(mine: PrivateMine) {
+        pmineData[mine.getMineName()] = mine
+    }
 
     fun savePmine(name: String) = savePmine(getPmine(name))
 

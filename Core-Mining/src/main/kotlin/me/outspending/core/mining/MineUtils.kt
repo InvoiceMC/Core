@@ -67,11 +67,11 @@ object MineUtils {
         maxLocation: Location,
         weightedCollection: WeightedCollection<BlockData>,
         syncPackets: Boolean = false
-    ): Int {
+    ): Pair<Int, MutableMap<Location, BlockData>> {
         val plrLocation = player.location
         val (num, blocks) = CuboidShape(minLocation, maxLocation).run(plrLocation, weightedCollection)
         setBlock(player, plrLocation, blocks, syncPackets)
 
-        return num
+        return (num to blocks)
     }
 }
