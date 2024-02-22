@@ -11,7 +11,7 @@ object PacketListeners {
         pipeline?.addBefore(
             "packet_handler",
             player.name,
-            MiningDuplexHandler(player, player.getConnection()!!)
+            MiningDuplexHandler(player, player.getConnection())
         )
     }
 

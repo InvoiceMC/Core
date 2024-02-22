@@ -1,31 +1,24 @@
 package me.outspending.core.mining.shapes
 
-import me.outspending.core.mining.Shape
+import me.outspending.core.mining.PacketShape
 import me.outspending.core.misc.WeightedCollection
+import me.outspending.core.pmines.PrivateMine
 import org.bukkit.Location
 import org.bukkit.block.data.BlockData
-import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
+import org.jetbrains.annotations.ApiStatus.Experimental
 
-class CuboidShape(private val vec1: Vector, private val vec2: Vector) : Shape {
-    constructor(loc1: Location, loc2: Location) : this(loc1.toVector(), loc2.toVector())
+@Experimental
+class CuboidShape(private val minVec: Vector, private val maxVec: Vector) : PacketShape {
+    override fun process(mine: PrivateMine, blockLocation: Location?, blockData: BlockData) {
+        for
+    }
 
-    override fun run(
-        region: BoundingBox,
-        blockLocation: Location,
-        blockData: BlockData
-    ): Pair<Int, MutableMap<Location, BlockData>> =
-        runInternal(region, blockLocation, vec1, vec2) { location, blockChanges ->
-            blockChanges[location] = blockData
-        }
-
-    override fun run(
-        region: BoundingBox,
-        blockLocation: Location,
-        weightedCollection: WeightedCollection<BlockData>
-    ): Pair<Int, MutableMap<Location, BlockData>> =
-        runInternal(region, blockLocation, vec1, vec2) { location, blockChanges ->
-            println("Setting block at: $location")
-            blockChanges[location] = weightedCollection.next()
-        }
+    override fun process(
+        mine: PrivateMine,
+        blockLocation: Location?,
+        weightedBlockData: WeightedCollection<BlockData>
+    ) {
+        TODO("Not yet implemented")
+    }
 }
