@@ -6,11 +6,13 @@ import me.outspending.core.data.Extensions.getData
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import org.bukkit.Location
 import org.bukkit.entity.Player
+import kotlin.time.measureTime
 
 private val RESET_MESSAGE: String = listOf(
     "",
     "<main><b>ᴘᴍɪɴᴇꜱ",
-    " <second><b>|<reset> <second>%s <gray>has just reset the mine!",
+    " <second><b>|<reset> <gray>Your mine has just been reset",
+    "  <gray>Time: <second>%s",
     "  <gray>Total Blocks Reset: <second>%s",
     ""
 ).joinToString("\n")
@@ -92,9 +94,10 @@ class PrivateMineImpl internal constructor(
 
     override fun resetMine(player: Player) {
         runAsync {
-            val changedBlocks: Int = mine.reset(player, this)
+            var changedBlocks: Int
+            val time = measureTime { changedBlocks = mine.reset(player, this) }
 
-            val message = RESET_MESSAGE.format(name, changedBlocks.format()).parse()
+            val message = RESET_MESSAGE.format(time, changedBlocks.format()).parse()
             getAllMembers()
                 .forEach {
                     it.sendMessage(message)

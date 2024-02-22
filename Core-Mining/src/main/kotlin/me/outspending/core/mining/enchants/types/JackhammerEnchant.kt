@@ -3,14 +3,15 @@ package me.outspending.core.mining.enchants.types
 import me.outspending.core.Utilities.regex
 import me.outspending.core.data.player.PlayerData
 import me.outspending.core.helpers.FormatHelper.Companion.parse
+import me.outspending.core.helpers.enums.CustomSound
 import me.outspending.core.mining.MineUtils
 import me.outspending.core.mining.enchants.EnchantResult
 import me.outspending.core.mining.enchants.PickaxeEnchant
 import me.outspending.core.mining.shapes.CuboidShape
-import net.kyori.adventure.title.Title
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.util.BoundingBox
@@ -56,11 +57,9 @@ class JackhammerEnchant : PickaxeEnchant {
         val moneyAmount: Double = random.nextDouble(10.0, 25.0) * blockCount
         val coinsAmount: Int = (moneyAmount / 5).toInt()
 
-        player.showTitle(
-            Title.title(
-                "<main><b>ᴊᴀᴄᴋʜᴀᴍᴍᴇʀ".parse(),
-                "<gray>Blocks Broken: <main>${blockCount.regex()}".parse()
-            )
+        CustomSound.Custom(Sound.BLOCK_PISTON_CONTRACT, 1f, 1.25f).playSound(player)
+        player.sendActionBar(
+            "<second>Jackhammer <gray>Has procced and broke <second>${blockCount.regex()} <gray>blocks".parse(true)
         )
 
         return EnchantResult(moneyAmount, coinsAmount, blockCount, blockCount)

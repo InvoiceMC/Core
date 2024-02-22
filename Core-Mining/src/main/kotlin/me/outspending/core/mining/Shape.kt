@@ -3,6 +3,7 @@ package me.outspending.core.mining
 import me.outspending.core.BlockVector3D
 import me.outspending.core.Utilities
 import me.outspending.core.misc.WeightedCollection
+import me.outspending.core.pmines.Extensions.hasLocation
 import me.outspending.core.pmines.Mine
 import org.bukkit.Location
 import org.bukkit.World
@@ -39,7 +40,7 @@ interface Shape {
         var num = 0
         val blocks = runXYZ(blockVector) { x, y, z, blockChanges ->
             val location = Utilities.toLocation(world, x, y, z)
-            if (region.contains(location.toVector())) {
+            if (region.hasLocation(location.toVector())) {
                 blockProcessor(location, blockChanges)
                 num++
             }

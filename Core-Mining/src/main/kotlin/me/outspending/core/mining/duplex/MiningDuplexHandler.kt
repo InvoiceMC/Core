@@ -8,6 +8,7 @@ import me.outspending.core.mining.PickaxeUpdater
 import me.outspending.core.mining.enchants.EnchantHandler
 import me.outspending.core.mining.enchants.EnchantResult
 import me.outspending.core.pmines.Extensions.getPmine
+import me.outspending.core.pmines.Extensions.hasLocation
 import me.outspending.core.pmines.Mine
 import me.outspending.core.pmines.sync.PacketSync
 import net.minecraft.core.BlockPos
@@ -44,8 +45,10 @@ class MiningDuplexHandler(
                     val pos: BlockPos = packet.pos
                     val location = toLocation(pos)
 
-                    if (region.contains(location.toVector())) {
+                    if (region.hasLocation(location.toVector())) {
                         connection.send(ClientboundBlockDestructionPacket(player.entityId, pos, -1))
+
+                        mine.removeBlock(location)
                         PacketSync.syncBlock(pmine, location, airBlock)
 
                         prisonBreak(player, location, mainHand, region)

@@ -3,6 +3,7 @@ package me.outspending.core.mining.enchants.types
 import me.outspending.core.Utilities.delay
 import me.outspending.core.Utilities.toComponent
 import me.outspending.core.data.player.PlayerData
+import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.mining.enchants.EnchantResult
 import me.outspending.core.mining.enchants.PickaxeEnchant
 import net.kyori.adventure.title.Title
@@ -41,11 +42,8 @@ class LevelFinderEnchant : PickaxeEnchant {
         player.level += amount
 
         delay(2) {
-            player.showTitle(
-                Title.title(
-                    "<main><b>ʟᴇᴠᴇʟꜰɪɴᴅᴇʀ".toComponent(),
-                    "<gray>You've found <main>${amount}</main> <gray>levels!".toComponent()
-                )
+            player.sendActionBar(
+                "<second>LevelFinder <gray>has procced and gave you <second>${amount} <gray>levels!".parse(true)
             )
         }
 

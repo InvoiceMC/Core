@@ -1,10 +1,10 @@
 package me.outspending.core.mining.enchants.types
 
+import me.outspending.core.Utilities.regex
 import me.outspending.core.data.player.PlayerData
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.mining.enchants.EnchantResult
 import me.outspending.core.mining.enchants.PickaxeEnchant
-import net.kyori.adventure.title.Title
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
 import org.bukkit.Material
@@ -38,11 +38,8 @@ class XPFinderEnchant : PickaxeEnchant {
 
         val xp = random.nextInt((50 * playerData.prestige), (250 * playerData.prestige))
 
-        player.showTitle(
-            Title.title(
-                "<main><b>xᴘꜰɪɴᴅᴇʀ".parse(),
-                "<gray>You've found <main>$xp</main> <gray>xp!".parse()
-            )
+        player.sendActionBar(
+            "<second>XPFinder <gray>has procced and gave you <second>${xp.regex()} <gray>xp!".parse(true)
         )
 
         return EnchantResult(xp = xp)

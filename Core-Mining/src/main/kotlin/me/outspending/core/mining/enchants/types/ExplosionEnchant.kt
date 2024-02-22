@@ -1,6 +1,7 @@
 package me.outspending.core.mining.enchants.types
 
 import me.outspending.core.data.player.PlayerData
+import me.outspending.core.helpers.enums.CustomSound
 import me.outspending.core.mining.MineUtils
 import me.outspending.core.mining.enchants.EnchantResult
 import me.outspending.core.mining.enchants.PickaxeEnchant
@@ -8,6 +9,7 @@ import me.outspending.core.mining.shapes.SphereShape
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.util.BoundingBox
@@ -42,6 +44,8 @@ class ExplosionEnchant : PickaxeEnchant {
             shape = SphereShape(4),
             syncPackets = true
         )
+
+        CustomSound.Custom(Sound.ENTITY_GENERIC_EXPLODE, 0.5f, 1.5f).playSound(player)
 
         val moneyAmount: Double = random.nextDouble(10.0, 25.0) * blockCount
         val coinsAmount: Int = (moneyAmount / 5).toInt()

@@ -16,6 +16,8 @@ object MineUpdater {
 
     fun resetMine(player: Player, privateMine: PrivateMine): Pair<Int, MutableMap<Location, BlockData>> {
         val mine = privateMine.getMine()
+        println(mine.getRegion())
+
         val bottom = mine.getBottomLocation()
         val top = mine.getTopLocation()
         val world = player.world
