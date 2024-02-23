@@ -1,41 +1,64 @@
 package me.outspending.core.mining.shapes
 
+import me.outspending.core.mining.PacketShape
 import me.outspending.core.mining.Shape
 import me.outspending.core.misc.WeightedCollection
+import me.outspending.core.pmines.PrivateMine
+import me.outspending.core.pmines.sync.PacketSync
 import org.bukkit.Location
 import org.bukkit.block.data.BlockData
 import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 
-class CylinderShape(private val radius: Int, private val height: Int) : Shape {
-    private val vec1 = Vector(radius, height, radius)
-    private val vec2 = Vector(-radius, -height, -radius)
+class CylinderShape(private val radius: Int, private val height: Int) : PacketShape() {
+    private val maxVec = Vector(radius, height, radius)
+    private val minVec = Vector(-radius, -height, -radius)
 
-    override fun run(
-        region: BoundingBox,
-        blockLocation: Location,
-        blockData: BlockData
-    ): Pair<Int, MutableMap<Location, BlockData>> =
-        runInternal(region, blockLocation, vec1, vec2) { location, blockChanges ->
+    override fun process(mine: PrivateMine, blockLocation: Location?, blockData: BlockData): Int {
+        requireNotNull(blockLocation) { "Block location cannot be null for CylinderShape" }
+
+        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys.toSet()
+        val (blocksChanged, blockDataMap) = runBetween(super.MINE_WORLD, blockLocation, minVec, maxVec) { location ->
             val distance = blockLocation.distance(location)
             val y = location.y - blockLocation.y
 
-            if (distance <= radius && y <= height) {
-                blockChanges[location] = blockData
+            if (distance <= radius && y <= height && y >= -height && mineBlocks.contains(location)) {
+                blockData
+            } else {
+                null
             }
         }
+        val keys: List<Location> = blockDataMap.keys.toList()
 
-    override fun run(
-        region: BoundingBox,
-        blockLocation: Location,
-        weightedCollection: WeightedCollection<BlockData>
-    ): Pair<Int, MutableMap<Location, BlockData>> =
-        runInternal(region, blockLocation, vec1, vec2) { location, blockChanges ->
+        PacketSync.syncBlocks(mine, blockDataMap)
+        updateBlocks(mine.getMine(), keys)
+        return blocksChanged
+    }
+
+    override fun process(
+        mine: PrivateMine,
+        blockLocation: Location?,
+        weightedBlockData: WeightedCollection<BlockData>
+    ): Int {
+        requireNotNull(blockLocation) { "Block location cannot be null for CylinderShape" }
+
+        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys.toSet()
+        val (blocksChanged, blockDataMap) = runBetween(super.MINE_WORLD, blockLocation, minVec, maxVec) { location ->
             val distance = blockLocation.distance(location)
             val y = location.y - blockLocation.y
 
-            if (distance <= radius && y <= height) {
-                blockChanges[location] = weightedCollection.next()
+            if (distance <= radius && y <= height && y >= -height && mineBlocks.contains(location)) {
+                weightedBlockData.next()
+            } else {
+                null
             }
         }
+        val keys: List<Location> = blockDataMap.keys.toList()
+
+        PacketSync.syncBlocks(mine, blockDataMap)
+        updateBlocks(mine.getMine(), keys)
+        return blocksChanged
+    }
+
+
 }

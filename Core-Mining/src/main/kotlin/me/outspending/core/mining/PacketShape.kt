@@ -21,21 +21,31 @@ abstract class PacketShape {
 
     fun runBetween(
         world: World,
-        minVec: Vector,
+        originLocation: Location,
+        minVector: Vector,
         maxVector: Vector,
         blockProcessor: (Location) -> BlockData?
     ): Pair<Int, Map<Location, BlockData>> {
-        val minX = minVec.blockX
-        val minY = minVec.blockY
-        val minZ = minVec.blockZ
+        val minLoc = originLocation.clone().add(minVector)
+        val maxLoc = originLocation.clone().add(maxVector)
 
-        val maxX = maxVector.blockX
-        val maxY = maxVector.blockY
-        val maxZ = maxVector.blockZ
+        return runBetween(world, minLoc, maxLoc, blockProcessor)
+    }
 
-        // TODO: DEBUG
-        println("minX: $minX, minY: $minY, minZ: $minZ")
-        println("maxX: $maxX, maxY: $maxY, maxZ: $maxZ")
+    fun runBetween(
+        world: World,
+        minLocation: Location,
+        maxLocation: Location,
+        blockProcessor: (Location) -> BlockData?
+    ): Pair<Int, Map<Location, BlockData>> {
+        val minX = minLocation.blockX
+        val minY = minLocation.blockY
+        val minZ = minLocation.blockZ
+
+        val maxX = maxLocation.blockX
+        val maxY = maxLocation.blockY
+        val maxZ = maxLocation.blockZ
+
         val blockDataMap = mutableMapOf<Location, BlockData>()
         for (x in minX..maxX) {
             for (y in minY..maxY) {
@@ -43,9 +53,7 @@ abstract class PacketShape {
                     val location = Utilities.toLocation(world, x, y, z)
                     val blockData = blockProcessor(location)
 
-                    // TODO: DEBUG
                     if (blockData != null) {
-                        println(location)
                         blockDataMap[location] = blockData
                     }
                 }

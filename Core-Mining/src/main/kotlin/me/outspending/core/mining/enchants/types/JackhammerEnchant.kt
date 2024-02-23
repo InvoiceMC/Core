@@ -4,7 +4,6 @@ import me.outspending.core.Utilities.regex
 import me.outspending.core.data.player.PlayerData
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.helpers.enums.CustomSound
-import me.outspending.core.mining.MineUtils
 import me.outspending.core.mining.enchants.EnchantResult
 import me.outspending.core.mining.enchants.PickaxeEnchant
 import me.outspending.core.mining.shapes.CuboidShape
@@ -15,8 +14,6 @@ import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
-import org.bukkit.util.BoundingBox
-import org.bukkit.util.Vector
 import kotlin.random.Random
 
 class JackhammerEnchant : PickaxeEnchant {
@@ -42,15 +39,10 @@ class JackhammerEnchant : PickaxeEnchant {
     ): EnchantResult {
         if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
 
-        val vec1 = Vector(5, 0, 5)
-        val vec2 = Vector(-5, 0, -5)
+        val maxLoc = blockLocation.clone().add(5.0, 0.0, 5.0)
+        val minLoc = blockLocation.clone().add(-5.0, 0.0, -5.0)
 
-        val blockCount =
-            MineUtils.setBlocks(
-                mine,
-                blockLocation,
-                CuboidShape(vec1, vec2),
-            )
+        val blockCount = CuboidShape(minLoc, maxLoc).process(mine, blockLocation)
 
         val moneyAmount: Double = random.nextDouble(10.0, 25.0) * blockCount
         val coinsAmount: Int = (moneyAmount / 5).toInt()

@@ -2,7 +2,6 @@ package me.outspending.core.mining.enchants.types
 
 import me.outspending.core.data.player.PlayerData
 import me.outspending.core.helpers.enums.CustomSound
-import me.outspending.core.mining.MineUtils
 import me.outspending.core.mining.enchants.EnchantResult
 import me.outspending.core.mining.enchants.PickaxeEnchant
 import me.outspending.core.mining.shapes.SphereShape
@@ -13,7 +12,6 @@ import org.bukkit.Material
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
-import org.bukkit.util.BoundingBox
 import kotlin.random.Random
 
 class ExplosionEnchant : PickaxeEnchant {
@@ -37,8 +35,7 @@ class ExplosionEnchant : PickaxeEnchant {
         random: Random
     ): EnchantResult {
         if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
-        val blockCount = SphereShape(4).process(mine, blockLocation)
-        println("EXPLODE!")
+        val blockCount: Int = SphereShape(4).process(mine, blockLocation)
 
         CustomSound.Custom(Sound.ENTITY_GENERIC_EXPLODE, 0.5f, 1.5f).playSound(player)
 

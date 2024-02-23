@@ -29,11 +29,11 @@ object EnchantHandler {
         val itemMeta = player.inventory.itemInMainHand.itemMeta
         val dataContainer: PersistentDataContainer = itemMeta.persistentDataContainer
 
+        val connection = player.getConnection()
         val enchantResult = EnchantResult()
         pickaxeEnchants.forEach { enchant ->
             val enchantmentLevel: Int = enchant.getEnchantmentLevel(dataContainer)
             if (enchantmentLevel > 0) {
-                val connection = player.getConnection()
                 val result: EnchantResult =
                     enchant.execute(
                         player,
