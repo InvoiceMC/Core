@@ -36,7 +36,7 @@ object MineUpdater {
             }
         }
 
-        PacketSync.syncBlocks(privateMine, min, blocks)
+        PacketSync.syncBlocks(privateMine, blocks)
         return (blocks.size to blocks)
     }
 }

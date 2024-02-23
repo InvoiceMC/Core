@@ -8,6 +8,7 @@ import me.outspending.core.mining.MineUtils
 import me.outspending.core.mining.enchants.EnchantResult
 import me.outspending.core.mining.enchants.PickaxeEnchant
 import me.outspending.core.mining.shapes.CuboidShape
+import me.outspending.core.pmines.PrivateMine
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
 import org.bukkit.Material
@@ -36,7 +37,7 @@ class JackhammerEnchant : PickaxeEnchant {
         dataContainer: PersistentDataContainer,
         enchantmentLevel: Int,
         blockLocation: Location,
-        region: BoundingBox,
+        mine: PrivateMine,
         random: Random
     ): EnchantResult {
         if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
@@ -46,12 +47,9 @@ class JackhammerEnchant : PickaxeEnchant {
 
         val blockCount =
             MineUtils.setBlocks(
-                player,
-                region,
+                mine,
                 blockLocation,
                 CuboidShape(vec1, vec2),
-
-                syncPackets = true
             )
 
         val moneyAmount: Double = random.nextDouble(10.0, 25.0) * blockCount

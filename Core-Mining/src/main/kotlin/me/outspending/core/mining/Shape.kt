@@ -13,6 +13,7 @@ import org.bukkit.util.Vector
 import kotlin.math.max
 import kotlin.math.min
 
+@Deprecated("Use PacketShape instead")
 interface Shape {
 
     fun run(

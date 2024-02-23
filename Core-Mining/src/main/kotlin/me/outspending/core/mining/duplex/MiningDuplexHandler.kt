@@ -10,6 +10,7 @@ import me.outspending.core.mining.enchants.EnchantResult
 import me.outspending.core.pmines.Extensions.getPmine
 import me.outspending.core.pmines.Extensions.hasLocation
 import me.outspending.core.pmines.Mine
+import me.outspending.core.pmines.PrivateMine
 import me.outspending.core.pmines.sync.PacketSync
 import net.minecraft.core.BlockPos
 import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket
@@ -51,7 +52,7 @@ class MiningDuplexHandler(
                         mine.removeBlock(location)
                         PacketSync.syncBlock(pmine, location, airBlock)
 
-                        prisonBreak(player, location, mainHand, region)
+                        prisonBreak(player, location, mainHand, pmine)
                     }
                 }
             }
@@ -70,7 +71,7 @@ class MiningDuplexHandler(
         player: Player,
         location: Location,
         mainHand: ItemStack,
-        region: BoundingBox
+        mine: PrivateMine
     ) {
         // TODO: Add a list per block material and check, right now it doesn't check therefore all
         // blocks are "mine able"
@@ -80,7 +81,7 @@ class MiningDuplexHandler(
         val data = player.getData()
 
         // Execute all the enchants that the player has on their pickaxe
-        val result: EnchantResult = EnchantHandler.executeAllEnchants(player, data, location, region, random)
+        val result: EnchantResult = EnchantHandler.executeAllEnchants(player, data, location, mine, random)
 
         // Some other things
         if (player.level >= (100 + (25 * data.prestige))) {

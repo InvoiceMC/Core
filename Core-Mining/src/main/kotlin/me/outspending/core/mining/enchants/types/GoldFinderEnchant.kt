@@ -5,6 +5,7 @@ import me.outspending.core.data.player.PlayerData
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.mining.enchants.EnchantResult
 import me.outspending.core.mining.enchants.PickaxeEnchant
+import me.outspending.core.pmines.PrivateMine
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
 import org.bukkit.Material
@@ -30,7 +31,7 @@ class GoldFinderEnchant : PickaxeEnchant {
         dataContainer: PersistentDataContainer,
         enchantmentLevel: Int,
         blockLocation: Location,
-        region: BoundingBox,
+        mine: PrivateMine,
         random: Random
     ): EnchantResult {
         // Check if enchant should be executed

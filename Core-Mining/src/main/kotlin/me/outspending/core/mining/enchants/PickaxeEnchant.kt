@@ -2,6 +2,7 @@ package me.outspending.core.mining.enchants
 
 import me.outspending.core.data.player.PlayerData
 import me.outspending.core.pmines.Mine
+import me.outspending.core.pmines.PrivateMine
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
 import org.bukkit.Material
@@ -37,7 +38,7 @@ interface PickaxeEnchant {
         dataContainer: PersistentDataContainer,
         enchantmentLevel: Int,
         blockLocation: Location,
-        region: BoundingBox,
+        mine: PrivateMine,
         random: Random
     ): EnchantResult
 }

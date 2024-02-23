@@ -6,6 +6,7 @@ import me.outspending.core.mining.MineUtils
 import me.outspending.core.mining.enchants.EnchantResult
 import me.outspending.core.mining.enchants.PickaxeEnchant
 import me.outspending.core.mining.shapes.SphereShape
+import me.outspending.core.pmines.PrivateMine
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
 import org.bukkit.Material
@@ -32,18 +33,12 @@ class ExplosionEnchant : PickaxeEnchant {
         dataContainer: PersistentDataContainer,
         enchantmentLevel: Int,
         blockLocation: Location,
-        region: BoundingBox,
+        mine: PrivateMine,
         random: Random
     ): EnchantResult {
         if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
-        val blockCount = MineUtils.setBlocks(
-            player,
-            region,
-            blockLocation,
-
-            shape = SphereShape(4),
-            syncPackets = true
-        )
+        val blockCount = SphereShape(4).process(mine, blockLocation)
+        println("EXPLODE!")
 
         CustomSound.Custom(Sound.ENTITY_GENERIC_EXPLODE, 0.5f, 1.5f).playSound(player)
 
