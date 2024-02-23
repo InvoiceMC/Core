@@ -15,7 +15,14 @@ class SphereShape(private val radius: Int) : PacketShape() {
     private val maxVector = Vector(radius, radius, radius)
     private val minVector = Vector(-radius, -radius, -radius)
 
-    override fun process(mine: PrivateMine, blockLocation: Location?, blockData: BlockData): Int {
+    override fun process(mine: PrivateMine, blockLocation: Location?, blockData: BlockData): Int = process(mine, blockLocation, blockData) { _, _ -> }
+
+    override fun process(
+        mine: PrivateMine,
+        blockLocation: Location?,
+        blockData: BlockData,
+        perBlock: (Location, BlockData) -> Unit
+    ): Int {
         requireNotNull(blockLocation) { "Block location cannot be null for SphereShape" }
 
         val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys.toSet() // Using set because its O(1) for .contains()
@@ -23,6 +30,7 @@ class SphereShape(private val radius: Int) : PacketShape() {
             val distance = blockLocation.distance(location)
 
             if (distance <= radius && mineBlocks.contains(location)) {
+                perBlock(location, blockData)
                 blockData
             } else {
                 null
@@ -39,6 +47,13 @@ class SphereShape(private val radius: Int) : PacketShape() {
         mine: PrivateMine,
         blockLocation: Location?,
         weightedBlockData: WeightedCollection<BlockData>
+    ): Int = process(mine, blockLocation, weightedBlockData) { _, _ -> }
+
+    override fun process(
+        mine: PrivateMine,
+        blockLocation: Location?,
+        weightedBlockData: WeightedCollection<BlockData>,
+        perBlock: (Location, BlockData) -> Unit
     ): Int {
         requireNotNull(blockLocation) { "Block location cannot be null for SphereShape" }
 
@@ -47,7 +62,10 @@ class SphereShape(private val radius: Int) : PacketShape() {
             val distance = blockLocation.distance(location)
 
             if (distance <= radius && mineBlocks.contains(location)) {
-                weightedBlockData.next()
+                val nextBlockType = weightedBlockData.next()
+
+                perBlock(location, nextBlockType)
+                nextBlockType
             } else {
                 null
             }

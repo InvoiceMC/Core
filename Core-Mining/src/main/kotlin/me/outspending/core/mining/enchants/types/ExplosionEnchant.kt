@@ -9,6 +9,7 @@ import me.outspending.core.pmines.PrivateMine
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
 import org.bukkit.Material
+import org.bukkit.Particle
 import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
@@ -37,6 +38,7 @@ class ExplosionEnchant : PickaxeEnchant {
         if (random.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
         val blockCount: Int = SphereShape(4).process(mine, blockLocation)
 
+        player.spawnParticle(Particle.EXPLOSION_LARGE, blockLocation, 1)
         CustomSound.Custom(Sound.ENTITY_GENERIC_EXPLODE, 0.5f, 1.5f).playSound(player)
 
         val moneyAmount: Double = random.nextDouble(10.0, 25.0) * blockCount

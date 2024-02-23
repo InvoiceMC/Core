@@ -13,11 +13,22 @@ import org.jetbrains.annotations.ApiStatus.Experimental
 @Experimental
 class CuboidShape(private val minLocation: Location, private val maxLocation: Location) : PacketShape() {
 
-    override fun process(mine: PrivateMine, blockLocation: Location?, blockData: BlockData): Int {
-        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys.toSet()
+    override fun process(mine: PrivateMine, blockLocation: Location?, blockData: BlockData): Int = process(mine, blockLocation, blockData) { _, _ -> }
+
+    override fun process(
+        mine: PrivateMine,
+        blockLocation: Location?,
+        blockData: BlockData,
+        perBlock: (Location, BlockData) -> Unit
+    ): Int {
+        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys.toSet() // Using set because its O(1) for .contains()
         val (blocksChanged, blockDataMap) = runBetween(super.MINE_WORLD, minLocation, maxLocation) {
-            if (mineBlocks.contains(it)) blockData
-            else null
+            if (mineBlocks.contains(it)) {
+                perBlock(it, blockData)
+                blockData
+            } else {
+                null
+            }
         }
         val keys: List<Location> = blockDataMap.keys.toList()
 
@@ -30,11 +41,24 @@ class CuboidShape(private val minLocation: Location, private val maxLocation: Lo
         mine: PrivateMine,
         blockLocation: Location?, // Cuboid doesn't need a block location therefore can be null
         weightedBlockData: WeightedCollection<BlockData>
+    ): Int = process(mine, blockLocation, weightedBlockData) { _, _ -> }
+
+    override fun process(
+        mine: PrivateMine,
+        blockLocation: Location?,
+        weightedBlockData: WeightedCollection<BlockData>,
+        perBlock: (Location, BlockData) -> Unit
     ): Int {
-        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys.toSet()
+        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys.toSet() // Using set because its O(1) for .contains()
         val (blocksChanged, blockDataMap) = runBetween(super.MINE_WORLD, minLocation, maxLocation) {
-            if (mineBlocks.contains(it)) weightedBlockData.next()
-            else null
+            if (mineBlocks.contains(it)) {
+                val nextBlockType = weightedBlockData.next()
+
+                perBlock(it, nextBlockType)
+                nextBlockType
+            } else {
+                null
+            }
         }
         val keys: List<Location> = blockDataMap.keys.toList()
 

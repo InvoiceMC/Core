@@ -17,7 +17,11 @@ abstract class PacketShape {
 
     abstract fun process(mine: PrivateMine, blockLocation: Location?, blockData: BlockData = NULLBLOCK): Int
 
+    abstract fun process(mine: PrivateMine, blockLocation: Location?, blockData: BlockData = NULLBLOCK, perBlock: (Location, BlockData) -> Unit): Int
+
     abstract fun process(mine: PrivateMine, blockLocation: Location?, weightedBlockData: WeightedCollection<BlockData>): Int
+
+    abstract fun process(mine: PrivateMine, blockLocation: Location?, weightedBlockData: WeightedCollection<BlockData>, perBlock: (Location, BlockData) -> Unit): Int
 
     fun runBetween(
         world: World,

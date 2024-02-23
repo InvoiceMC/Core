@@ -105,6 +105,8 @@ object Utilities {
     fun toLocation(world: World, x: Int, y: Int, z: Int) =
         Location(world, x.toDouble(), y.toDouble(), z.toDouble())
 
+    fun Location.center(): Location = this.clone().add(0.5, 0.5, 0.5)
+
     fun getStaff(): List<Player> = Bukkit.getOnlinePlayers().filter { it.hasPermission("core.staff") }
 
     fun getAdmins(): List<Player> = Bukkit.getOnlinePlayers().filter { it.hasPermission("core.admin") }
