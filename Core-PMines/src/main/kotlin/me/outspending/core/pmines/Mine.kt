@@ -1,7 +1,9 @@
 package me.outspending.core.pmines
 
+import me.outspending.core.misc.WeightedCollection
 import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
 import org.bukkit.util.BoundingBox
@@ -9,6 +11,11 @@ import org.bukkit.util.BoundingBox
 interface Mine {
 
     companion object {
+        private val DEFAULT_COLLECTION = WeightedCollection<BlockData>()
+            .add(0.75, Material.STONE.createBlockData())
+            .add(0.25, Material.COBBLESTONE.createBlockData())
+
+        // TODO: Improve this slightly
         fun default(): Mine {
             val world = Bukkit.getWorld("world")
             val topLocation = Location(world, 296.0, 29.0, -846.0)
@@ -17,9 +24,12 @@ interface Mine {
             return createMine(bottomLocation, topLocation)
         }
 
-        fun createMine(bottom: Location, top: Location): Mine {
+        fun createMine(bottom: Location, top: Location, blockWeights: WeightedCollection<BlockData> = DEFAULT_COLLECTION): Mine {
             val boundingBox = BoundingBox.of(bottom, top)
-            return MineImpl(bottom, top, boundingBox)
+            val mine = MineImpl(bottom, top, boundingBox)
+            mine.blockWeights = blockWeights
+
+            return mine
         }
     }
 

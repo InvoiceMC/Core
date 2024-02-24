@@ -42,6 +42,7 @@ class PrivateMineImpl internal constructor(
 
     private fun hasPmine(player: Player): Boolean = player.getData().pmineName != null
 
+    // TODO: Recode this
     override fun addMember(executedPlayer: Player, newMember: Player) {
         if (!isOwner(executedPlayer)) {
             executedPlayer.sendMessage("<red>You are not the owner of this mine!".parse(true))

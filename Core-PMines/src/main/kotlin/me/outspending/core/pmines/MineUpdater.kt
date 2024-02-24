@@ -10,11 +10,7 @@ import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
 
 object MineUpdater {
-    private val DEFAULT = WeightedCollection<BlockData>()
-        .add(0.75, Material.STONE.createBlockData())
-        .add(0.25, Material.COBBLESTONE.createBlockData())
-
-    fun resetMine(player: Player, privateMine: PrivateMine): Pair<Int, MutableMap<Location, BlockData>> {
+    fun resetMine(player: Player, privateMine: PrivateMine, blockWeights: WeightedCollection<BlockData>): Pair<Int, MutableMap<Location, BlockData>> {
         val mine = privateMine.getMine()
         println(mine.getRegion())
 
@@ -31,7 +27,7 @@ object MineUpdater {
             for (y in min.blockY..max.blockY) {
                 for (z in min.blockZ..max.blockZ) {
                     val location = Utilities.toLocation(world, x, y, z)
-                    blocks[location] = DEFAULT.next()
+                    blocks[location] = blockWeights.next()
                 }
             }
         }

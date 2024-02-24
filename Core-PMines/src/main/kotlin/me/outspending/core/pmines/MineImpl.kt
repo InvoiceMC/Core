@@ -1,5 +1,6 @@
 package me.outspending.core.pmines
 
+import me.outspending.core.misc.WeightedCollection
 import org.bukkit.Location
 import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
@@ -8,10 +9,11 @@ import org.bukkit.util.BoundingBox
 private const val RESET_COOLDOWN: Long = 60000 // in milliseconds = 1 Minute
 
 class MineImpl internal constructor(
-    private val bottom: Location,
-    private val top: Location,
+    private var bottom: Location,
+    private var top: Location,
     private val region: BoundingBox
 ) : Mine {
+    internal var blockWeights = WeightedCollection<BlockData>()
     private var blocks: MutableMap<Location, BlockData> = mutableMapOf()
     private var lastReset: Long = 0
 
@@ -30,7 +32,7 @@ class MineImpl internal constructor(
 
     override fun reset(player: Player, mine: PrivateMine): Int? {
         return if (canReset()) {
-            val (num, newBlocks) = MineUpdater.resetMine(player, mine)
+            val (num, newBlocks) = MineUpdater.resetMine(player, mine, blockWeights)
             blocks = newBlocks
             lastReset = System.currentTimeMillis()
 
