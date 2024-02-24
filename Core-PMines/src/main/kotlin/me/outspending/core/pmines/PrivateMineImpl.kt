@@ -6,7 +6,10 @@ import me.outspending.core.data.Extensions.getData
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import org.bukkit.Location
 import org.bukkit.entity.Player
+import kotlin.time.Duration
+import kotlin.time.DurationUnit
 import kotlin.time.measureTime
+import kotlin.time.toDuration
 
 private val RESET_MESSAGE: String = listOf(
     "",
@@ -80,8 +83,6 @@ class PrivateMineImpl internal constructor(
 
             it.sendMessage("<red>Your mine has been disbanded!".parse(true))
         }
-
-        TODO("Not yet implemented")
     }
 
     override fun teleportToMine(player: Player) {
@@ -95,7 +96,18 @@ class PrivateMineImpl internal constructor(
     override fun resetMine(player: Player) {
         runAsync {
             var changedBlocks: Int
-            val time = measureTime { changedBlocks = mine.reset(player, this) }
+            val time = measureTime {
+                val result = mine.reset(player, this)
+                if (result != null) {
+                    changedBlocks = result
+                } else {
+                    val resetTimer = mine.getResetTimeLeft()
+                        .toDuration(DurationUnit.MILLISECONDS)
+
+                    player.sendMessage("You cannot reset your mine yet! Please wait <second>$resetTimer".parse(true))
+                    return@runAsync
+                }
+            }
 
             val message = RESET_MESSAGE.format(time, changedBlocks.format()).parse()
             getAllMembers()

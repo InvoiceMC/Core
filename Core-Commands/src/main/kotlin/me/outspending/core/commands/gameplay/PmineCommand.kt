@@ -89,6 +89,19 @@ class PmineCommand {
         data.pmineName = null
     }
 
+    @SubCommand("disband")
+    fun disband(player: Player) {
+        if (!checkPmine(player)) return
+        val pmine = player.getPmine()
+
+        if (!pmine.isOwner(player)) {
+            player.sendMessage("<red>You are not the owner of this pmine!".parse(true))
+            return
+        }
+
+        pmine.disbandMine()
+    }
+
     @SubCommand("reset")
     fun reset(player: Player) {
         if (!checkPmine(player)) return

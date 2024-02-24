@@ -5,12 +5,15 @@ import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
 import org.bukkit.util.BoundingBox
 
+private const val RESET_COOLDOWN: Long = 60000 // in milliseconds = 1 Minute
+
 class MineImpl internal constructor(
     private val bottom: Location,
     private val top: Location,
     private val region: BoundingBox
 ) : Mine {
     private var blocks: MutableMap<Location, BlockData> = mutableMapOf()
+    private var lastReset: Long = 0
 
     override fun getBlocks(): Map<Location, BlockData> = blocks
     override fun getBottomLocation(): Location = bottom
@@ -25,12 +28,21 @@ class MineImpl internal constructor(
         locations.forEach { blocks.remove(it) }
     }
 
-    override fun reset(player: Player, mine: PrivateMine): Int {
-        val (num, newBlocks) = MineUpdater.resetMine(player, mine)
-        blocks = newBlocks
+    override fun reset(player: Player, mine: PrivateMine): Int? {
+        return if (canReset()) {
+            val (num, newBlocks) = MineUpdater.resetMine(player, mine)
+            blocks = newBlocks
+            lastReset = System.currentTimeMillis()
 
-        return num
+            num
+        } else {
+            null
+        }
     }
+
+    override fun canReset(): Boolean = getResetCooldown() >= RESET_COOLDOWN
+    override fun getResetTimeLeft(): Long = RESET_COOLDOWN - getResetCooldown()
+    override fun getResetCooldown(): Long = System.currentTimeMillis() - lastReset
 
     override fun expand(size: Int) {
         TODO("Not yet implemented")
