@@ -11,13 +11,15 @@ import org.bukkit.entity.TextDisplay
 import org.reflections.Reflections
 
 const val CRATES_PACKAGE = "me.outspending.core.crates.impl"
-val cratesHandler: CratesHandler = CratesHandler().load()
 
-class CratesHandler {
-
+object CratesHandler {
     private val crates: MutableMap<String, ICrate> = mutableMapOf()
     val tasks: MutableMap<String, MutableList<SpiralParticles>> = mutableMapOf()
     val billboards: MutableMap<String, Entity> = mutableMapOf()
+
+    init {
+        load()
+    }
 
     fun reload() {
         Bukkit.broadcast("<gray>Reloading crates...".parse(true))
@@ -25,7 +27,7 @@ class CratesHandler {
         load()
     }
 
-    fun load(): CratesHandler {
+    fun load() {
         delay(20L) {
             println("This has been reloadedaa?")
             for (entity in Bukkit.getWorld("world")?.entities!!) {
@@ -47,7 +49,6 @@ class CratesHandler {
                 billboards[name] = Hologram.createServerSideHologram(crate.getLocation().clone().add(0.5, 1.5, 0.5), listOf("<main>${crate.getDisplayName()}", "<gray>Right click to open", "<gray>Left click to preview rewards"))
             }
         }
-        return this
     }
 
     private fun registerCrate(name: String, crate: ICrate) {

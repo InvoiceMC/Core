@@ -2,7 +2,7 @@ package me.outspending.core.commands.admin
 
 import com.azuyamat.maestro.bukkit.annotations.Command
 import com.azuyamat.maestro.bukkit.annotations.SubCommand
-import me.outspending.core.crates.cratesHandler
+import me.outspending.core.crates.CratesHandler
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.helpers.enums.CustomSound
 import org.bukkit.Bukkit
@@ -27,7 +27,7 @@ class CratesCommand {
         permission = "core.crate.reload"
     )
     fun reload(player: CommandSender) {
-        cratesHandler.reload()
+        CratesHandler.reload()
         player.sendMessage("<gray>Successfully reloaded the crates!".parse(true))
     }
 
@@ -42,7 +42,7 @@ class CratesCommand {
     ) {
         var key = key
         key += " Crate"
-        val crate = cratesHandler.getCrate(key) ?: return player.sendMessage("<red>Invalid crate key ($key)!\n\n<gray>Crates: ${cratesHandler.getCrates().map { it.getDisplayName() }}".parse(true))
+        val crate = CratesHandler.getCrate(key) ?: return player.sendMessage("<red>Invalid crate key ($key)!\n\n<gray>Crates: ${CratesHandler.getCrates().map { it.getDisplayName() }}".parse(true))
         val item = crate.getItemKey().clone()
         item.amount = amount
         for (loopedPlayer in Bukkit.getOnlinePlayers()) {

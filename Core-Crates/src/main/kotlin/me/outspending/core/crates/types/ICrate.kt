@@ -1,6 +1,6 @@
 package me.outspending.core.crates.types
 
-import me.outspending.core.crates.cratesHandler
+import me.outspending.core.crates.CratesHandler
 import me.outspending.core.crates.particles.SpiralParticles
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.misc.WeightedCollection
@@ -67,13 +67,13 @@ interface ICrate {
     fun getRewards(): WeightedCollection<IReward>
 
     fun startParticles(options: DustOptions) {
-        cratesHandler.tasks[getDisplayName()] = mutableListOf()
-        cratesHandler.tasks[getDisplayName()]?.add(SpiralParticles(getLocation(), Vector(0.0, 1.0, 0.0), options))
+        CratesHandler.tasks[getDisplayName()] = mutableListOf()
+        CratesHandler.tasks[getDisplayName()]?.add(SpiralParticles(getLocation(), Vector(0.0, 1.0, 0.0), options))
     }
 
     fun stopParticles() {
-        cratesHandler.tasks[getDisplayName()]?.forEach { it.cancel() }
-        cratesHandler.tasks[getDisplayName()]?.clear()
+        CratesHandler.tasks[getDisplayName()]?.forEach { it.cancel() }
+        CratesHandler.tasks[getDisplayName()]?.clear()
 
     }
 

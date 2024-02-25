@@ -56,8 +56,9 @@ dependencies {
     implementation(project(":Core-PMines"))
 
     // Reobf Modules (These are only modules that contain paperweight)
-    implementation(project(path = ":Core-Mining", configuration = "reobf"))
+    implementation(project(path = ":Core-Mining",    configuration = "reobf"))
     implementation(project(path = ":Core-Holograms", configuration = "reobf"))
+    implementation(project(path = ":Core-Heads",     configuration = "reobf"))
 
     // JMH
     jmh("commons-io:commons-io:2.7")

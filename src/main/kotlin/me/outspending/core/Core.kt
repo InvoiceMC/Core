@@ -2,7 +2,9 @@ package me.outspending.core
 
 import me.outspending.core.bot.DiscordBot
 import me.outspending.core.commands.CommandRegistry
+import me.outspending.core.crates.CratesHandler
 import me.outspending.core.data.DatabaseManager
+import me.outspending.core.heads.HeadsHandler
 import me.outspending.core.listeners.ListenerRegistry
 import org.bukkit.plugin.java.JavaPlugin
 import kotlin.time.measureTime
@@ -20,6 +22,8 @@ class Core : JavaPlugin() {
             CommandRegistry.registerAll()
 
             DatabaseManager.setupDatabase()
+            HeadsHandler.loadHeads()
+            CratesHandler.load()
             // BroadcastHandler.registerAllBroadcasts()
         }
 

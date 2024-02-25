@@ -8,7 +8,8 @@ api-version: $apiVersion
 authors:
   - Outspending
   - Azuyamat
+  - Th7bo
 
 depend:
   - LuckPerms
-  - FastAsyncWorldEdit # For Private Mines (Schematics)
+#  - FastAsyncWorldEdit # For Private Mines (Schematics)
