@@ -1,14 +1,13 @@
 package me.outspending.core.crates
 
-import me.outspending.core.Utilities.delay
 import me.outspending.core.crates.particles.SpiralParticles
 import me.outspending.core.crates.types.ICrate
+import me.outspending.core.delay
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.holograms.GlobalHologram
 import me.outspending.core.holograms.Hologram
 import org.bukkit.Bukkit
 import org.bukkit.entity.Display
-import org.bukkit.entity.Entity
 import org.bukkit.entity.TextDisplay
 import org.reflections.Reflections
 

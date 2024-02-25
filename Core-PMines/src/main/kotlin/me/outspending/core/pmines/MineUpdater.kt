@@ -1,11 +1,10 @@
 package me.outspending.core.pmines
 
 import me.outspending.core.BlockVector3D
-import me.outspending.core.Utilities
 import me.outspending.core.misc.WeightedCollection
 import me.outspending.core.pmines.sync.PacketSync
+import me.outspending.core.toLocation
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
 
@@ -26,7 +25,7 @@ object MineUpdater {
         for (x in min.blockX..max.blockX) {
             for (y in min.blockY..max.blockY) {
                 for (z in min.blockZ..max.blockZ) {
-                    val location = Utilities.toLocation(world, x, y, z)
+                    val location = toLocation(world, x, y, z)
                     blocks[location] = blockWeights.next()
                 }
             }

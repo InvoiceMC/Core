@@ -2,7 +2,6 @@ package me.outspending.core.bot.listeners.discord
 
 import me.outspending.core.bot.DiscordBot
 import me.outspending.core.bot.factories.EmbedFactory
-import net.dv8tion.jda.api.entities.channel.concrete.TextChannel
 import net.dv8tion.jda.api.events.session.ReadyEvent
 import net.dv8tion.jda.api.hooks.ListenerAdapter
 

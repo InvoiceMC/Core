@@ -1,7 +1,6 @@
 package me.outspending.core.mining.enchants
 
 import me.outspending.core.data.player.PlayerData
-import me.outspending.core.pmines.Mine
 import me.outspending.core.pmines.PrivateMine
 import net.minecraft.server.network.ServerGamePacketListenerImpl
 import org.bukkit.Location
@@ -10,35 +9,46 @@ import org.bukkit.NamespacedKey
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
 import org.bukkit.persistence.PersistentDataType
-import org.bukkit.util.BoundingBox
-import kotlin.random.Random
+import java.util.concurrent.ThreadLocalRandom
 
-interface PickaxeEnchant {
+data class EnchantResult(
+    var money: Double = 0.0,
+    var gold: Int = 1,
+    var xp: Int = 0,
+    var blocks: Int = 0
+) {
+    operator fun plusAssign(enchantResult: EnchantResult) {
+        money += enchantResult.money
+        gold += enchantResult.gold
+        xp += enchantResult.xp
+        blocks += enchantResult.blocks
+    }
+}
 
-    fun getEnchantName(): String
-    fun getDescription(): String
-    fun getEnchantItem(): Material
-    fun getInitialCost(): Double = 100.0
-    fun getIncreaseProgression(): Double = 1.0
-    fun getMaxEnchantmentLevel(): Int = 25000
-    fun getEnchantmentChance(enchantLevel: Int): Double
-
-    fun getEnchantmentLevel(itemContainer: PersistentDataContainer): Int {
-        return itemContainer.getOrDefault(
-            NamespacedKey("enchant", getEnchantName()),
-            PersistentDataType.INTEGER,
-            0
-        )
+abstract class PickaxeEnchant {
+    companion object {
+        val RANDOM = ThreadLocalRandom.current()
     }
 
-    fun execute(
+    private val enchantKey = NamespacedKey("enchant", getEnchantName())
+
+    abstract fun getEnchantName(): String
+    abstract fun getDescription(): String
+    abstract fun getEnchantItem(): Material
+    abstract fun getInitialCost(): Float
+    abstract fun getIncreaseProgression(): Float
+    abstract fun getMaxEnchantmentLevel(): Int
+    abstract fun getEnchantmentChance(enchantmentLevel: Int): Float
+    abstract fun execute(
         player: Player,
         playerData: PlayerData,
         playerConnection: ServerGamePacketListenerImpl,
+        blockLocation: Location,
         dataContainer: PersistentDataContainer,
         enchantmentLevel: Int,
-        blockLocation: Location,
         mine: PrivateMine,
-        random: Random
     ): EnchantResult
+
+    fun getEnchantmentLevel(itemContainer: PersistentDataContainer): Int? =
+        itemContainer.get(enchantKey, PersistentDataType.INTEGER)
 }

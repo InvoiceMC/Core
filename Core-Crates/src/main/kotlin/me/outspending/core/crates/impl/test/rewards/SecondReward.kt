@@ -1,7 +1,7 @@
 package me.outspending.core.crates.impl.test.rewards
 
-import me.outspending.core.misc.items.ItemCreator
 import me.outspending.core.crates.types.IReward
+import me.outspending.core.misc.items.ItemCreator
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player

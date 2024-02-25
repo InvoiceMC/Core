@@ -1,13 +1,13 @@
 package me.outspending.core.mining.enchants
 
 import me.outspending.core.data.player.PlayerData
+import me.outspending.core.mining.MetaStorage
 import me.outspending.core.mining.getConnection
 import me.outspending.core.pmines.PrivateMine
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
 import org.reflections.Reflections
-import kotlin.random.Random
 
 const val ENCHANTS_PACKAGE = "me.outspending.core.mining.enchants.types"
 
@@ -20,33 +20,34 @@ object EnchantHandler {
     fun executeAllEnchants(
         player: Player,
         playerData: PlayerData,
+        metaStorage: MetaStorage,
         blockLocation: Location,
-        mine: PrivateMine,
-        random: Random
+        mine: PrivateMine
     ): EnchantResult {
-        val itemMeta = player.inventory.itemInMainHand.itemMeta
-        val dataContainer: PersistentDataContainer = itemMeta.persistentDataContainer
+        val dataContainer: PersistentDataContainer = metaStorage.data
 
         val connection = player.getConnection()
         val enchantResult = EnchantResult()
-        pickaxeEnchants.forEach { enchant ->
-            val enchantmentLevel: Int = enchant.getEnchantmentLevel(dataContainer)
-            if (enchantmentLevel > 0) {
+        pickaxeEnchants
+            .mapNotNull { enchant ->
+                val enchantLevel = enchant.getEnchantmentLevel(dataContainer)
+
+                if (enchantLevel != null && enchantLevel > 0) enchant to enchantLevel else null
+            }
+            .forEach { (enchant, level) ->
                 val result: EnchantResult =
                     enchant.execute(
                         player,
                         playerData,
                         connection,
-                        dataContainer,
-                        enchantmentLevel,
                         blockLocation,
-                        mine,
-                        random
+                        dataContainer,
+                        level,
+                        mine
                     )
 
                 enchantResult += result
             }
-        }
 
         return enchantResult
     }

@@ -1,9 +1,9 @@
 package me.outspending.core.data
 
 import me.outspending.core.CoreHandler.core
-import me.outspending.core.Utilities.runTaskTimer
 import me.outspending.core.data.player.PlayerData
 import me.outspending.core.data.player.playerDataManager
+import me.outspending.core.runTaskTimer
 import me.outspending.munch.Munch
 import me.outspending.munch.connection.MunchConnection
 import me.outspending.munch.serializer.Serializer

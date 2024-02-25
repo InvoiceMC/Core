@@ -1,9 +1,5 @@
 package me.outspending.core.commands.cell
 
-import com.azuyamat.maestro.bukkit.annotations.Command
-import com.azuyamat.maestro.bukkit.annotations.SubCommand
-import org.bukkit.entity.Player
-
 //@Command(
 //    name = "cell",
 //    description = "Manage your <main>cell",

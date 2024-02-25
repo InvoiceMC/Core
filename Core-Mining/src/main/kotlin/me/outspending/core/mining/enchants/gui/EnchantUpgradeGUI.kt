@@ -1,10 +1,9 @@
 package me.outspending.core.mining.enchants.gui
 
 import me.outspending.core.CoreHandler.core
-import me.outspending.core.Utilities.format
-import me.outspending.core.Utilities.toUpperCase
 import me.outspending.core.data.Extensions.getData
 import me.outspending.core.data.player.PlayerData
+import me.outspending.core.format
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.mining.enchants.PickaxeEnchant
 import me.outspending.core.mining.enchants.PickaxeEnchanter
@@ -17,17 +16,17 @@ import org.bukkit.Material
 import org.bukkit.entity.Player
 import kotlin.math.pow
 
-private val ENCHANT_STEPS = arrayOf(1, 5, 25, 50, 100, 500) // Last one is for upgrade max
-private val ENCHANT_MAX_MAX_LEVEL = 25000
+private val ENCHANT_STEPS: Array<Int> = arrayOf(1, 5, 25, 50, 100, 500) // Last one is for upgrade max
+private const val ENCHANT_MAX_MAX_LEVEL: Int = 25000
 
 class EnchantUpgradeGUI(private val player: Player, private val enchant: PickaxeEnchant) :
     EnchantGUI {
     private fun getEnchantCost(currentLevel: Int, increaseLevel: Int): Double {
-        val increase: Double = enchant.getIncreaseProgression() / 100
-        val initialCost: Double = enchant.getInitialCost()
-        val totalLevel: Double = (currentLevel + increaseLevel).toDouble()
+        val increase: Float = enchant.getIncreaseProgression() / 100
+        val initialCost: Float = enchant.getInitialCost()
+        val totalLevel: Float = (currentLevel + increaseLevel).toFloat()
 
-        return initialCost * (1 + increase).pow(totalLevel)
+        return initialCost.toDouble() * (1 + increase).pow(totalLevel)
     }
 
     private fun getEnchantMax(playerData: PlayerData, currentLevel: Int): Pair<Double, Int> {
@@ -67,7 +66,7 @@ class EnchantUpgradeGUI(private val player: Player, private val enchant: Pickaxe
             val playerData = player.getData()
             val data = meta.persistentDataContainer
 
-            val enchantLevel = enchant.getEnchantmentLevel(data)
+            val enchantLevel = enchant.getEnchantmentLevel(data) ?: 0
 
             var index = 2
             for (num in ENCHANT_STEPS) {
@@ -85,23 +84,23 @@ class EnchantUpgradeGUI(private val player: Player, private val enchant: Pickaxe
                             lore =
                                 if (isMaxed) {
                                     listOf(
-                                            "",
-                                            "<red><b>ᴇʀʀᴏʀ",
-                                            " <red>You cannot upgrade this many levels!",
-                                            " <red>It's already at the maximum level!",
-                                            ""
-                                        )
+                                        "",
+                                        "<red><b>ᴇʀʀᴏʀ",
+                                        " <red>You cannot upgrade this many levels!",
+                                        " <red>It's already at the maximum level!",
+                                        ""
+                                    )
                                         .map { it.parse() }
                                 } else {
                                     listOf(
-                                            "",
-                                            "<main><b>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ</b>",
-                                            " <second><b>|</b> <gray>ᴄᴜʀʀᴇɴᴛ ʟᴇᴠᴇʟ: <white>${enchantLevel}",
-                                            " <second><b>|</b> <gray>ᴄᴏꜱᴛ: <yellow>⛁${enchantCost.format()}",
-                                            "",
-                                            if (hasEnough) "<green><i>Click to upgrade"
-                                            else "<red><i>Not Enough Gold!"
-                                        )
+                                        "",
+                                        "<main><b>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ</b>",
+                                        " <second><b>|</b> <gray>ᴄᴜʀʀᴇɴᴛ ʟᴇᴠᴇʟ: <white>${enchantLevel}",
+                                        " <second><b>|</b> <gray>ᴄᴏꜱᴛ: <yellow>⛁${enchantCost.format()}",
+                                        "",
+                                        if (hasEnough) "<green><i>Click to upgrade"
+                                        else "<red><i>Not Enough Gold!"
+                                    )
                                         .map { it.parse() }
                                 }
                             onClick { event ->
@@ -145,23 +144,23 @@ class EnchantUpgradeGUI(private val player: Player, private val enchant: Pickaxe
                         lore =
                             if (hasEnough) {
                                 listOf(
-                                        "",
-                                        "<main><b>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ",
-                                        " <second><b>|</b> <gray>ᴄᴜʀʀᴇɴᴛ ʟᴇᴠᴇʟ: <main>${enchantLevel} <dark_gray>→ <second>${level}",
-                                        " <second><b>|</b> <gray>ᴛᴏᴛᴀʟ: <white>${level - enchantLevel}",
-                                        " <second><b>|</b> <gray>ᴄᴏꜱᴛ: <yellow>⛁${cost.format()}",
-                                        "",
-                                        "<green><i>Click to upgrade"
-                                    )
+                                    "",
+                                    "<main><b>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ",
+                                    " <second><b>|</b> <gray>ᴄᴜʀʀᴇɴᴛ ʟᴇᴠᴇʟ: <main>${enchantLevel} <dark_gray>→ <second>${level}",
+                                    " <second><b>|</b> <gray>ᴛᴏᴛᴀʟ: <white>${level - enchantLevel}",
+                                    " <second><b>|</b> <gray>ᴄᴏꜱᴛ: <yellow>⛁${cost.format()}",
+                                    "",
+                                    "<green><i>Click to upgrade"
+                                )
                                     .map { it.parse() }
                             } else {
                                 listOf(
-                                        "",
-                                        "<red><b>ᴇʀʀᴏʀ",
-                                        " <red>You don't have enough gold to upgrade this enchant!",
-                                        " <red>Come back when you have enough!",
-                                        ""
-                                    )
+                                    "",
+                                    "<red><b>ᴇʀʀᴏʀ",
+                                    " <red>You don't have enough gold to upgrade this enchant!",
+                                    " <red>Come back when you have enough!",
+                                    ""
+                                )
                                     .map { it.parse() }
                             }
                         onClick {

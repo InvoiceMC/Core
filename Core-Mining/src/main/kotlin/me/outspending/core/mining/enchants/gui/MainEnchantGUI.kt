@@ -1,9 +1,9 @@
 package me.outspending.core.mining.enchants.gui
 
 import me.outspending.core.CoreHandler.core
-import me.outspending.core.Utilities.toUpperCase
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.mining.enchants.EnchantHandler
+import me.outspending.core.toUpperCase
 import me.tech.mcchestui.GUI
 import me.tech.mcchestui.GUIType
 import me.tech.mcchestui.item.item
@@ -28,7 +28,7 @@ class MainEnchantGUI(private val player: Player): EnchantGUI {
             var y = 2
             var x = 2
             for (enchant in EnchantHandler.pickaxeEnchants) {
-                val enchantLevel = enchant.getEnchantmentLevel(data)
+                val enchantLevel = enchant.getEnchantmentLevel(data) ?: 0
                 val maxLevel = enchant.getMaxEnchantmentLevel()
                 val chance = if (enchant.getEnchantmentChance(enchantLevel) <= 100) enchant.getEnchantmentChance(enchantLevel) else 100
                 val enchantName: String = enchant.getEnchantName()

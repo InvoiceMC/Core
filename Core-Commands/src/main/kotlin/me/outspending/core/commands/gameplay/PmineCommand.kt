@@ -4,10 +4,10 @@ import com.azuyamat.maestro.bukkit.annotations.Command
 import com.azuyamat.maestro.bukkit.annotations.SubCommand
 import me.outspending.core.data.Extensions.getData
 import me.outspending.core.helpers.FormatHelper.Companion.parse
-import me.outspending.core.pmines.data.pmineDataManager
 import me.outspending.core.pmines.Extensions.getPmine
 import me.outspending.core.pmines.Extensions.hasPmine
 import me.outspending.core.pmines.PrivateMine
+import me.outspending.core.pmines.data.pmineDataManager
 import net.kyori.adventure.title.Title
 import org.bukkit.entity.Player
 

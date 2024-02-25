@@ -1,7 +1,5 @@
 package me.outspending.core.misc.broadcaster
 
-import org.bukkit.scheduler.BukkitRunnable
-
 const val DELAY = 9000L
 const val PERIOD = 9000L
 const val BROADCAST_INDENTATION_CHAR = "%line%"

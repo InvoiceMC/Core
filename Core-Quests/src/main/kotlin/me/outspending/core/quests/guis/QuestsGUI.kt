@@ -1,17 +1,6 @@
 package me.outspending.core.quests.guis
 
-import me.outspending.core.CoreHandler.core
-import me.outspending.core.helpers.FormatHelper
-import me.outspending.core.helpers.FormatHelper.Companion.parse
-import me.outspending.core.helpers.NumberHelper
 import me.outspending.core.quests.QUESTS_LIMIT
-import me.outspending.core.quests.data.PlayerQuest
-import me.tech.mcchestui.GUI
-import me.tech.mcchestui.GUIType
-import me.tech.mcchestui.item.item
-import me.tech.mcchestui.utils.gui
-import me.tech.mcchestui.utils.openGUI
-import org.bukkit.Material
 import org.bukkit.entity.Player
 
 const val MAX_QUESTS = QUESTS_LIMIT

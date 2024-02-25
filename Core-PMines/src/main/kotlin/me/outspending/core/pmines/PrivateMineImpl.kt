@@ -1,12 +1,11 @@
 package me.outspending.core.pmines
 
-import me.outspending.core.Utilities.format
-import me.outspending.core.Utilities.runAsync
 import me.outspending.core.data.Extensions.getData
+import me.outspending.core.format
 import me.outspending.core.helpers.FormatHelper.Companion.parse
+import me.outspending.core.runAsync
 import org.bukkit.Location
 import org.bukkit.entity.Player
-import kotlin.time.Duration
 import kotlin.time.DurationUnit
 import kotlin.time.measureTime
 import kotlin.time.toDuration

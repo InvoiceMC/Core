@@ -2,12 +2,9 @@ package me.outspending.core.mining.duplex
 
 import io.netty.channel.ChannelDuplexHandler
 import io.netty.channel.ChannelHandlerContext
-import me.outspending.core.Utilities.runTaskLater
-import me.outspending.core.Utilities.toComponent
 import me.outspending.core.data.Extensions.getData
 import me.outspending.core.helpers.FormatHelper.Companion.parse
-import me.outspending.core.holograms.PacketHologram
-import me.outspending.core.mining.PickaxeUpdater
+import me.outspending.core.mining.MetaStorage
 import me.outspending.core.mining.enchants.EnchantHandler
 import me.outspending.core.mining.enchants.EnchantResult
 import me.outspending.core.pmines.Extensions.getPmine
@@ -34,6 +31,8 @@ class MiningDuplexHandler(
     private val random: Random = Random.Default
     private val airBlock = Material.AIR.createBlockData()
 
+    private lateinit var metaStorage: MetaStorage
+
     override fun channelRead(
         channelHandlerContext: ChannelHandlerContext,
         packet: Any?,
@@ -41,23 +40,28 @@ class MiningDuplexHandler(
         if (packet is ServerboundPlayerActionPacket) {
             if (packet.action == ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK) {
                 val mainHand = player.inventory.itemInMainHand
-                if (mainHand.type == Material.DIAMOND_PICKAXE) {
-                    val pmine = player.getPmine()
-                    val mine = pmine.getMine()
-                    val region = mine.getRegion()
+                if (mainHand.type != Material.DIAMOND_PICKAXE) return
 
-                    val pos: BlockPos = packet.pos
-                    val location = toLocation(pos)
-
-                    if (region.hasLocation(location.toVector())) {
-                        connection.send(ClientboundBlockDestructionPacket(player.entityId, pos, -1))
-
-                        mine.removeBlock(location)
-                        PacketSync.syncBlock(pmine, location, airBlock)
-
-                        prisonBreak(player, location, mainHand, pmine)
-                    }
+                if (!this::metaStorage.isInitialized) {
+                    metaStorage = MetaStorage(player, mainHand.itemMeta)
                 }
+
+                val pmine: PrivateMine = player.getPmine()
+                val mine: Mine = pmine.getMine()
+                val region: BoundingBox = mine.getRegion()
+
+                val pos: BlockPos = packet.pos
+                val location = toLocation(pos)
+
+                if (region.hasLocation(location.toVector())) {
+                    connection.send(ClientboundBlockDestructionPacket(player.entityId, pos, -1))
+
+                    mine.removeBlock(location)
+                    PacketSync.syncBlock(pmine, location, airBlock)
+
+                    prisonBreak(player, location, mainHand, pmine)
+                }
+
             }
         } else if (packet is ServerboundUseItemOnPacket) {
             return
@@ -83,13 +87,16 @@ class MiningDuplexHandler(
         // Grab the player's data
         val data = player.getData()
 
+        // Runs the metaStorage which automatically does everything for you.
+        metaStorage.run()
+
         // Execute all the enchants that the player has on their pickaxe
-        val result: EnchantResult = EnchantHandler.executeAllEnchants(player, data, location, mine, random)
+        val result: EnchantResult = EnchantHandler.executeAllEnchants(player, data, metaStorage, location, mine)
 
         // Some other things
         if (player.level >= (100 + (25 * data.prestige))) {
             player.sendActionBar(
-                "<red>You are at the max level, use <dark_red>/ᴘʀᴇꜱᴛɪɢᴇ".toComponent(),
+                "<red>You are at the max level, use <dark_red>/ᴘʀᴇꜱᴛɪɢᴇ".parse(),
             )
         } else {
             player.giveExp(1 + result.xp)
@@ -102,8 +109,5 @@ class MiningDuplexHandler(
         data.gold += ((blockGold + result.gold) * data.multiplier).toInt()
         data.balance += ((blockMoney + result.money) * data.multiplier)
         data.blocksBroken += 1
-
-        val newItem = PickaxeUpdater.updatePickaxe(mainHand, result.blocks)
-        player.inventory.setItemInMainHand(newItem)
     }
 }

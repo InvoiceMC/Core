@@ -1,7 +1,6 @@
 package me.outspending.core.holograms
 
 import io.papermc.paper.adventure.PaperAdventure
-import me.outspending.core.helpers.FormatHelper.Companion.parse
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.JoinConfiguration
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket

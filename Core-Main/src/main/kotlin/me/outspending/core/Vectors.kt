@@ -39,6 +39,6 @@ data class BlockVector3D(
         max(bottomLocation.blockZ, topLocation.blockZ)
     )
 
-    fun getMin(world: World) = Utilities.toLocation(world, minX, minY, minZ)
-    fun getMax(world: World) = Utilities.toLocation(world, maxX, maxY, maxZ)
+    fun getMin(world: World) = toLocation(world, minX, minY, minZ)
+    fun getMax(world: World) = toLocation(world, maxX, maxY, maxZ)
 }

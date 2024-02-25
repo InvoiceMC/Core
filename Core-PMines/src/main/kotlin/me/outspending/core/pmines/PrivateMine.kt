@@ -1,7 +1,6 @@
 package me.outspending.core.pmines
 
 import me.outspending.core.data.Extensions.getData
-import me.outspending.core.pmines.data.pmineDataManager
 import org.bukkit.Location
 import org.bukkit.entity.Player
 

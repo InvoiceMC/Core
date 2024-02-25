@@ -1,11 +1,11 @@
 package me.outspending.core.crates.impl.test
 
 import de.tr7zw.changeme.nbtapi.NBTBlock
-import me.outspending.core.Utilities
 import me.outspending.core.crates.types.ICrate
 import me.outspending.core.crates.types.IReward
 import me.outspending.core.misc.WeightedCollection
 import me.outspending.core.misc.items.ItemCreator
+import me.outspending.core.toLocation
 import org.bukkit.*
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -15,7 +15,7 @@ class TestCrate() : ICrate {
     private var rewards = WeightedCollection<IReward>()
     private val name = "Test Crate"
     private val key = ItemCreator(Material.TRIPWIRE_HOOK).name("<main>$name Key").create()
-    private val location = Utilities.toLocation(Bukkit.getWorld("world")!!, 1, 83, 2)
+    private val location = toLocation(Bukkit.getWorld("world")!!, 1, 83, 2)
     override fun openCrate(p: Player, isSneaking: Boolean) {
         doRewards(p, isSneaking, rewards)
     }

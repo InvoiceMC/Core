@@ -1,9 +1,9 @@
 package me.outspending.core.mining
 
-import me.outspending.core.Utilities
 import me.outspending.core.misc.WeightedCollection
 import me.outspending.core.pmines.Mine
 import me.outspending.core.pmines.PrivateMine
+import me.outspending.core.toLocation
 import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.Material
@@ -54,7 +54,7 @@ abstract class PacketShape {
         for (x in minX..maxX) {
             for (y in minY..maxY) {
                 for (z in minZ..maxZ) {
-                    val location = Utilities.toLocation(world, x, y, z)
+                    val location = toLocation(world, x, y, z)
                     val blockData = blockProcessor(location)
 
                     if (blockData != null) {
