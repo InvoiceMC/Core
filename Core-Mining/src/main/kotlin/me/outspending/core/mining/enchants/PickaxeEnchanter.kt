@@ -1,8 +1,8 @@
 package me.outspending.core.mining.enchants
 
-import me.outspending.core.Utilities.regex
-import me.outspending.core.Utilities.toTinyString
 import me.outspending.core.helpers.FormatHelper.Companion.parse
+import me.outspending.core.regex
+import me.outspending.core.toTinyString
 import net.kyori.adventure.text.Component
 import org.bukkit.NamespacedKey
 import org.bukkit.inventory.ItemStack

@@ -1,12 +1,12 @@
 package me.outspending.core.listeners.types
 
 import io.papermc.paper.event.player.AsyncChatEvent
-import me.outspending.core.Utilities.format
-import me.outspending.core.Utilities.toComponent
-import me.outspending.core.Utilities.toTinyNumber
 import me.outspending.core.chat.ChatHandler
 import me.outspending.core.data.Extensions.getData
 import me.outspending.core.data.player.PlayerData
+import me.outspending.core.format
+import me.outspending.core.toComponent
+import me.outspending.core.toTinyNumber
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
 import org.bukkit.event.EventHandler

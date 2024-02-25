@@ -1,38 +1,51 @@
 package me.outspending.core.pmines
 
-import me.outspending.core.helpers.FormatHelper.Companion.parse
-import me.outspending.core.mining.MineUtils
 import me.outspending.core.misc.WeightedCollection
+import org.bukkit.Bukkit
 import org.bukkit.Location
+import org.bukkit.Material
 import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
+import org.bukkit.util.BoundingBox
 
-class Mine(private val minLocation: Location, private val maxLocation: Location, val blocks: WeightedCollection<BlockData>) {
-    private val resetTime: Long = 0L
+interface Mine {
 
-    fun getVolume(): Int {
-        val x = maxLocation.x - minLocation.x
-        val y = maxLocation.y - minLocation.y
-        val z = maxLocation.z - minLocation.z
+    companion object {
+        private val DEFAULT_COLLECTION = WeightedCollection<BlockData>()
+            .add(0.75, Material.STONE.createBlockData())
+            .add(0.25, Material.COBBLESTONE.createBlockData())
 
-        return (x * y * z).toInt()
-    }
+        // TODO: Improve this slightly
+        fun default(): Mine {
+            val world = Bukkit.getWorld("world")
+            val topLocation = Location(world, 296.0, 29.0, -846.0)
+            val bottomLocation = Location(world, 286.0, -15.0, -856.0)
 
-    fun reset(receivingPlayer: Player) {
-        val time = System.currentTimeMillis()
-        if (time < resetTime) {
-            val seconds = (resetTime - time) / 1000
-            receivingPlayer.sendMessage("You cannot reset your mine for another <second>${"%.2f".format(seconds)} seconds<gray>!".parse(true))
-            return
+            return createMine(bottomLocation, topLocation)
         }
 
-        MineUtils.setBlocksBetween(
-            receivingPlayer,
-            minLocation,
-            maxLocation,
-            blocks,
-            true
-        )
+        fun createMine(bottom: Location, top: Location, blockWeights: WeightedCollection<BlockData> = DEFAULT_COLLECTION): Mine {
+            val boundingBox = BoundingBox.of(bottom, top)
+            val mine = MineImpl(bottom, top, boundingBox)
+            mine.blockWeights = blockWeights
+
+            return mine
+        }
     }
 
+    fun getBlocks(): Map<Location, BlockData>
+    fun getBottomLocation(): Location
+    fun getTopLocation(): Location
+    fun getRegion(): BoundingBox
+
+    fun removeBlock(location: Location)
+    fun removeBlocks(locations: List<Location>)
+
+    fun reset(player: Player, mine: PrivateMine): Int?
+    fun canReset(): Boolean
+    fun getResetTimeLeft(): Long
+    fun getResetCooldown(): Long
+
+    fun expand(size: Int)
+    fun increaseBlocks(amount: Int)
 }

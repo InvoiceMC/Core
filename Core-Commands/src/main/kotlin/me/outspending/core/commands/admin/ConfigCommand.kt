@@ -1,7 +1,7 @@
 package me.outspending.core.commands.admin
 
-import com.azuyamat.maestro.bukkit.annotations.Command
-import com.azuyamat.maestro.bukkit.annotations.SubCommand
+import com.azuyamat.maestro.common.annotations.Command
+import com.azuyamat.maestro.common.annotations.SubCommand
 import me.outspending.core.config.messagesConfig
 import me.outspending.core.config.questsConfig
 import me.outspending.core.helpers.FormatHelper.Companion.parse

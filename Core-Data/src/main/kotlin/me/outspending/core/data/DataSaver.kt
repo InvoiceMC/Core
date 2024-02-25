@@ -1,7 +1,7 @@
 package me.outspending.core.data
 
-import me.outspending.core.Utilities.toComponent
 import me.outspending.core.data.player.playerDataManager
+import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.helpers.enums.CustomSound
 import org.bukkit.Bukkit
 import kotlin.time.measureTime
@@ -29,6 +29,6 @@ object DataSaver {
             saveSound.playSound(player)
         }
 
-        Bukkit.broadcast(BROADCAST_MESSAGE.format(players.size, time).toComponent())
+        Bukkit.broadcast(BROADCAST_MESSAGE.format(players.size, time).parse())
     }
 }

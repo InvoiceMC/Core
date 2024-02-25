@@ -1,14 +1,14 @@
 package me.outspending.core.scoreboard
 
 import fr.mrmicky.fastboard.adventure.FastBoard
-import me.outspending.core.Utilities.fix
-import me.outspending.core.Utilities.format
-import me.outspending.core.Utilities.progressBar
-import me.outspending.core.Utilities.runTaskTimer
 import me.outspending.core.data.Extensions.getData
 import me.outspending.core.data.player.PlayerData
+import me.outspending.core.fix
+import me.outspending.core.format
 import me.outspending.core.helpers.FormatHelper
 import me.outspending.core.helpers.FormatHelper.Companion.parse
+import me.outspending.core.progressBar
+import me.outspending.core.runTaskTimer
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*

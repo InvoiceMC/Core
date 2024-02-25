@@ -1,38 +1,80 @@
 package me.outspending.core.mining.shapes
 
-import me.outspending.core.mining.Shape
+import me.outspending.core.mining.PacketShape
 import me.outspending.core.misc.WeightedCollection
+import me.outspending.core.pmines.PrivateMine
+import me.outspending.core.pmines.sync.PacketSync
 import org.bukkit.Location
 import org.bukkit.block.data.BlockData
 import org.bukkit.util.Vector
 
-class CylinderShape(private val radius: Int, private val height: Int) : Shape {
-    private val vec1 = Vector(radius, height, radius)
-    private val vec2 = Vector(-radius, -height, -radius)
+class CylinderShape(private val radius: Int, private val height: Int) : PacketShape() {
+    private val maxVec = Vector(radius, height, radius)
+    private val minVec = Vector(-radius, -height, -radius)
 
-    override fun run(
-        blockLocation: Location,
-        blockData: BlockData
-    ): Pair<Int, MutableMap<Location, BlockData>> =
-        runInternal(blockLocation, vec1, vec2) { location, blockChanges ->
+    override fun process(mine: PrivateMine, blockLocation: Location?, blockData: BlockData): Int = process(mine, blockLocation, blockData) { _, _ -> }
+
+    override fun process(
+        mine: PrivateMine,
+        blockLocation: Location?,
+        blockData: BlockData,
+        perBlock: (Location, BlockData) -> Unit
+    ): Int {
+        requireNotNull(blockLocation) { "Block location cannot be null for CylinderShape" }
+
+        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys.toSet() // Using set because its O(1) for .contains()
+        val (blocksChanged, blockDataMap) = runBetween(super.MINE_WORLD, blockLocation, minVec, maxVec) { location ->
             val distance = blockLocation.distance(location)
             val y = location.y - blockLocation.y
 
-            if (distance <= radius && y <= height) {
-                blockChanges[location] = blockData
+            if (distance <= radius && y <= height && y >= -height && mineBlocks.contains(location)) {
+                perBlock(location, blockData)
+                blockData
+            } else {
+                null
             }
         }
+        val keys: List<Location> = blockDataMap.keys.toList()
 
-    override fun run(
-        blockLocation: Location,
-        weightedCollection: WeightedCollection<BlockData>
-    ): Pair<Int, MutableMap<Location, BlockData>> =
-        runInternal(blockLocation, vec1, vec2) { location, blockChanges ->
+        PacketSync.syncBlocks(mine, blockDataMap)
+        updateBlocks(mine.getMine(), keys)
+        return blocksChanged
+    }
+
+    override fun process(
+        mine: PrivateMine,
+        blockLocation: Location?,
+        weightedBlockData: WeightedCollection<BlockData>
+    ): Int = process(mine, blockLocation, weightedBlockData) { _, _ -> }
+
+    override fun process(
+        mine: PrivateMine,
+        blockLocation: Location?,
+        weightedBlockData: WeightedCollection<BlockData>,
+        perBlock: (Location, BlockData) -> Unit
+    ): Int {
+        requireNotNull(blockLocation) { "Block location cannot be null for CylinderShape" }
+
+        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys.toSet() // Using set because its O(1) for .contains()
+        val (blocksChanged, blockDataMap) = runBetween(super.MINE_WORLD, blockLocation, minVec, maxVec) { location ->
             val distance = blockLocation.distance(location)
             val y = location.y - blockLocation.y
 
-            if (distance <= radius && y <= height) {
-                blockChanges[location] = weightedCollection.next()
+            if (distance <= radius && y <= height && y >= -height && mineBlocks.contains(location)) {
+                val nextBlockType = weightedBlockData.next()
+
+                perBlock(location, nextBlockType)
+                nextBlockType
+            } else {
+                null
             }
         }
+        val keys: List<Location> = blockDataMap.keys.toList()
+
+        PacketSync.syncBlocks(mine, blockDataMap)
+        updateBlocks(mine.getMine(), keys)
+        return blocksChanged
+    }
+
+
 }

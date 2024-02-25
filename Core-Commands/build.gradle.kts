@@ -1,5 +1,5 @@
 dependencies {
-    implementation("com.github.Azuyamat:Maestro:3.2.1")
+    implementation("com.github.Azuyamat:Maestro:3.2.2")
 
     compileOnly(project(path = ":Core-Configs", configuration = "shadow"))
     compileOnly(project(path = ":Core-Crates", configuration = "shadow"))

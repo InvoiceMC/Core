@@ -1,11 +1,11 @@
 package me.outspending.core.listeners.types
 
-import me.outspending.core.Utilities.runAsync
 import me.outspending.core.data.player.playerDataManager
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.helpers.enums.CustomSound
 import me.outspending.core.mining.duplex.PacketListeners
 import me.outspending.core.quests.QuestsHandler
+import me.outspending.core.runAsync
 import me.outspending.core.scoreboard.scoreboardManager
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.title.Title

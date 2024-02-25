@@ -1,14 +1,14 @@
 package me.outspending.core.listeners.types
 
-import org.bukkit.event.EventHandler
-import org.bukkit.event.Listener
-import org.bukkit.event.player.PlayerInteractEvent
 import de.tr7zw.changeme.nbtapi.NBTBlock
 import me.outspending.core.crates.CratesHandler
 import me.outspending.core.crates.gui.PreviewCrateGUI
 import me.outspending.core.helpers.FormatHelper.Companion.parse
+import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
 import org.bukkit.event.block.Action
 import org.bukkit.event.block.BlockBreakEvent
+import org.bukkit.event.player.PlayerInteractEvent
 import org.bukkit.inventory.EquipmentSlot
 
 class CrateListeners : Listener {

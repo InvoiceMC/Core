@@ -22,9 +22,9 @@ class Core : JavaPlugin() {
             CommandRegistry.registerAll()
 
             DatabaseManager.setupDatabase()
+            // BroadcastHandler.registerAllBroadcasts() // Had to remove this for now
             HeadsHandler.loadHeads()
             CratesHandler.load()
-            // BroadcastHandler.registerAllBroadcasts()
         }
 
         logger.info("Core has finished loading in $time!")
@@ -33,10 +33,4 @@ class Core : JavaPlugin() {
     override fun onDisable() {
         DatabaseManager.stopDatabase()
     }
-
-//    private fun setupLuckPerms() {
-//        val service: RegisteredServiceProvider<LuckPerms>? =
-//            server.servicesManager.getRegistration(LuckPerms::class.java)
-//        service?.let { luckPermsProvider = it.provider }
-//    }
 }

@@ -5,11 +5,10 @@ import me.outspending.core.pmines.PrivateMine
 
 class PmineDataPersistenceHandler : DataPersistenceHandler<PrivateMine, String> {
     override fun save(value: String, data: PrivateMine?) {
-        TODO("Not yet implemented")
+        println("Saving pmine $value")
     }
 
     override fun load(value: String): PrivateMine {
-        TODO("Not yet implemented")
+        TODO()
     }
-
 }

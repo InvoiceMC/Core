@@ -1,27 +1,67 @@
 package me.outspending.core.mining.shapes
 
-import me.outspending.core.mining.Shape
+import me.outspending.core.mining.PacketShape
 import me.outspending.core.misc.WeightedCollection
+import me.outspending.core.pmines.PrivateMine
+import me.outspending.core.pmines.sync.PacketSync
 import org.bukkit.Location
 import org.bukkit.block.data.BlockData
-import org.bukkit.util.Vector
+import org.jetbrains.annotations.ApiStatus.Experimental
 
-class CuboidShape(private val vec1: Vector, private val vec2: Vector) : Shape {
-    constructor(loc1: Location, loc2: Location) : this(loc1.toVector(), loc2.toVector())
+@Experimental
+class CuboidShape(private val minLocation: Location, private val maxLocation: Location) : PacketShape() {
 
-    override fun run(
-        blockLocation: Location,
-        blockData: BlockData
-    ): Pair<Int, MutableMap<Location, BlockData>> =
-        runInternal(blockLocation, vec1, vec2) { location, blockChanges ->
-            blockChanges[location] = blockData
+    override fun process(mine: PrivateMine, blockLocation: Location?, blockData: BlockData): Int = process(mine, blockLocation, blockData) { _, _ -> }
+
+    override fun process(
+        mine: PrivateMine,
+        blockLocation: Location?,
+        blockData: BlockData,
+        perBlock: (Location, BlockData) -> Unit
+    ): Int {
+        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys.toSet() // Using set because its O(1) for .contains()
+        val (blocksChanged, blockDataMap) = runBetween(super.MINE_WORLD, minLocation, maxLocation) {
+            if (mineBlocks.contains(it)) {
+                perBlock(it, blockData)
+                blockData
+            } else {
+                null
+            }
         }
+        val keys: List<Location> = blockDataMap.keys.toList()
 
-    override fun run(
-        blockLocation: Location,
-        weightedCollection: WeightedCollection<BlockData>
-    ): Pair<Int, MutableMap<Location, BlockData>> =
-        runInternal(blockLocation, vec1, vec2) { location, blockChanges ->
-            blockChanges[location] = weightedCollection.next()
+        PacketSync.syncBlocks(mine, blockDataMap)
+        updateBlocks(mine.getMine(), keys)
+        return blocksChanged
+    }
+
+    override fun process(
+        mine: PrivateMine,
+        blockLocation: Location?, // Cuboid doesn't need a block location therefore can be null
+        weightedBlockData: WeightedCollection<BlockData>
+    ): Int = process(mine, blockLocation, weightedBlockData) { _, _ -> }
+
+    override fun process(
+        mine: PrivateMine,
+        blockLocation: Location?,
+        weightedBlockData: WeightedCollection<BlockData>,
+        perBlock: (Location, BlockData) -> Unit
+    ): Int {
+        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys.toSet() // Using set because its O(1) for .contains()
+        val (blocksChanged, blockDataMap) = runBetween(super.MINE_WORLD, minLocation, maxLocation) {
+            if (mineBlocks.contains(it)) {
+                val nextBlockType = weightedBlockData.next()
+
+                perBlock(it, nextBlockType)
+                nextBlockType
+            } else {
+                null
+            }
         }
+        val keys: List<Location> = blockDataMap.keys.toList()
+
+        PacketSync.syncBlocks(mine, blockDataMap)
+        updateBlocks(mine.getMine(), keys)
+        return blocksChanged
+    }
 }

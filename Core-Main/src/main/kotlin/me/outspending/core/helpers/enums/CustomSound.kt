@@ -10,10 +10,21 @@ open class CustomSound {
         fun broadcastSound()
     }
 
+    data class Custom(val sound: Sound, val volume: Float = 1F, val pitch: Float = 1F) : CoreSound {
+        override fun playSound(player: Player) {
+            player.playSound(player.location, sound, volume, pitch)
+        }
+
+        override fun broadcastSound() {
+            Bukkit.getOnlinePlayers().forEach(this::playSound)
+        }
+    }
+
     data class Levelup(val volume: Float = 1F, val pitch: Float = 1F) : CoreSound {
         override fun playSound(player: Player) {
             player.playSound(player.location, Sound.ITEM_TRIDENT_HIT, volume, pitch)
         }
+
         override fun broadcastSound() {
             Bukkit.getOnlinePlayers().forEach(this::playSound)
         }

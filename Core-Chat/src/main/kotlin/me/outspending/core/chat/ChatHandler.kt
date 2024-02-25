@@ -1,13 +1,12 @@
 package me.outspending.core.chat
 
-import me.outspending.core.Utilities.toComponent
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.helpers.enums.CustomSound
+import me.outspending.core.toComponent
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.JoinConfiguration
 import net.kyori.adventure.text.TextReplacementConfig
 import net.kyori.adventure.text.minimessage.tag.resolver.Placeholder
-import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
@@ -24,12 +23,12 @@ object ChatHandler {
     fun builder(component: Component): Builder = Builder(component)
 
     private fun convertItemToComponent(item: ItemStack): Component {
-        val displayName: Component = item.itemMeta?.displayName() ?: item.type.name.toComponent()
+        val displayName: Component = item.itemMeta?.displayName() ?: item.type.name.parse()
         val lore: List<Component>? = item.itemMeta?.lore()
         val amount: Int = item.amount
 
         val displayNamePlaceholder = Placeholder.component("displayname", displayName)
-        val amountPlaceholder = Placeholder.component("amount", "x$amount".toComponent())
+        val amountPlaceholder = Placeholder.component("amount", "x$amount".parse())
 
         val lorePlaceholder = lore?.let {
             Placeholder.component(
