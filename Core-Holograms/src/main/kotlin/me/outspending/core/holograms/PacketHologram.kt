@@ -9,7 +9,9 @@ import org.bukkit.Location
 import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer
 import org.bukkit.entity.Player
 
-class PacketHologram(private val player: Player, location: Location, lines: Collection<Component>) : Hologram {
+typealias LocalHologram = PacketHologram
+
+class PacketHologram(private val player: Player, location: Location, private var lines: MutableList<Component>) : Hologram {
     private val hologramPacket = ClientboundHologramPacket(location, lines)
 
     private val teleportPacket by lazy { ClientboundTeleportEntityPacket(hologramPacket.entity) }
@@ -24,15 +26,31 @@ class PacketHologram(private val player: Player, location: Location, lines: Coll
         connection.send(teleportPacket)
     }
 
-    override fun setLines(lines: List<Component>) {
-        val vanillaComponent = Component.join(JoinConfiguration.newlines(), lines)
-        hologramPacket.entity.text = PaperAdventure.asVanilla(vanillaComponent)
+    override fun updateLines() {
+        val vanillaComponent = PaperAdventure.asVanilla(Component.join(JoinConfiguration.newlines(), lines))
+        hologramPacket.entity.text = vanillaComponent
 
         hologramPacket.updateData(player)
     }
 
+    override fun setLines(lines: List<Component>) {
+        this.lines = lines.toMutableList()
+        updateLines()
+    }
+
     override fun addLine(line: Component) {
-        // TODO: Add line
+        lines.add(line)
+        updateLines()
+    }
+
+    override fun updateLine(index: Int, line: Component) {
+        lines[index] = line
+        updateLines()
+    }
+
+    override fun removeLine(index: Int) {
+        lines.removeAt(index)
+        updateLines()
     }
 
     fun send(player: Player) = hologramPacket.sendPacket(player)

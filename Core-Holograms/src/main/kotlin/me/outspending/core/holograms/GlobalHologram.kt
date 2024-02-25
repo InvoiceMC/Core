@@ -9,7 +9,7 @@ import org.bukkit.entity.EntityType
 import org.bukkit.entity.TextDisplay
 
 class GlobalHologram(
-    private val lines: Collection<Component>,
+    private var lines: MutableList<Component>,
     spawnLocation: Location,
     private val hologramBillboard: Billboard,
     private val hasBackground: Boolean = false
@@ -29,14 +29,29 @@ class GlobalHologram(
         textDisplay.teleport(location)
     }
 
-    override fun setLines(lines: List<Component>) {
+    override fun updateLines() {
         textDisplay.text(Component.join(JoinConfiguration.newlines(), lines))
+    }
+
+    override fun setLines(lines: List<Component>) {
+        this.lines = lines.toMutableList()
+        updateLines()
     }
 
     override fun addLine(line: Component) {
         textDisplay.text()
             .append(Component.newline())
             .append(line)
+    }
+
+    override fun updateLine(index: Int, line: Component) {
+        lines[index] = line
+        updateLines()
+    }
+
+    override fun removeLine(index: Int) {
+        lines.removeAt(index)
+        updateLines()
     }
 
     override fun kill() {
