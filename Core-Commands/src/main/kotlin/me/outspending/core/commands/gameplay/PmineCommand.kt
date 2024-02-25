@@ -1,7 +1,7 @@
 package me.outspending.core.commands.gameplay
 
-import com.azuyamat.maestro.bukkit.annotations.Command
-import com.azuyamat.maestro.bukkit.annotations.SubCommand
+import com.azuyamat.maestro.common.annotations.Command
+import com.azuyamat.maestro.common.annotations.SubCommand
 import me.outspending.core.data.Extensions.getData
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.pmines.Extensions.getPmine

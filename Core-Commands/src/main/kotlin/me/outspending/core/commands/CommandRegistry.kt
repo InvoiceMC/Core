@@ -1,7 +1,7 @@
 package me.outspending.core.commands
 
-import com.azuyamat.maestro.bukkit.Maestro
-import com.azuyamat.maestro.bukkit.data.CommandData
+import com.azuyamat.maestro.bukkit.BukkitMaestro
+import com.azuyamat.maestro.common.data.command.CommandData
 import me.outspending.core.CoreHandler.core
 
 object CommandRegistry {
@@ -9,7 +9,7 @@ object CommandRegistry {
     internal var commandsList: MutableList<CommandData> = mutableListOf()
 
     fun registerAll() {
-        Maestro(core).apply {
+        BukkitMaestro(core).apply {
             registerCommands(COMMANDS_PACKAGE)
             commandsList = commands
         }
