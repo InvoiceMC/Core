@@ -1,14 +1,11 @@
 package me.outspending.core.mining.shapes
 
 import me.outspending.core.mining.PacketShape
-import me.outspending.core.mining.Shape
 import me.outspending.core.misc.WeightedCollection
 import me.outspending.core.pmines.PrivateMine
 import me.outspending.core.pmines.sync.PacketSync
 import org.bukkit.Location
-import org.bukkit.Material
 import org.bukkit.block.data.BlockData
-import org.bukkit.util.BoundingBox
 import org.bukkit.util.Vector
 
 class SphereShape(private val radius: Int) : PacketShape() {

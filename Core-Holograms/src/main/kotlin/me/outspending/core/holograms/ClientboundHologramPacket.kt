@@ -1,9 +1,13 @@
 package me.outspending.core.holograms
 
-import net.minecraft.network.chat.Component
+import io.papermc.paper.adventure.PaperAdventure
+import me.outspending.core.helpers.FormatHelper.Companion.parse
+import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.JoinConfiguration
 import net.minecraft.network.protocol.game.ClientboundAddEntityPacket
 import net.minecraft.network.protocol.game.ClientboundSetEntityDataPacket
 import net.minecraft.world.entity.Display
+import net.minecraft.world.entity.Display.BillboardConstraints
 import net.minecraft.world.entity.EntityType
 import net.minecraft.world.phys.Vec3
 import org.bukkit.Location
@@ -11,16 +15,28 @@ import org.bukkit.craftbukkit.v1_20_R3.CraftWorld
 import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer
 import org.bukkit.entity.Player
 
-class ClientboundHologramPacket(private val location: Location, private val lines: List<String>){
+class ClientboundHologramPacket internal constructor(private val location: Location, private val lines: Collection<Component>){
     private val craftWorld: CraftWorld = location.world as CraftWorld
-    private val entity: Display.TextDisplay = Display.TextDisplay(EntityType.TEXT_DISPLAY, craftWorld.handle)
+    internal val entity: Display.TextDisplay = Display.TextDisplay(EntityType.TEXT_DISPLAY, craftWorld.handle)
 
-    constructor(location: Location, lines: Array<String>) : this(location, lines.toList())
+    constructor(location: Location, lines: Array<Component>) : this(location, lines.toList())
 
     init {
         entity.apply {
-            billboardConstraints = Display.BillboardConstraints.CENTER
-            text = Component.nullToEmpty(lines.joinToString("\n"))
+            billboardConstraints = BillboardConstraints.VERTICAL
+            text = PaperAdventure.asVanilla(Component.join(JoinConfiguration.newlines(), lines))
+        }
+    }
+
+    private fun getConnection(player: Player) = (player as CraftPlayer).handle.connection
+
+    fun updateData(player: Player) {
+        val dataPacket = entity.entityData.nonDefaultValues?.let {
+            ClientboundSetEntityDataPacket(entity.id, it)
+        }
+
+        if (dataPacket != null) {
+            getConnection(player).send(dataPacket)
         }
     }
 
@@ -40,13 +56,9 @@ class ClientboundHologramPacket(private val location: Location, private val line
                 0.0,
             )
 
-        val dataPacket =
-            entity.entityData.nonDefaultValues?.let {
-                ClientboundSetEntityDataPacket(entity.id, it)
-            }
-
-        val connection = (receivingPlayer as CraftPlayer).handle.connection
+        val connection = getConnection(receivingPlayer)
         connection.send(addPacket)
-        dataPacket?.let { connection.send(it) }
+
+        updateData(receivingPlayer)
     }
 }

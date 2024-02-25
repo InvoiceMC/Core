@@ -1,13 +1,11 @@
 package me.outspending.core.mining.enchants
 
 import me.outspending.core.data.player.PlayerData
-import me.outspending.core.mining.Extensions.getConnection
-import me.outspending.core.pmines.Mine
+import me.outspending.core.mining.getConnection
 import me.outspending.core.pmines.PrivateMine
 import org.bukkit.Location
 import org.bukkit.entity.Player
 import org.bukkit.persistence.PersistentDataContainer
-import org.bukkit.util.BoundingBox
 import org.reflections.Reflections
 import kotlin.random.Random
 
