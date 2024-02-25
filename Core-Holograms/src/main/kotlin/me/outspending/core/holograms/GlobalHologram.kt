@@ -2,6 +2,7 @@ package me.outspending.core.holograms
 
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import net.kyori.adventure.text.Component
+import net.kyori.adventure.text.JoinConfiguration
 import org.bukkit.Location
 import org.bukkit.entity.Display.Billboard
 import org.bukkit.entity.EntityType
@@ -18,7 +19,7 @@ class GlobalHologram(
 
     init {
         textDisplay.apply {
-            this.text(lines.joinToString("\n").parse())
+            this.text(Component.join(JoinConfiguration.newlines(), lines))
             this.billboard = hologramBillboard
             this.isDefaultBackground = hasBackground
         }
@@ -29,7 +30,7 @@ class GlobalHologram(
     }
 
     override fun setLines(lines: List<Component>) {
-        textDisplay.text(lines.joinToString("\n").parse())
+        textDisplay.text(Component.join(JoinConfiguration.newlines(), lines))
     }
 
     override fun addLine(line: Component) {
