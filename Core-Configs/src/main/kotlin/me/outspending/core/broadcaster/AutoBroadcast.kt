@@ -1,4 +1,4 @@
-package me.outspending.core.misc.broadcaster
+package me.outspending.core.broadcaster
 
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import org.bukkit.Bukkit
