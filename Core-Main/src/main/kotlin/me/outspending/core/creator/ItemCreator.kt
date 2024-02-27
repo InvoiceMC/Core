@@ -7,12 +7,13 @@ import org.bukkit.Material
 import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 
-class ItemCreator : Creator<ItemStack> {
+class ItemCreator(
+    private var material: Material
+) : Creator<ItemStack> {
     private var name: Component? = null
     private var type: String? = null
     private var lore: List<Component>? = null
     private var flags: Array<out ItemFlag>? = null
-    private var material: Material? = null
 
     fun name(name: String) = apply { this.name = name.parse() }
     fun name(name: Component) = apply { this.name = name }
@@ -27,9 +28,7 @@ class ItemCreator : Creator<ItemStack> {
     fun material(material: Material) = apply { this.material = material }
 
     override fun build(): ItemStack {
-        requireNotNull(material) { "Material cannot be null" }
-
-        val itemStack = ItemStack(material!!)
+        val itemStack = ItemStack(material)
         itemStack.editMeta { meta ->
             name?.let { meta.displayName(it) }
             lore?.let { lore ->
