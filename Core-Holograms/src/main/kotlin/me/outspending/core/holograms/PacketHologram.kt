@@ -7,11 +7,14 @@ import net.minecraft.network.protocol.game.ClientboundRemoveEntitiesPacket
 import net.minecraft.network.protocol.game.ClientboundTeleportEntityPacket
 import org.bukkit.Location
 import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer
+import org.bukkit.entity.Display
 import org.bukkit.entity.Player
 
 typealias LocalHologram = PacketHologram
 
 class PacketHologram(private val player: Player, location: Location, private var lines: MutableList<Component>) : Hologram {
+    constructor(player: Player, location: Location, lines: Collection<Component>) : this(player, location, lines.toMutableList())
+
     private val hologramPacket = ClientboundHologramPacket(location, lines)
 
     private val teleportPacket by lazy { ClientboundTeleportEntityPacket(hologramPacket.entity) }

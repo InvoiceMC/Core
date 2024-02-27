@@ -1,6 +1,7 @@
 package me.outspending.core.commands.admin
 
 import com.azuyamat.maestro.common.annotations.Command
+import me.outspending.core.mining.MetaStorage
 import me.outspending.core.mining.enchants.PickaxeEnchanter
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -18,7 +19,9 @@ class EnchantCommand {
         val item = inventory.itemInMainHand
 
         if (item.type == Material.DIAMOND_PICKAXE) {
-            val newItem: ItemStack = PickaxeEnchanter.enchantPickaxe(item, enchant, level)
+            val metaStorage = MetaStorage.metaData[player] ?: return
+
+            val newItem: ItemStack = PickaxeEnchanter.enchantPickaxe(item, metaStorage, enchant, level)
             player.inventory.setItemInMainHand(newItem)
         }
     }

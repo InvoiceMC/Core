@@ -5,6 +5,7 @@ import me.outspending.core.data.Extensions.getData
 import me.outspending.core.data.player.PlayerData
 import me.outspending.core.format
 import me.outspending.core.helpers.FormatHelper.Companion.parse
+import me.outspending.core.mining.MetaStorage
 import me.outspending.core.mining.enchants.PickaxeEnchant
 import me.outspending.core.mining.enchants.PickaxeEnchanter
 import me.tech.mcchestui.GUI
@@ -14,6 +15,7 @@ import me.tech.mcchestui.utils.gui
 import me.tech.mcchestui.utils.openGUI
 import org.bukkit.Material
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import kotlin.math.pow
 
 private val ENCHANT_STEPS: Array<Int> = arrayOf(1, 5, 25, 50, 100, 500) // Last one is for upgrade max
@@ -21,6 +23,7 @@ private const val ENCHANT_MAX_MAX_LEVEL: Int = 25000
 
 class EnchantUpgradeGUI(private val player: Player, private val enchant: PickaxeEnchant) :
     EnchantGUI {
+
     private fun getEnchantCost(currentLevel: Int, increaseLevel: Int): Double {
         val increase: Float = enchant.getIncreaseProgression() / 100
         val initialCost: Float = enchant.getInitialCost()
@@ -53,6 +56,8 @@ class EnchantUpgradeGUI(private val player: Player, private val enchant: Pickaxe
         return (cost to maxLevel)
     }
 
+    private var didUpgrade: Boolean = false
+
     override fun createGUI(): GUI {
         return gui(
             plugin = core,
@@ -62,10 +67,16 @@ class EnchantUpgradeGUI(private val player: Player, private val enchant: Pickaxe
             fillBorder { item = item(Material.GRAY_STAINED_GLASS_PANE) { name = " ".parse() } }
 
             val heldItem = player.inventory.itemInMainHand
-            val meta = heldItem.itemMeta
-            val playerData = player.getData()
-            val data = meta.persistentDataContainer
+            val metaStorage = MetaStorage.metaData[player]!!
+            val data = metaStorage.data
 
+            onCloseInventory = { event ->
+                if (didUpgrade) {
+                    metaStorage.update(heldItem)
+                }
+            }
+
+            val playerData = player.getData()
             val enchantLevel = enchant.getEnchantmentLevel(data) ?: 0
 
             var index = 2
@@ -122,8 +133,12 @@ class EnchantUpgradeGUI(private val player: Player, private val enchant: Pickaxe
                                     playerData.gold -= enchantCost
 
                                     val item =
-                                        PickaxeEnchanter.enchantPickaxe(heldItem, enchant, num)
+                                        PickaxeEnchanter.enchantPickaxe(heldItem, metaStorage, enchant, num)
                                     player.inventory.setItemInMainHand(item)
+
+                                    if (!didUpgrade) {
+                                        didUpgrade = true
+                                    }
 
                                     refresh()
                                 }
@@ -171,10 +186,15 @@ class EnchantUpgradeGUI(private val player: Player, private val enchant: Pickaxe
                             val item =
                                 PickaxeEnchanter.enchantPickaxe(
                                     heldItem,
+                                    metaStorage,
                                     enchant,
                                     (level - enchantLevel)
                                 )
                             player.inventory.setItemInMainHand(item)
+
+                            if (!didUpgrade) {
+                                didUpgrade = true
+                            }
 
                             refresh()
                         }

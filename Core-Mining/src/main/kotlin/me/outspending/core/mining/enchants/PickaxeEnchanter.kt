@@ -1,10 +1,12 @@
 package me.outspending.core.mining.enchants
 
 import me.outspending.core.helpers.FormatHelper.Companion.parse
+import me.outspending.core.mining.MetaStorage
 import me.outspending.core.regex
 import me.outspending.core.toTinyString
 import net.kyori.adventure.text.Component
 import org.bukkit.NamespacedKey
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.ItemMeta
 import org.bukkit.persistence.PersistentDataContainer
@@ -56,19 +58,20 @@ object PickaxeEnchanter {
         meta.lore(lore)
     }
 
-    fun enchantPickaxe(item: ItemStack, enchant: String, level: Int): ItemStack {
-        item.editMeta { meta ->
-            val data = meta.persistentDataContainer
-            val key = NamespacedKey("enchant", enchant)
-            val lore = meta.getLoreMutable() ?: return@editMeta
+    fun enchantPickaxe(item: ItemStack, storage: MetaStorage, enchant: String, level: Int): ItemStack {
+        val meta = storage.meta
+        val data = storage.data
 
-            if (data.has(key)) editEnchant(meta, data, lore, enchant, level)
-            else addEnchant(meta, data, lore, enchant, level)
-        }
+        val key = NamespacedKey("enchant", enchant)
+        val lore = meta.getLoreMutable() ?: return item
 
+        if (data.has(key)) editEnchant(meta, data, lore, enchant, level)
+        else addEnchant(meta, data, lore, enchant, level)
+
+        item.itemMeta = meta
         return item
     }
 
-    fun enchantPickaxe(item: ItemStack, enchant: PickaxeEnchant, level: Int): ItemStack =
-        enchantPickaxe(item, enchant.getEnchantName(), level)
+    fun enchantPickaxe(item: ItemStack, storage: MetaStorage, enchant: PickaxeEnchant, level: Int): ItemStack =
+        enchantPickaxe(item, storage, enchant.getEnchantName(), level)
 }

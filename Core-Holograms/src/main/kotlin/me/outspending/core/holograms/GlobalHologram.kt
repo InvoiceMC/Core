@@ -14,6 +14,9 @@ class GlobalHologram(
     private val hologramBillboard: Billboard,
     private val hasBackground: Boolean = false
 ) : Hologram {
+    constructor(lines: Collection<Component>, spawnLocation: Location, hologramBillboard: Billboard) :
+            this(lines.toMutableList(), spawnLocation, hologramBillboard)
+
     private val textDisplay: TextDisplay =
         spawnLocation.world.spawnEntity(spawnLocation, EntityType.TEXT_DISPLAY) as TextDisplay
 
