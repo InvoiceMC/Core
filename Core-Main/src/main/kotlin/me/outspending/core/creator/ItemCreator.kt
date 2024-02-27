@@ -20,7 +20,7 @@ class ItemCreator(
 
     fun type(type: String) = apply { this.type = type }
 
-    fun lore(vararg lore: String) = apply { this.lore = lore.map { it.parse() } }
+    fun lore(vararg lore: String) = apply { this.lore = lore.map { "<gray>$it".parse() } }
     fun lore(vararg lore: Component) = apply { this.lore = lore.toList() }
 
     fun flags(vararg flags: ItemFlag) = apply { this.flags = flags }
