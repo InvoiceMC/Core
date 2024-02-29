@@ -1,4 +1,4 @@
-package me.outspending.core.registry
+package me.outspending.core.misc.interfaces
 
 fun interface Startable {
     fun start()

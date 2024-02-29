@@ -4,7 +4,7 @@ import me.outspending.core.CoreHandler.core
 import me.outspending.core.bot.listeners.discord.ReadyListener
 import me.outspending.core.bot.listeners.discord.UserEvents
 import me.outspending.core.config.impl.DiscordConfig
-import me.outspending.core.registry.Startable
+import me.outspending.core.misc.interfaces.Startable
 import net.dv8tion.jda.api.JDA
 import net.dv8tion.jda.api.JDABuilder
 import net.dv8tion.jda.api.entities.Activity
