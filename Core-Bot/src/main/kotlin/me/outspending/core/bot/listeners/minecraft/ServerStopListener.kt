@@ -1,6 +1,7 @@
 package me.outspending.core.bot.listeners.minecraft
 
 import me.outspending.core.bot.DiscordBot
+import me.outspending.core.bot.discordBot
 import me.outspending.core.bot.factories.EmbedFactory
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
@@ -19,6 +20,6 @@ class ServerStopListener: Listener {
             .setDescription("What a shame. I was having fun.")
             .addField("Uptime", duration.toString(), false)
             .build()
-        DiscordBot.logChannel.sendMessageEmbeds(embed).queue()
+        discordBot.logChannel.sendMessageEmbeds(embed).queue()
     }
 }

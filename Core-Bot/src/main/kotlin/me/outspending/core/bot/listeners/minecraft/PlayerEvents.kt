@@ -3,6 +3,7 @@ package me.outspending.core.bot.listeners.minecraft
 import io.papermc.paper.event.player.AsyncChatEvent
 import me.outspending.core.CoreHandler.core
 import me.outspending.core.bot.DiscordBot
+import me.outspending.core.bot.discordBot
 import me.outspending.core.bot.factories.EmbedFactory
 import net.kyori.adventure.text.TextComponent
 import org.bukkit.entity.Player
@@ -23,8 +24,8 @@ class PlayerEvents : Listener {
             .setThumbnail(getImage(event.player))
             .setFooter(playerCount())
             .build()
-        DiscordBot.logChannel.sendMessageEmbeds(embed).queue()
-        DiscordBot.updateActivity()
+        discordBot.logChannel.sendMessageEmbeds(embed).queue()
+        discordBot.updateActivity()
     }
 
     @EventHandler
@@ -35,8 +36,8 @@ class PlayerEvents : Listener {
             .setThumbnail(getImage(event.player))
             .setFooter(playerCount())
             .build()
-        DiscordBot.logChannel.sendMessageEmbeds(embed).queue()
-        DiscordBot.updateActivity()
+        discordBot.logChannel.sendMessageEmbeds(embed).queue()
+        discordBot.updateActivity()
     }
 
     @EventHandler
@@ -51,7 +52,7 @@ class PlayerEvents : Listener {
         if (event.isCancelled)
             embed.setColor("#FF0000")
 
-        DiscordBot.logChannel.sendMessageEmbeds(embed.build()).queue()
+        discordBot.logChannel.sendMessageEmbeds(embed.build()).queue()
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
@@ -65,7 +66,7 @@ class PlayerEvents : Listener {
             .setDescription("**${player.name}**: `$command`")
             .setColor("#222222")
 
-        DiscordBot.msgChannel.sendMessageEmbeds(embed.build()).queue()
+        discordBot.msgChannel.sendMessageEmbeds(embed.build()).queue()
     }
 
     private fun getImage(player: Player) = "https://crafatar.com/avatars/${player.uniqueId}?size=128&overlay"

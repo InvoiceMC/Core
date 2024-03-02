@@ -2,6 +2,7 @@ package me.outspending.core.bot.listeners.discord
 
 import me.outspending.core.CoreHandler.core
 import me.outspending.core.bot.DiscordBot
+import me.outspending.core.bot.discordBot
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import net.dv8tion.jda.api.entities.emoji.Emoji
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent
@@ -11,7 +12,7 @@ class UserEvents : ListenerAdapter() {
     @Override
     override fun onMessageReceived(event: MessageReceivedEvent) {
         if (event.author.isBot) return
-        if (DiscordBot.getLogChannel() != event.channel) return
+        if (discordBot.getLogChannel() != event.channel) return
 
         val author = event.author.name
         val message = event.message.contentRaw
