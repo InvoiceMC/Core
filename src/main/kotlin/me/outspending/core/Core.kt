@@ -1,6 +1,8 @@
 package me.outspending.core
 
-import me.outspending.core.bot.DiscordBot
+import com.github.shynixn.mccoroutine.bukkit.SuspendingJavaPlugin
+import com.github.shynixn.mccoroutine.bukkit.launch
+import kotlinx.coroutines.coroutineScope
 import me.outspending.core.bot.discordBot
 import me.outspending.core.crates.CratesHandler
 import me.outspending.core.data.DatabaseManager
@@ -9,13 +11,12 @@ import me.outspending.core.registry.RegistryType
 import org.bukkit.plugin.java.JavaPlugin
 import kotlin.time.measureTime
 
-lateinit var core: Core
+class Core : SuspendingJavaPlugin() {
 
-class Core : JavaPlugin() {
+    override suspend fun onEnableAsync() {
+        CoreHandler.setup(this)
 
-    override fun onEnable() {
         val time = measureTime {
-            CoreHandler.setup(this)
             discordBot.start()
 
             RegistryType.LISTENERS.register()
@@ -30,7 +31,7 @@ class Core : JavaPlugin() {
         logger.info("Core has finished loading in $time!")
     }
 
-    override fun onDisable() {
+    override suspend fun onDisableAsync() {
         DatabaseManager.stopDatabase()
     }
 }

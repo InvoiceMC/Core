@@ -3,7 +3,7 @@ package me.outspending.core.commands.admin
 import com.azuyamat.maestro.common.annotations.Command
 import com.azuyamat.maestro.common.annotations.SubCommand
 import me.outspending.core.config.messagesConfig
-import me.outspending.core.data.DataSaver
+import me.outspending.core.data.player.playerDataManager
 import org.bukkit.command.CommandSender
 
 @Command(
@@ -13,7 +13,8 @@ import org.bukkit.command.CommandSender
 class DatabaseCommand {
     @SubCommand("reload")
     fun reload(player: CommandSender) {
-        DataSaver.updateAllData()
+        playerDataManager.saveAllData()
+
         player.sendMessage(messagesConfig.getMessage("commands.admin.database.reload_success"))
     }
 

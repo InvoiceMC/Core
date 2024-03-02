@@ -1,11 +1,14 @@
 package me.outspending.core.listeners.types
 
+import com.github.shynixn.mccoroutine.bukkit.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import me.outspending.core.CoreHandler.core
 import me.outspending.core.data.player.playerDataManager
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.helpers.enums.CustomSound
 import me.outspending.core.mining.duplex.PacketListeners
 import me.outspending.core.quests.QuestsHandler
-import me.outspending.core.runAsync
 import me.outspending.core.scoreboard.scoreboardManager
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.title.Title
@@ -15,17 +18,35 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.event.player.PlayerLevelChangeEvent
+import org.bukkit.event.player.PlayerLoginEvent
 import org.bukkit.event.player.PlayerQuitEvent
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
-import java.util.*
-import kotlin.time.measureTime
+
+class AsyncPlayerListeners : Listener {
+    @EventHandler
+    suspend fun onPlayerLogin(e: PlayerLoginEvent) {
+        core.launch {
+            // Load data
+            val deferred = async(Dispatchers.IO) { playerDataManager.loadPlayerData(e.player) }
+            deferred.await()
+        }
+    }
+
+    @EventHandler
+    suspend fun onPlayerLeave(e: PlayerQuitEvent) {
+        core.launch {
+            val deferred = async(Dispatchers.IO) { playerDataManager.savePlayerData(e.player) }
+            deferred.await()
+        }
+    }
+}
 
 class PlayerListeners : Listener {
+
     @EventHandler
     fun onPlayerJoin(e: PlayerJoinEvent) {
         val player: Player = e.player
-        val uuid: UUID = player.uniqueId
 
         // Join message
         val joinMessage: Component =
@@ -42,45 +63,22 @@ class PlayerListeners : Listener {
             PotionEffect(PotionEffectType.NIGHT_VISION, Int.MAX_VALUE, 1, false, false)
         )
 
-        // Load data
-        runAsync {
-            val time = measureTime {
-                playerDataManager.loadPlayerData(uuid)
-            }
+        // Scoreboard & Packet Listener (DuplexChannel)
+        scoreboardManager.createScoreboard(player)
+        PacketListeners.addPlayer(player)
 
-            // Show data loaded title
-            player.showTitle(
-                Title.title(
-                    "<main><b>ᴅᴀᴛᴀʙᴀꜱᴇ</b>".parse(),
-                    "<gray><i>Loaded your data in <second><u>$time</u><gray>!".parse(),
-                ),
-            )
-
-            // Play sound
-            CustomSound.Success(pitch = 1.65F).playSound(player)
-
-            // Scoreboard & Packet Listener (DuplexChannel)
-            scoreboardManager.createScoreboard(player)
-            PacketListeners.addPlayer(player)
-
-            QuestsHandler(player)
-        }
+        QuestsHandler(player)
     }
 
     @EventHandler
     fun onPlayerLeave(e: PlayerQuitEvent) {
         val player: Player = e.player
-        val uuid: UUID = player.uniqueId
 
         e.quitMessage(null)
 
-        runAsync {
-            playerDataManager.unloadPlayerData(uuid)
-
-            // Remove Scoreboard & Packet Listener (DuplexChannel)
-            scoreboardManager.removeScoreboard(player)
-            PacketListeners.removePlayer(player)
-        }
+        // Remove Scoreboard & Packet Listener (DuplexChannel)
+        scoreboardManager.removeScoreboard(player)
+        PacketListeners.removePlayer(player)
     }
 
     @EventHandler

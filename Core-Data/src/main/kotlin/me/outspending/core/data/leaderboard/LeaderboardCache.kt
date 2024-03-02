@@ -10,12 +10,13 @@ import org.bukkit.OfflinePlayer
 private const val LEADERBOARD_SIZE: UByte = 10u
 private const val LEADERBOARD_FORMAT: String = "%s - %s: %s"
 
+// TODO: What the actual fuck :skull:
 class LeaderboardCache {
     companion object {
         private var cachedData: Map<OfflinePlayer, PlayerData> = mutableMapOf()
     }
 
-    private fun getAllData(): List<PlayerData>? = database.getAllData(munchPlayerData).get()
+    private fun getAllData(): List<PlayerData>? = database.getAllData(munchPlayerData)
 
     private fun updateCache() {
         val data = getAllData()

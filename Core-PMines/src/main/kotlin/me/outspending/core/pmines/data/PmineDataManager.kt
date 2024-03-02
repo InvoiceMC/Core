@@ -40,7 +40,7 @@ class PmineDataManager {
         }
     }
 
-    fun loadPmine(player: Player) {
+    suspend fun loadPmine(player: Player) {
         val data = player.getData()
         data.pmineName?.let { loadPmine(it) }
     }

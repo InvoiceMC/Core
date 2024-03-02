@@ -10,14 +10,14 @@ class PlayerDataPersistenceHandler : DataPersistenceHandler<PlayerData, UUID> {
     override fun save(value: UUID, data: PlayerData?) {
         requireNotNull(data) { "Player data for $value is null" }
 
-        database.hasData(munchPlayerData, value).thenAcceptAsync { hasData ->
-            if (hasData!!) database.updateData(munchPlayerData, data, value)
-            else database.addData(munchPlayerData, data)
-        }
+        val hasData = database.hasData(munchPlayerData, value) ?: false
+
+        if (hasData) database.updateData(munchPlayerData, data, value)
+        else database.addData(munchPlayerData, data)
     }
 
     override fun load(value: UUID): PlayerData {
-        val playerData: PlayerData? = database.getData(munchPlayerData, value).join()
+        val playerData: PlayerData? = database.getData(munchPlayerData, value)
         val loadedData = playerData ?: PlayerData(value)
 
         return loadedData

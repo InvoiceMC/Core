@@ -94,6 +94,7 @@ class PrivateMineImpl internal constructor(
     }
 
     override fun resetMine(player: Player) {
+        // TODO: Make this a coroutine
         runAsync {
             var changedBlocks: Int
             val time = measureTime {

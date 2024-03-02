@@ -1,5 +1,6 @@
 package me.outspending.core.listeners
 
+import com.github.shynixn.mccoroutine.bukkit.registerSuspendingEvents
 import me.outspending.core.CoreHandler.core
 import me.outspending.core.registry.Registrable
 import org.bukkit.event.Listener
@@ -11,7 +12,7 @@ class ListenerRegistry : Registrable {
             .getSubTypesOf(Listener::class.java)
             .forEach {
                 val listener = it.getDeclaredConstructor().newInstance() as Listener
-                core.server.pluginManager.registerEvents(listener, core)
+                core.server.pluginManager.registerSuspendingEvents(listener, core)
             }
     }
 }

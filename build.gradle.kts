@@ -28,7 +28,11 @@ allprojects {
 
         api("org.reflections:reflections:0.9.8")
 
+        // Async Stuff
+        implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.0")
         implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.14.0")
+        implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-core:2.14.0")
+
         implementation("net.kyori:adventure-text-minimessage:4.14.0")
         implementation("de.tr7zw:item-nbt-api:2.12.2")
     }
@@ -88,6 +92,7 @@ tasks {
 
         relocate("fr.mrmicky.fastboard", "me.outspending.core.relocations.fastboard")
         relocate("de.tr7zw.changeme.nbtapi", "me.outspending.core.relocations.nbtapi")
+        relocate("org.github.shynixn.mccoroutine", "me.outspending.core.relocations.mccoroutine")
 
         if (!env.DIRECTORY.isPresent) {
             throw IllegalStateException("DIRECTORY environment variable is not set")
