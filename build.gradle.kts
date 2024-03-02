@@ -28,6 +28,7 @@ allprojects {
 
         api("org.reflections:reflections:0.9.8")
 
+        implementation("com.github.shynixn.mccoroutine:mccoroutine-bukkit-api:2.14.0")
         implementation("net.kyori:adventure-text-minimessage:4.14.0")
         implementation("de.tr7zw:item-nbt-api:2.12.2")
     }
