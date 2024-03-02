@@ -52,10 +52,7 @@ class PlayerDataManager {
             val allData = playerData.values.toList()
 
             val time = measureTime {
-                val deferred = async(Dispatchers.IO) {
-                    database.updateAllData(munchPlayerData, allData)
-                    Bukkit.broadcast("Running in thread: <white>${Thread.currentThread().name}".parse(true))
-                }
+                val deferred = async(Dispatchers.IO) { database.updateAllData(munchPlayerData, allData) }
                 deferred.await()
 
                 for (player in playerData.keys) {
@@ -71,8 +68,6 @@ class PlayerDataManager {
         if (playerData.containsKey(player)) return
 
         playerData[player] = persistenceHandler.load(player.uniqueId)
-
-        Bukkit.broadcast("Running in thread: <white>${Thread.currentThread().name}".parse(true))
     }
 
     fun unloadPlayerData(player: Player) {
@@ -82,7 +77,6 @@ class PlayerDataManager {
         playerData?.let {
             persistenceHandler.save(player.uniqueId, it)
         }
-        Bukkit.broadcast("Running in thread: <white>${Thread.currentThread().name}".parse(true))
     }
 
     fun savePlayerData(player: Player) {
@@ -90,7 +84,6 @@ class PlayerDataManager {
 
         val playerData: PlayerData = getPlayerData(player)
         persistenceHandler.save(player.uniqueId, playerData)
-        Bukkit.broadcast("Running in thread: <white>${Thread.currentThread().name}".parse(true))
     }
 
     fun getPlayerData(player: Player): PlayerData = playerData[player]!!

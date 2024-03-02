@@ -15,9 +15,6 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 @PublishedApi
-internal val THREAD_EXECUTOR: ExecutorService =
-    Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors() + 1)
-@PublishedApi
 internal val scheduler: BukkitScheduler = Bukkit.getScheduler()
 
 /** Strings */
@@ -39,9 +36,6 @@ fun Number.regex(): String = NumberHelper(this).toCommas()
 fun Number.fix(): String = "%.1f".format(this.toDouble())
 
 fun Number.toTinyNumber(): String = NumberHelper(this).toTinyNumbers()
-
-/** Async */
-inline fun runAsync(crossinline block: () -> Unit) = THREAD_EXECUTOR.execute { block() }
 
 /** BukkitRunnables */
 inline fun delay(delay: Long, crossinline block: () -> Unit) =
