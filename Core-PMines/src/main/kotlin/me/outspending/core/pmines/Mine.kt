@@ -39,8 +39,11 @@ interface Mine {
     fun getTopLocation(): Location
     fun getRegion(): BoundingBox
 
+    fun getVolume(): Int
+    fun getBlockCount(): Int
+
     fun removeBlock(location: Location)
-    fun removeBlocks(locations: List<Location>)
+    fun removeBlocks(locations: Set<Location>)
 
     fun forceReset(player: Player, mine: PrivateMine): Int?
     fun reset(player: Player, mine: PrivateMine): Int?

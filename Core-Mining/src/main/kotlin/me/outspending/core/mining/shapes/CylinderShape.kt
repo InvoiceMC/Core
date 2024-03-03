@@ -34,7 +34,7 @@ class CylinderShape(private val radius: Int, private val height: Int) : PacketSh
                 null
             }
         }
-        val keys: List<Location> = blockDataMap.keys.toList()
+        val keys: Set<Location> = blockDataMap.keys.toSet()
 
         PacketSync.syncBlocks(mine, blockDataMap)
         updateBlocks(mine.getMine(), keys)
@@ -69,7 +69,7 @@ class CylinderShape(private val radius: Int, private val height: Int) : PacketSh
                 null
             }
         }
-        val keys: List<Location> = blockDataMap.keys.toList()
+        val keys: Set<Location> = blockDataMap.keys.toSet()
 
         PacketSync.syncBlocks(mine, blockDataMap)
         updateBlocks(mine.getMine(), keys)

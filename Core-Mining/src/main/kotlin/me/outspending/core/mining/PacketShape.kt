@@ -67,5 +67,5 @@ abstract class PacketShape {
         return (blockDataMap.size to blockDataMap)
     }
 
-    fun updateBlocks(mine: Mine, blocksToRemove: List<Location>) = mine.removeBlocks(blocksToRemove)
+    fun updateBlocks(mine: Mine, blocksToRemove: Set<Location>) = mine.removeBlocks(blocksToRemove)
 }

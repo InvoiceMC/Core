@@ -17,6 +17,7 @@ import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket
 import net.minecraft.network.protocol.game.ServerboundPlayerActionPacket
 import net.minecraft.network.protocol.game.ServerboundUseItemOnPacket
 import net.minecraft.server.network.ServerGamePacketListenerImpl
+import org.bukkit.GameMode
 import org.bukkit.Location
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -40,7 +41,7 @@ class MiningDuplexHandler(
         if (packet is ServerboundPlayerActionPacket) {
             if (packet.action == ServerboundPlayerActionPacket.Action.START_DESTROY_BLOCK) {
                 val mainHand = player.inventory.itemInMainHand
-                if (mainHand.type != Material.DIAMOND_PICKAXE) return
+                if (player.gameMode != GameMode.SURVIVAL || mainHand.type != Material.DIAMOND_PICKAXE) return
 
                 if (!this::metaStorage.isInitialized) {
                     metaStorage = MetaStorage(player, mainHand.itemMeta)

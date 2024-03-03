@@ -19,7 +19,7 @@ class CuboidShape(private val minLocation: Location, private val maxLocation: Lo
         blockData: BlockData,
         perBlock: (Location, BlockData) -> Unit
     ): Int {
-        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys.toSet() // Using set because its O(1) for .contains()
+        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys
         val (blocksChanged, blockDataMap) = runBetween(super.MINE_WORLD, minLocation, maxLocation) {
             if (mineBlocks.contains(it)) {
                 perBlock(it, blockData)
@@ -28,7 +28,7 @@ class CuboidShape(private val minLocation: Location, private val maxLocation: Lo
                 null
             }
         }
-        val keys: List<Location> = blockDataMap.keys.toList()
+        val keys: Set<Location> = blockDataMap.keys.toSet()
 
         PacketSync.syncBlocks(mine, blockDataMap)
         updateBlocks(mine.getMine(), keys)
@@ -47,7 +47,7 @@ class CuboidShape(private val minLocation: Location, private val maxLocation: Lo
         weightedBlockData: WeightedCollection<BlockData>,
         perBlock: (Location, BlockData) -> Unit
     ): Int {
-        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys.toSet() // Using set because its O(1) for .contains()
+        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys
         val (blocksChanged, blockDataMap) = runBetween(super.MINE_WORLD, minLocation, maxLocation) {
             if (mineBlocks.contains(it)) {
                 val nextBlockType = weightedBlockData.next()
@@ -58,7 +58,7 @@ class CuboidShape(private val minLocation: Location, private val maxLocation: Lo
                 null
             }
         }
-        val keys: List<Location> = blockDataMap.keys.toList()
+        val keys: Set<Location> = blockDataMap.keys.toSet()
 
         PacketSync.syncBlocks(mine, blockDataMap)
         updateBlocks(mine.getMine(), keys)

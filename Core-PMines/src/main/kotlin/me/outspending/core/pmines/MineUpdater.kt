@@ -7,6 +7,7 @@ import me.outspending.core.toLocation
 import org.bukkit.Location
 import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
+import kotlin.math.abs
 
 object MineUpdater {
     fun resetMine(player: Player, privateMine: PrivateMine, blockWeights: WeightedCollection<BlockData>): Pair<Int, MutableMap<Location, BlockData>> {
@@ -21,7 +22,7 @@ object MineUpdater {
         val min = vector.getMin(world)
         val max = vector.getMax(world)
 
-        val blocks: MutableMap<Location, BlockData> = mutableMapOf()
+        val blocks: HashMap<Location, BlockData> = HashMap()
         for (x in min.blockX..max.blockX) {
             for (y in min.blockY..max.blockY) {
                 for (z in min.blockZ..max.blockZ) {

@@ -5,6 +5,7 @@ import org.bukkit.Location
 import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
 import org.bukkit.util.BoundingBox
+import kotlin.math.abs
 
 private const val RESET_COOLDOWN: Long = 60000 // in milliseconds = 1 Minute
 
@@ -23,15 +24,27 @@ class MineImpl internal constructor(
     override fun getTopLocation(): Location = top
     override fun getRegion(): BoundingBox = region
 
+    override fun getVolume(): Int {
+        val min = bottom.toVector()
+        val max = top.toVector()
+
+        val difference = max.subtract(min)
+        val volume = abs(difference.x) * abs(difference.y) * abs(difference.z)
+
+        return volume.toInt()
+    }
+
+    override fun getBlockCount(): Int = blocks.size
+
     override fun removeBlock(location: Location) {
         blocks.remove(location)
     }
 
-    override fun removeBlocks(locations: List<Location>) {
-        locations.forEach { blocks.remove(it) }
+    override fun removeBlocks(locations: Set<Location>) {
+        blocks.keys.removeAll(locations)
     }
 
-    override fun forceReset(player: Player, mine: PrivateMine): Int? {
+    override fun forceReset(player: Player, mine: PrivateMine): Int {
         val (num, newBlocks) = MineUpdater.resetMine(player, mine, blockWeights)
         blocks = newBlocks
         lastReset = System.currentTimeMillis()
@@ -50,8 +63,8 @@ class MineImpl internal constructor(
     override fun expand(size: Int) {
         val doubleSize = size.toDouble()
 
-        top = top.clone().add(doubleSize, 0.0, -doubleSize)
-        bottom = bottom.clone().add(-doubleSize, 0.0, doubleSize)
+        top = top.clone().add(doubleSize, 0.0, doubleSize)
+        bottom = bottom.clone().add(-doubleSize, 0.0, -doubleSize)
 
         region.resize(top.x, top.y, top.z, bottom.x, bottom.y, bottom.z)
     }
