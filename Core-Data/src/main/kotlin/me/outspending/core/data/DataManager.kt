@@ -6,7 +6,7 @@ abstract class DataManager<K : Any, V : Any>(val data: MutableMap<K, V>) {
     abstract fun load()
     abstract fun unload()
     abstract fun saveAllData()
-    abstract fun loadData(key: K)
+    abstract suspend fun loadData(key: K): V
     abstract fun unloadData(key: K)
     abstract fun saveData(key: K)
     abstract fun getData(key: K): V

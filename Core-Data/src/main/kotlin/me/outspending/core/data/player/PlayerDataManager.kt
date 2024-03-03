@@ -1,8 +1,10 @@
 package me.outspending.core.data.player
 
+import com.github.shynixn.mccoroutine.bukkit.asyncDispatcher
 import com.github.shynixn.mccoroutine.bukkit.launch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import me.outspending.core.CoreHandler.core
 import me.outspending.core.data.DataManager
@@ -68,12 +70,15 @@ class PlayerDataManager : DataManager<Player, PlayerData>() {
         }
     }
 
-    override fun loadData(key: Player) {
-        if (data.containsKey(key)) return
+    override suspend fun loadData(key: Player): PlayerData {
+        if (data.containsKey(key)) return data[key]!!
 
-        core.launch {
-            data[key] = async(Dispatchers.IO) { persistenceHandler.load(key.uniqueId) }.await()
+        val playerData = coroutineScope {
+            async(Dispatchers.IO) { persistenceHandler.load(key.uniqueId) }.await()
         }
+
+        data[key] = playerData
+        return playerData
     }
 
     override fun unloadData(key: Player) {
@@ -96,5 +101,5 @@ class PlayerDataManager : DataManager<Player, PlayerData>() {
         }
     }
 
-    override fun getData(key: Player): PlayerData = data[key]!!
+    override fun getData(key: Player): PlayerData = data[key] ?: PlayerData(key.uniqueId)
 }

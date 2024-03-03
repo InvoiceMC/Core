@@ -4,7 +4,6 @@ import com.github.shynixn.mccoroutine.bukkit.launch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import me.outspending.core.CoreHandler.core
-import me.outspending.core.data.getData
 import me.outspending.core.data.player.playerDataManager
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.helpers.enums.CustomSound
@@ -29,17 +28,13 @@ import org.bukkit.potion.PotionEffectType
 class AsyncPlayerListeners : Listener {
     @EventHandler
     suspend fun onPlayerLogin(e: PlayerLoginEvent) {
-        val player = e.player
-
         core.launch {
-            // Load data
-            val deferred = async(Dispatchers.IO) {
-                playerDataManager.loadData(e.player)
+            val playerDataDeferred = async(Dispatchers.IO) { playerDataManager.loadData(e.player) }
 
-                val data = player.getData()
-                pmineDataManager.loadData(data.pmineName ?: "")
-            }
-            deferred.await()
+            val data = playerDataDeferred.await()
+            val pmineName = data.pmineName ?: ""
+
+            async(Dispatchers.IO) { pmineDataManager.loadData(pmineName) }.await()
         }
     }
 
@@ -48,13 +43,13 @@ class AsyncPlayerListeners : Listener {
         val player = e.player
 
         core.launch {
-            val deferred = async(Dispatchers.IO) {
-                val pmine = player.getPmine()
+            async(Dispatchers.IO) {
+                    val pmine = player.getPmine()
 
-                playerDataManager.saveData(e.player)
-                pmineDataManager.saveData(pmine.getMineName())
-            }
-            deferred.await()
+                    playerDataManager.saveData(e.player)
+                    pmineDataManager.saveData(pmine.getMineName())
+                }
+                .await()
         }
     }
 }

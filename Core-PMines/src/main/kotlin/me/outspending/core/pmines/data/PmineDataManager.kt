@@ -3,6 +3,7 @@ package me.outspending.core.pmines.data
 import com.github.shynixn.mccoroutine.bukkit.launch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import me.outspending.core.CoreHandler.core
 import me.outspending.core.data.DataManager
 import me.outspending.core.data.DataPersistenceHandler
@@ -52,11 +53,13 @@ class PmineDataManager : DataManager<String, PrivateMine>() {
         }
     }
 
-    override fun loadData(key: String) {
-        if (data.containsKey(key)) return
+    override suspend fun loadData(key: String): PrivateMine {
+        if (data.containsKey(key)) return data[key]!!
 
-        core.launch {
-            data[key] = async(Dispatchers.IO) { persistenceHandler.load(key) }.await().toPmine()
+        val storablePmine = coroutineScope {
+            async(Dispatchers.IO) { persistenceHandler.load(key) }.await()
         }
+
+        return storablePmine.toPmine()
     }
 }
