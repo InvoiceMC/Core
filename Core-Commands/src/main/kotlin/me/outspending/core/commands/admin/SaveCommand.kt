@@ -2,8 +2,8 @@ package me.outspending.core.commands.admin
 
 import com.azuyamat.maestro.common.annotations.Command
 import com.azuyamat.maestro.common.annotations.SubCommand
-import me.outspending.core.data.Extensions.savePlayerData
 import me.outspending.core.data.player.playerDataManager
+import me.outspending.core.data.savePlayerData
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import org.bukkit.entity.Player
 

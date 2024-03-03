@@ -1,58 +1,62 @@
 package me.outspending.core.pmines.data
 
+import com.github.shynixn.mccoroutine.bukkit.launch
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import me.outspending.core.CoreHandler.core
+import me.outspending.core.data.DataManager
 import me.outspending.core.data.DataPersistenceHandler
-import me.outspending.core.data.Extensions.getData
+import me.outspending.core.data.database
 import me.outspending.core.pmines.PrivateMine
-import org.bukkit.Bukkit
-import org.bukkit.entity.Player
 
 val pmineDataManager = PmineDataManager()
 
-class PmineDataManager {
-
-    private val pmineData: MutableMap<String, PrivateMine> = mutableMapOf()
-    private val persistenceHandler: DataPersistenceHandler<PrivateMine, String> =
+class PmineDataManager : DataManager<String, PrivateMine>() {
+    private val persistenceHandler: DataPersistenceHandler<StorablePmine, String> =
         PmineDataPersistenceHandler()
 
-    fun getPmine(name: String): PrivateMine {
-        val pmine = pmineData[name]
-        requireNotNull(pmine) { "The pmine named $name doesn't exist" }
-
-        return pmine
+    override fun load() {
+        database.createTable(pmineMunchClass)
     }
 
-    fun addPmine(mine: PrivateMine) {
-        pmineData[mine.getMineName()] = mine
+    override fun unload() {
+        saveAllData()
     }
 
-    fun savePmine(name: String) = savePmine(getPmine(name))
-
-    fun savePmine(mine: PrivateMine) = persistenceHandler.save(mine.getMineName(), mine)
-
-    fun saveAndDeletePmine(name: String) {
-        val mine = getPmine(name)
-
-        val onlinePlayers = Bukkit.getOnlinePlayers()
-        val anyoneOnline = mine.getAllMembers().any { it in onlinePlayers }
-        if (!anyoneOnline) { // Only save's and deletes if no one from the pmine is online
-            savePmine(name)
-            pmineData.remove(name)
+    override fun saveAllData() {
+        core.launch {
+            val allData = getAllDataList().map { it.toStorable() }
+            async { database.updateAllData(pmineMunchClass, allData) }.await()
         }
     }
 
-    suspend fun loadPmine(player: Player) {
-        val data = player.getData()
-        data.pmineName?.let { loadPmine(it) }
+    override fun getData(key: String): PrivateMine = data[key]!!
+
+    override fun saveData(key: String) {
+        if (!data.containsKey(key)) return
+
+        val mine = getData(key)
+        core.launch {
+            async(Dispatchers.IO) { persistenceHandler.save(key, mine.toStorable()) }.await()
+        }
     }
 
-    fun loadPmine(name: String) {
-        if (pmineData.containsKey(name)) return // Means it's already loaded
+    override fun unloadData(key: String) {
+        if (!data.containsKey(key)) return
 
-        val mine = persistenceHandler.load(name)
-        pmineData[name] = mine
+        val pmine = data.remove(key)
+        pmine?.let {
+            core.launch {
+                async(Dispatchers.IO) { persistenceHandler.save(key, it.toStorable()) }.await()
+            }
+        }
     }
 
-    fun getPmineNames(): Set<String> = pmineData.keys
+    override fun loadData(key: String) {
+        if (data.containsKey(key)) return
 
-    fun hasPmineName(name: String) = pmineData.containsKey(name)
+        core.launch {
+            data[key] = async(Dispatchers.IO) { persistenceHandler.load(key) }.await().toPmine()
+        }
+    }
 }

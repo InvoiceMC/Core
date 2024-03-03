@@ -1,7 +1,7 @@
 package me.outspending.core.scoreboard
 
 import fr.mrmicky.fastboard.adventure.FastBoard
-import me.outspending.core.data.Extensions.getData
+import me.outspending.core.data.getData
 import me.outspending.core.data.player.PlayerData
 import me.outspending.core.fix
 import me.outspending.core.format

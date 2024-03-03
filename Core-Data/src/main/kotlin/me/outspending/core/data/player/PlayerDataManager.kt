@@ -1,23 +1,25 @@
 package me.outspending.core.data.player
 
 import com.github.shynixn.mccoroutine.bukkit.launch
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.delay
 import me.outspending.core.CoreHandler.core
+import me.outspending.core.data.DataManager
 import me.outspending.core.data.DataPersistenceHandler
 import me.outspending.core.data.database
-import me.outspending.core.data.munchPlayerData
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.helpers.enums.CustomSound
-import me.outspending.core.runTaskLater
-import me.outspending.core.runTaskTimer
+import me.outspending.munch.Munch
 import org.bukkit.Bukkit
 import org.bukkit.entity.Player
 import java.util.*
 import kotlin.time.measureTime
 
+val munchPlayerData = Munch.create(PlayerData::class).process<UUID>()
 val playerDataManager = PlayerDataManager()
 
-class PlayerDataManager {
+class PlayerDataManager : DataManager<Player, PlayerData>() {
     private val saveSound: CustomSound.DataSave = CustomSound.DataSave(pitch = 0.65f)
     private val BROADCAST_MESSAGE: String =
         listOf(
@@ -29,7 +31,6 @@ class PlayerDataManager {
             )
             .joinToString("\n")
 
-    private val playerData: HashMap<Player, PlayerData> = HashMap()
     private val persistenceHandler: DataPersistenceHandler<PlayerData, UUID> =
         PlayerDataPersistenceHandler()
 
@@ -43,52 +44,57 @@ class PlayerDataManager {
         }
     }
 
-    fun clear() {
-        playerData.clear()
+    override fun load() {
+        database.createTable(munchPlayerData)
     }
 
-    suspend fun saveAllData() {
+    override fun unload() {
+        saveAllData()
+    }
+
+    override fun saveAllData() {
         core.launch {
-            val allData = playerData.values.toList()
+            val allData = data.values.toList()
 
             val time = measureTime {
-                val deferred = async(Dispatchers.IO) { database.updateAllData(munchPlayerData, allData) }
-                deferred.await()
+                async(Dispatchers.IO) { database.updateAllData(munchPlayerData, allData) }.await()
 
-                for (player in playerData.keys) {
+                for (player in data.keys) {
                     saveSound.playSound(player)
                 }
             }
 
-            Bukkit.broadcast(BROADCAST_MESSAGE.format(playerData.size, time).parse())
+            Bukkit.broadcast(BROADCAST_MESSAGE.format(data.size, time).parse())
         }
     }
 
-    fun loadPlayerData(player: Player) {
-        if (playerData.containsKey(player)) return
+    override fun loadData(key: Player) {
+        if (data.containsKey(key)) return
 
-        playerData[player] = persistenceHandler.load(player.uniqueId)
+        core.launch {
+            data[key] = async(Dispatchers.IO) { persistenceHandler.load(key.uniqueId) }.await()
+        }
     }
 
-    fun unloadPlayerData(player: Player) {
-        if (!playerData.containsKey(player)) return
+    override fun unloadData(key: Player) {
+        if (!data.containsKey(key)) return
 
-        val playerData: PlayerData? = playerData.remove(player)
+        val playerData: PlayerData? = data.remove(key)
         playerData?.let {
-            persistenceHandler.save(player.uniqueId, it)
+            core.launch {
+                async(Dispatchers.IO) { persistenceHandler.save(key.uniqueId, it) }.await()
+            }
         }
     }
 
-    fun savePlayerData(player: Player) {
-        if (!playerData.containsKey(player)) return
+    override fun saveData(key: Player) {
+        if (!data.containsKey(key)) return
 
-        val playerData: PlayerData = getPlayerData(player)
-        persistenceHandler.save(player.uniqueId, playerData)
+        val playerData: PlayerData = getData(key)
+        core.launch {
+            async(Dispatchers.IO) { persistenceHandler.save(key.uniqueId, playerData) }.await()
+        }
     }
 
-    fun getPlayerData(player: Player): PlayerData = playerData[player]!!
-
-    fun getPlayerDataList(): List<PlayerData> = playerData.values.toList()
-
-    fun getAllPlayerData(): HashMap<Player, PlayerData> = playerData
+    override fun getData(key: Player): PlayerData = data[key]!!
 }

@@ -3,7 +3,7 @@ package me.outspending.core.pmines
 import com.github.shynixn.mccoroutine.bukkit.launch
 import kotlinx.coroutines.async
 import me.outspending.core.CoreHandler.core
-import me.outspending.core.data.Extensions.getData
+import me.outspending.core.data.getData
 import me.outspending.core.format
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import org.bukkit.Location
@@ -129,7 +129,13 @@ internal constructor(
         }
     }
 
-    override fun increaseMineSize(size: Int) = mine.expand(size)
+    override fun increaseMineSize(player: Player, size: Int) {
+        mine.expand(size)
+
+        core.launch {
+            async { mine.forceReset(player, this@PrivateMineImpl) }.await()
+        }
+    }
 
     override fun updatePackets(player: Player) = player.sendMultiBlockChange(mine.getBlocks())
 

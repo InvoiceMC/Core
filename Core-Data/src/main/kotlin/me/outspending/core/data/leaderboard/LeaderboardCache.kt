@@ -1,8 +1,8 @@
 package me.outspending.core.data.leaderboard
 
 import me.outspending.core.data.database
-import me.outspending.core.data.munchPlayerData
 import me.outspending.core.data.player.PlayerData
+import me.outspending.core.data.player.munchPlayerData
 import me.outspending.core.holograms.Hologram
 import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer

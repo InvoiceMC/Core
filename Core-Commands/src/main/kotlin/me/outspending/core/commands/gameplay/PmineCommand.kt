@@ -2,12 +2,12 @@ package me.outspending.core.commands.gameplay
 
 import com.azuyamat.maestro.common.annotations.Command
 import com.azuyamat.maestro.common.annotations.SubCommand
-import me.outspending.core.data.Extensions.getData
+import me.outspending.core.data.getData
 import me.outspending.core.helpers.FormatHelper.Companion.parse
-import me.outspending.core.pmines.Extensions.getPmine
-import me.outspending.core.pmines.Extensions.hasPmine
 import me.outspending.core.pmines.PrivateMine
 import me.outspending.core.pmines.data.pmineDataManager
+import me.outspending.core.pmines.getPmine
+import me.outspending.core.pmines.hasPmine
 import net.kyori.adventure.title.Title
 import org.bukkit.entity.Player
 
@@ -47,7 +47,7 @@ class PmineCommand {
             return
         }
 
-        if (pmineDataManager.hasPmineName(name)) {
+        if (pmineDataManager.hasData(name)) {
             player.sendMessage("<red>A pmine with that name already exists!".parse(true))
             return
         }
@@ -60,8 +60,7 @@ class PmineCommand {
         )
 
         val privateMine = PrivateMine.createMine(name, player)
-        pmineDataManager.addPmine(privateMine)
-        println(pmineDataManager.getPmineNames())
+        pmineDataManager.addData(name, privateMine)
         privateMine.resetMine(player)
     }
 
@@ -108,5 +107,13 @@ class PmineCommand {
 
         val pmine = player.getPmine()
         pmine.resetMine(player)
+    }
+
+    @SubCommand("increase")
+    fun increase(player: Player, amount: Int = 1) {
+        if (!checkPmine(player)) return
+
+        val pmine = player.getPmine()
+        pmine.increaseMineSize(player, amount)
     }
 }

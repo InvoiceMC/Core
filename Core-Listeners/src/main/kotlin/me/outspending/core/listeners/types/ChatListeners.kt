@@ -2,7 +2,7 @@ package me.outspending.core.listeners.types
 
 import io.papermc.paper.event.player.AsyncChatEvent
 import me.outspending.core.chat.ChatHandler
-import me.outspending.core.data.Extensions.getData
+import me.outspending.core.data.getData
 import me.outspending.core.data.player.PlayerData
 import me.outspending.core.format
 import me.outspending.core.toComponent
@@ -46,13 +46,7 @@ class ChatListeners : Listener {
             val msg = Placeholder.component("message", newMessage)
 
             val playerData = player.getData()
-            val hoverText = playerData.let {
-                if (it != null) {
-                    createHoverText(it, player.level)
-                } else {
-                    "<red>No player data"
-                }
-            }
+            val hoverText = createHoverText(playerData, player.level)
 
             "<hover:show_text:'$hoverText'>${player.name}<gold><bold>${player.level.toTinyNumber()}</bold></hover> <gray>»<white> <message>"
                 .toComponent(msg)

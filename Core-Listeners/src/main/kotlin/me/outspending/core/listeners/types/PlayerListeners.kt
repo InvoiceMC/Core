@@ -4,10 +4,13 @@ import com.github.shynixn.mccoroutine.bukkit.launch
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import me.outspending.core.CoreHandler.core
+import me.outspending.core.data.getData
 import me.outspending.core.data.player.playerDataManager
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.helpers.enums.CustomSound
 import me.outspending.core.mining.duplex.PacketListeners
+import me.outspending.core.pmines.data.pmineDataManager
+import me.outspending.core.pmines.getPmine
 import me.outspending.core.quests.QuestsHandler
 import me.outspending.core.scoreboard.scoreboardManager
 import net.kyori.adventure.text.Component
@@ -26,17 +29,31 @@ import org.bukkit.potion.PotionEffectType
 class AsyncPlayerListeners : Listener {
     @EventHandler
     suspend fun onPlayerLogin(e: PlayerLoginEvent) {
+        val player = e.player
+
         core.launch {
             // Load data
-            val deferred = async(Dispatchers.IO) { playerDataManager.loadPlayerData(e.player) }
+            val deferred = async(Dispatchers.IO) {
+                playerDataManager.loadData(e.player)
+
+                val data = player.getData()
+                pmineDataManager.loadData(data.pmineName ?: "")
+            }
             deferred.await()
         }
     }
 
     @EventHandler
     suspend fun onPlayerLeave(e: PlayerQuitEvent) {
+        val player = e.player
+
         core.launch {
-            val deferred = async(Dispatchers.IO) { playerDataManager.savePlayerData(e.player) }
+            val deferred = async(Dispatchers.IO) {
+                val pmine = player.getPmine()
+
+                playerDataManager.saveData(e.player)
+                pmineDataManager.saveData(pmine.getMineName())
+            }
             deferred.await()
         }
     }

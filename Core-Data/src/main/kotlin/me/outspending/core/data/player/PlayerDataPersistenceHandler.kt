@@ -2,7 +2,6 @@ package me.outspending.core.data.player
 
 import me.outspending.core.data.DataPersistenceHandler
 import me.outspending.core.data.database
-import me.outspending.core.data.munchPlayerData
 import java.util.*
 
 class PlayerDataPersistenceHandler : DataPersistenceHandler<PlayerData, UUID> {

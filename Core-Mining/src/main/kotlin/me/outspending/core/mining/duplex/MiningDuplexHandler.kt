@@ -2,15 +2,15 @@ package me.outspending.core.mining.duplex
 
 import io.netty.channel.ChannelDuplexHandler
 import io.netty.channel.ChannelHandlerContext
-import me.outspending.core.data.Extensions.getData
+import me.outspending.core.data.getData
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.mining.MetaStorage
 import me.outspending.core.mining.enchants.EnchantHandler
 import me.outspending.core.mining.enchants.EnchantResult
-import me.outspending.core.pmines.Extensions.getPmine
-import me.outspending.core.pmines.Extensions.hasLocation
 import me.outspending.core.pmines.Mine
 import me.outspending.core.pmines.PrivateMine
+import me.outspending.core.pmines.getPmine
+import me.outspending.core.pmines.hasLocation
 import me.outspending.core.pmines.sync.PacketSync
 import net.minecraft.core.BlockPos
 import net.minecraft.network.protocol.game.ClientboundBlockDestructionPacket

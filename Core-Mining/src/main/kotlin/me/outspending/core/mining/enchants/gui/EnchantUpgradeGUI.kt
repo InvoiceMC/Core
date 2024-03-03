@@ -1,7 +1,7 @@
 package me.outspending.core.mining.enchants.gui
 
 import me.outspending.core.CoreHandler.core
-import me.outspending.core.data.Extensions.getData
+import me.outspending.core.data.getData
 import me.outspending.core.data.player.PlayerData
 import me.outspending.core.format
 import me.outspending.core.helpers.FormatHelper.Companion.parse

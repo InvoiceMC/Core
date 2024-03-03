@@ -1,6 +1,6 @@
 package me.outspending.core.pmines
 
-import me.outspending.core.data.Extensions.getData
+import me.outspending.core.data.getData
 import org.bukkit.Location
 import org.bukkit.entity.Player
 
@@ -10,12 +10,12 @@ interface PrivateMine {
         fun createMine(name: String, owner: Player): PrivateMine {
             // TODO: Update these to be correct
             val defaultMine = Mine.default()
-            val location = Location(owner.world, 271.5, 33.0, -851.5, 90f, 0f)
+            val pmineHome = Location(owner.world, 371.5, 33.0, -850.5, 90f, 0f)
 
             val data = owner.getData()
             data.pmineName = name
 
-            return PrivateMineImpl(name, owner, mutableListOf(), location, defaultMine)
+            return PrivateMineImpl(name, owner, mutableListOf(), pmineHome, defaultMine)
         }
 
         fun createMine(
@@ -48,7 +48,7 @@ interface PrivateMine {
     fun showInfo(player: Player)
     fun resetMine(player: Player)
 
-    fun increaseMineSize(size: Int)
+    fun increaseMineSize(player: Player, size: Int = 1)
 
     fun updatePackets(player: Player) // Used for when the player does /pmine home
     fun updateMine() // This will update the bedrock and mine

@@ -17,17 +17,27 @@ class WeightedCollection<T> : Iterable<T> {
         return this
     }
 
-    fun remove(item: T): WeightedCollection<T> {
-        val iterator = items.entries.iterator()
-        while (iterator.hasNext()) {
-            val entry = iterator.next()
-            if (entry.value == item) {
-                iterator.remove()
-                totalWeight -= entry.key
-            }
-        }
+    fun clear() {
+        items.clear()
+        totalWeight = 0.0
+    }
 
-        return this
+    fun remove(item: T) {
+        val entry = items.entries.find { it.value == item } ?: return
+        items.remove(entry.key)
+        totalWeight -= entry.key
+    }
+
+    fun normalize() {
+        var currentWeight = 0.0
+        val newItems = TreeMap<Double, T>()
+        items.forEach { (weight, item) ->
+            currentWeight += weight
+            newItems[currentWeight] = item
+        }
+        items.clear()
+        items.putAll(newItems)
+        totalWeight = currentWeight
     }
 
     fun next(): T {
@@ -36,10 +46,10 @@ class WeightedCollection<T> : Iterable<T> {
     }
 
     fun nextAndRemove(): T {
-        val nextItem = next()
-        remove(nextItem)
+        val next = next()
+        remove(next)
 
-        return nextItem
+        return next
     }
 
     override fun iterator(): Iterator<T> = items.values.iterator()

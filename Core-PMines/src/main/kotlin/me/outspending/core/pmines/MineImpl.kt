@@ -17,6 +17,7 @@ class MineImpl internal constructor(
     private var blocks: MutableMap<Location, BlockData> = mutableMapOf()
     private var lastReset: Long = 0
 
+    override fun getBlockWeights(): WeightedCollection<BlockData> = blockWeights
     override fun getBlocks(): Map<Location, BlockData> = blocks
     override fun getBottomLocation(): Location = bottom
     override fun getTopLocation(): Location = top
@@ -30,16 +31,16 @@ class MineImpl internal constructor(
         locations.forEach { blocks.remove(it) }
     }
 
-    override fun reset(player: Player, mine: PrivateMine): Int? {
-        return if (canReset()) {
-            val (num, newBlocks) = MineUpdater.resetMine(player, mine, blockWeights)
-            blocks = newBlocks
-            lastReset = System.currentTimeMillis()
+    override fun forceReset(player: Player, mine: PrivateMine): Int? {
+        val (num, newBlocks) = MineUpdater.resetMine(player, mine, blockWeights)
+        blocks = newBlocks
+        lastReset = System.currentTimeMillis()
 
-            num
-        } else {
-            null
-        }
+        return num
+    }
+
+    override fun reset(player: Player, mine: PrivateMine): Int? {
+        return if (canReset()) forceReset(player, mine) else null
     }
 
     override fun canReset(): Boolean = getResetCooldown() >= RESET_COOLDOWN
@@ -47,7 +48,12 @@ class MineImpl internal constructor(
     override fun getResetCooldown(): Long = System.currentTimeMillis() - lastReset
 
     override fun expand(size: Int) {
-        TODO("Not yet implemented")
+        val doubleSize = size.toDouble()
+
+        top = top.clone().add(doubleSize, 0.0, -doubleSize)
+        bottom = bottom.clone().add(-doubleSize, 0.0, doubleSize)
+
+        region.resize(top.x, top.y, top.z, bottom.x, bottom.y, bottom.z)
     }
 
     override fun increaseBlocks(amount: Int) {
