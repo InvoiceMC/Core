@@ -34,7 +34,7 @@ class ExplosionEnchant : PickaxeEnchant() {
         enchantmentLevel: Int,
         mine: PrivateMine
     ): EnchantResult {
-        if (RANDOM.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
+        if (RANDOM.nextDouble(100.0) > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
         val blockCount: Int = SphereShape(4).process(mine, blockLocation)
 
         player.spawnParticle(Particle.EXPLOSION_LARGE, blockLocation, 1)
@@ -43,6 +43,6 @@ class ExplosionEnchant : PickaxeEnchant() {
         val moneyAmount: Double = RANDOM.nextDouble(10.0, 25.0) * blockCount
         val coinsAmount: Int = (moneyAmount / 5).toInt()
 
-        return EnchantResult(moneyAmount, coinsAmount, blockCount, blockCount)
+        return EnchantResult(moneyAmount, coinsAmount, (blockCount / 4), blockCount)
     }
 }

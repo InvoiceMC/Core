@@ -9,12 +9,24 @@ import me.outspending.core.data.DataManager
 import me.outspending.core.data.DataPersistenceHandler
 import me.outspending.core.data.database
 import me.outspending.core.pmines.PrivateMine
+import me.outspending.core.runTaskTimer
 
 val pmineDataManager = PmineDataManager()
 
 class PmineDataManager : DataManager<String, PrivateMine>() {
     private val persistenceHandler: DataPersistenceHandler<StorablePmine, String> =
         PmineDataPersistenceHandler()
+
+    init {
+        runTaskTimer(60, 60, true) {
+            for (pmine in data.values) {
+                val mine = pmine.getMine()
+                if (mine.getBlockPercentage() < 20) {
+                    mine.forceReset(pmine)
+                }
+            }
+        }
+    }
 
     override fun load() {
         database.createTable(pmineMunchClass)

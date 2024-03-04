@@ -38,21 +38,18 @@ object EnchantHandler {
                 if (enchantLevel != null && enchantLevel > 0) enchant to enchantLevel else null
             }
             .forEach { (enchant, level) ->
-                val time = measureTime {
-                    val result: EnchantResult =
-                        enchant.execute(
-                            player,
-                            playerData,
-                            connection,
-                            blockLocation,
-                            dataContainer,
-                            level,
-                            mine
-                        )
+                val result: EnchantResult =
+                    enchant.execute(
+                        player,
+                        playerData,
+                        connection,
+                        blockLocation,
+                        dataContainer,
+                        level,
+                        mine
+                    )
 
-                    enchantResult += result
-                }
-                Bukkit.broadcast("Finished in <gold>$time".parse())
+                enchantResult += result
             }
 
         return enchantResult

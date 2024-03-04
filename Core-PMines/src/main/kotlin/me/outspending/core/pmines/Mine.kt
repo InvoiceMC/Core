@@ -1,5 +1,6 @@
 package me.outspending.core.pmines
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import me.outspending.core.misc.WeightedCollection
 import org.bukkit.Bukkit
 import org.bukkit.Location
@@ -34,19 +35,20 @@ interface Mine {
     }
 
     fun getBlockWeights(): WeightedCollection<BlockData>
-    fun getBlocks(): Map<Location, BlockData>
+    fun getBlocks(): HashMap<Location, BlockData>
     fun getBottomLocation(): Location
     fun getTopLocation(): Location
     fun getRegion(): BoundingBox
 
     fun getVolume(): Int
     fun getBlockCount(): Int
+    fun getBlockPercentage(): Double
 
     fun removeBlock(location: Location)
     fun removeBlocks(locations: Set<Location>)
 
-    fun forceReset(player: Player, mine: PrivateMine): Int
-    fun reset(player: Player, mine: PrivateMine): Int
+    fun forceReset(mine: PrivateMine): Int
+    fun reset(mine: PrivateMine): Int
     fun canReset(): Boolean
     fun getResetTimeLeft(): Long
     fun getResetCooldown(): Long

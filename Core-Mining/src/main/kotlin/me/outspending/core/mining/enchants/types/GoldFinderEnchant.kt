@@ -33,7 +33,7 @@ class GoldFinderEnchant : PickaxeEnchant() {
         mine: PrivateMine
     ): EnchantResult {
         // Check if enchant should be executed
-        if (RANDOM.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
+        if (RANDOM.nextDouble(100.0) > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
 
         // Execute enchant
         val goldFinderAmount: Int =

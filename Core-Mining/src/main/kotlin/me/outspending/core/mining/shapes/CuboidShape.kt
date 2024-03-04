@@ -1,5 +1,6 @@
 package me.outspending.core.mining.shapes
 
+import it.unimi.dsi.fastutil.objects.ObjectSet
 import me.outspending.core.mining.PacketShape
 import me.outspending.core.misc.WeightedCollection
 import me.outspending.core.pmines.PrivateMine
@@ -28,7 +29,7 @@ class CuboidShape(private val minLocation: Location, private val maxLocation: Lo
                 null
             }
         }
-        val keys: Set<Location> = blockDataMap.keys.toSet()
+        val keys: Set<Location> = blockDataMap.keys
 
         PacketSync.syncBlocks(mine, blockDataMap)
         updateBlocks(mine.getMine(), keys)
@@ -58,7 +59,7 @@ class CuboidShape(private val minLocation: Location, private val maxLocation: Lo
                 null
             }
         }
-        val keys: Set<Location> = blockDataMap.keys.toSet()
+        val keys: Set<Location> = blockDataMap.keys
 
         PacketSync.syncBlocks(mine, blockDataMap)
         updateBlocks(mine.getMine(), keys)

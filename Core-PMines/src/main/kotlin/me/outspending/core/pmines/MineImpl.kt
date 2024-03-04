@@ -1,5 +1,8 @@
 package me.outspending.core.pmines
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap
+import it.unimi.dsi.fastutil.objects.Object2ObjectMap
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import me.outspending.core.misc.WeightedCollection
 import org.bukkit.Location
 import org.bukkit.block.data.BlockData
@@ -15,11 +18,11 @@ class MineImpl internal constructor(
     private val region: BoundingBox
 ) : Mine {
     internal var blockWeights = WeightedCollection<BlockData>()
-    private var blocks: MutableMap<Location, BlockData> = mutableMapOf()
+    private var blocks: HashMap<Location, BlockData> = HashMap()
     private var lastReset: Long = 0
 
     override fun getBlockWeights(): WeightedCollection<BlockData> = blockWeights
-    override fun getBlocks(): Map<Location, BlockData> = blocks
+    override fun getBlocks(): HashMap<Location, BlockData> = blocks
     override fun getBottomLocation(): Location = bottom
     override fun getTopLocation(): Location = top
     override fun getRegion(): BoundingBox = region
@@ -36,6 +39,8 @@ class MineImpl internal constructor(
 
     override fun getBlockCount(): Int = blocks.size
 
+    override fun getBlockPercentage(): Double = (getBlockCount() / getVolume().toDouble()) * 100
+
     override fun removeBlock(location: Location) {
         blocks.remove(location)
     }
@@ -44,16 +49,16 @@ class MineImpl internal constructor(
         blocks.keys.removeAll(locations)
     }
 
-    override fun forceReset(player: Player, mine: PrivateMine): Int {
-        val (num, newBlocks) = MineUpdater.resetMine(player, mine, blockWeights)
+    override fun forceReset(mine: PrivateMine): Int {
+        val (num, newBlocks) = MineUpdater.resetMine(mine, blockWeights)
         blocks = newBlocks
         lastReset = System.currentTimeMillis()
 
         return num
     }
 
-    override fun reset(player: Player, mine: PrivateMine): Int {
-        return if (canReset()) forceReset(player, mine) else 0
+    override fun reset(mine: PrivateMine): Int {
+        return if (canReset()) forceReset(mine) else 0
     }
 
     override fun canReset(): Boolean = getResetCooldown() >= RESET_COOLDOWN

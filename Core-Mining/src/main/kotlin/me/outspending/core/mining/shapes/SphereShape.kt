@@ -33,7 +33,7 @@ class SphereShape(private val radius: Int) : PacketShape() {
                 null
             }
         }
-        val keys: Set<Location> = blockDataMap.keys.toSet() // Might be slow as fuck but we see <3
+        val keys: Set<Location> = blockDataMap.keys
 
         PacketSync.syncBlocks(mine, blockDataMap)
         updateBlocks(mine.getMine(), keys)
@@ -54,7 +54,7 @@ class SphereShape(private val radius: Int) : PacketShape() {
     ): Int {
         requireNotNull(blockLocation) { "Block location cannot be null for SphereShape" }
 
-        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys.toSet() // Using set because its O(1) for .contains()
+        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys
         val (blocksChanged, blockDataMap) = runBetween(super.MINE_WORLD, blockLocation, minVector, maxVector) { location ->
             val distance = blockLocation.distance(location)
 
@@ -67,7 +67,7 @@ class SphereShape(private val radius: Int) : PacketShape() {
                 null
             }
         }
-        val keys: Set<Location> = blockDataMap.keys.toSet()
+        val keys: Set<Location> = blockDataMap.keys
 
         PacketSync.syncBlocks(mine, blockDataMap)
         updateBlocks(mine.getMine(), keys)

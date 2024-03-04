@@ -115,7 +115,7 @@ internal constructor(
         core.launch {
             var changedBlocks: Int
             val time = measureTime {
-                val result: Int = async { mine.reset(player, this@PrivateMineImpl) }.await() // Why the fuck is this on the main thread!!! :rage:
+                val result: Int = async { mine.reset(this@PrivateMineImpl) }.await()
                 if (result != 0) {
                     changedBlocks = result
                 } else {
@@ -147,7 +147,7 @@ internal constructor(
     override fun increaseMineSize(player: Player, size: Int) {
         mine.expand(size)
 
-        core.launch { async { mine.forceReset(player, this@PrivateMineImpl) }.await() }
+        core.launch { async { mine.forceReset(this@PrivateMineImpl) }.await() }
     }
 
     override fun updatePackets(player: Player) = player.sendMultiBlockChange(mine.getBlocks())

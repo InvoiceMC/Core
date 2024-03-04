@@ -38,7 +38,7 @@ class NukeEnchant : PickaxeEnchant() {
         enchantmentLevel: Int,
         mine: PrivateMine
     ): EnchantResult {
-        if (RANDOM.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
+        if (RANDOM.nextDouble(100.0) > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
 
         val blockCount = SphereShape(25).process(mine, blockLocation)
 
@@ -49,6 +49,6 @@ class NukeEnchant : PickaxeEnchant() {
             "<second>Nuke <gray>Has procced and broke <second>${blockCount.regex()} <gray>blocks".parse(true)
         )
 
-        return EnchantResult(moneyAmount, coinsAmount, blockCount, blockCount)
+        return EnchantResult(moneyAmount, coinsAmount, (blockCount / 4), blockCount)
     }
 }

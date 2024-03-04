@@ -1,22 +1,25 @@
 package me.outspending.core.pmines
 
+import it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap
+import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap
 import me.outspending.core.BlockVector3D
 import me.outspending.core.misc.WeightedCollection
 import me.outspending.core.pmines.sync.PacketSync
 import me.outspending.core.toLocation
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
 import kotlin.math.abs
 
 object MineUpdater {
-    fun resetMine(player: Player, privateMine: PrivateMine, blockWeights: WeightedCollection<BlockData>): Pair<Int, MutableMap<Location, BlockData>> {
+    private val world = Bukkit.getWorld("testing")!!
+
+    fun resetMine(privateMine: PrivateMine, blockWeights: WeightedCollection<BlockData>): Pair<Int, HashMap<Location, BlockData>> {
         val mine = privateMine.getMine()
-        println(mine.getRegion())
 
         val bottom = mine.getBottomLocation()
         val top = mine.getTopLocation()
-        val world = player.world
 
         val vector = BlockVector3D(bottom, top)
         val min = vector.getMin(world)

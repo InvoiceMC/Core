@@ -32,7 +32,7 @@ class LevelFinderEnchant : PickaxeEnchant() {
         enchantmentLevel: Int,
         mine: PrivateMine
     ): EnchantResult {
-        if (RANDOM.nextDouble() > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
+        if (RANDOM.nextDouble(100.0) > getEnchantmentChance(enchantmentLevel)) return EnchantResult()
         if (player.level >= (100 + (25 * playerData.prestige))) return EnchantResult()
 
         val amount = RANDOM.nextInt(1, 7)

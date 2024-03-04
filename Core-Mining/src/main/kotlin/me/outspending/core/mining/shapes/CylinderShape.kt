@@ -22,7 +22,7 @@ class CylinderShape(private val radius: Int, private val height: Int) : PacketSh
     ): Int {
         requireNotNull(blockLocation) { "Block location cannot be null for CylinderShape" }
 
-        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys.toSet() // Using set because its O(1) for .contains()
+        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys
         val (blocksChanged, blockDataMap) = runBetween(super.MINE_WORLD, blockLocation, minVec, maxVec) { location ->
             val distance = blockLocation.distance(location)
             val y = location.y - blockLocation.y
@@ -34,7 +34,7 @@ class CylinderShape(private val radius: Int, private val height: Int) : PacketSh
                 null
             }
         }
-        val keys: Set<Location> = blockDataMap.keys.toSet()
+        val keys: Set<Location> = blockDataMap.keys
 
         PacketSync.syncBlocks(mine, blockDataMap)
         updateBlocks(mine.getMine(), keys)
@@ -55,7 +55,7 @@ class CylinderShape(private val radius: Int, private val height: Int) : PacketSh
     ): Int {
         requireNotNull(blockLocation) { "Block location cannot be null for CylinderShape" }
 
-        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys.toSet() // Using set because its O(1) for .contains()
+        val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys
         val (blocksChanged, blockDataMap) = runBetween(super.MINE_WORLD, blockLocation, minVec, maxVec) { location ->
             val distance = blockLocation.distance(location)
             val y = location.y - blockLocation.y
@@ -69,7 +69,7 @@ class CylinderShape(private val radius: Int, private val height: Int) : PacketSh
                 null
             }
         }
-        val keys: Set<Location> = blockDataMap.keys.toSet()
+        val keys: Set<Location> = blockDataMap.keys
 
         PacketSync.syncBlocks(mine, blockDataMap)
         updateBlocks(mine.getMine(), keys)
