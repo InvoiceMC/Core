@@ -7,6 +7,7 @@ import me.outspending.core.data.getData
 import me.outspending.core.format
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import org.bukkit.Location
+import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import kotlin.time.DurationUnit
 import kotlin.time.measureTime
@@ -26,23 +27,25 @@ private val RESET_MESSAGE: String =
 class PrivateMineImpl
 internal constructor(
     val name: String,
-    private val owner: Player,
-    private val members: MutableList<Player>,
+    private val owner: OfflinePlayer,
+    private val members: MutableList<OfflinePlayer>,
     private val spawn: Location,
     private val mine: Mine
 ) : PrivateMine {
     override fun getMineName(): String = name
 
-    override fun getMineOwner(): Player = owner
+    override fun getMineOwner(): OfflinePlayer = owner
 
-    override fun getAllMembers(): MutableList<Player> {
+    override fun getAllMembers(): List<OfflinePlayer> {
         val allMembers = mutableListOf(owner)
         allMembers.addAll(members)
 
         return allMembers
     }
 
-    override fun getMineMembers(): MutableList<Player> = members
+    override fun getAllOnlineMembers(): List<Player> = getAllMembers().filterIsInstance<Player>()
+
+    override fun getMineMembers(): List<OfflinePlayer> = members
 
     override fun getMineSpawn(): Location = spawn
 
@@ -75,7 +78,7 @@ internal constructor(
         )
     }
 
-    override fun removeMember(executedPlayer: Player, member: Player) {
+    override fun removeMember(executedPlayer: Player, member: OfflinePlayer) {
         TODO("Not yet implemented")
     }
 
@@ -88,7 +91,7 @@ internal constructor(
     }
 
     override fun disbandMine() {
-        getAllMembers().forEach {
+        getAllOnlineMembers().forEach {
             val data = it.getData()
             data.pmineName = null
 
@@ -112,29 +115,39 @@ internal constructor(
         core.launch {
             var changedBlocks: Int
             val time = measureTime {
-                val result: Int? = async { mine.reset(player, this@PrivateMineImpl) }.await()
-                if (result != null) {
+                val result: Int = async { mine.reset(player, this@PrivateMineImpl) }.await() // Why the fuck is this on the main thread!!! :rage:
+                if (result != 0) {
                     changedBlocks = result
                 } else {
-                    val resetTimer = mine.getResetTimeLeft()
-                        .toDuration(DurationUnit.MILLISECONDS)
+                    val resetTimer = mine.getResetTimeLeft().toDuration(DurationUnit.MILLISECONDS)
 
                     player.sendMessage("You cannot reset your mine yet! Please wait <second>$resetTimer".parse(true))
                     return@launch
                 }
             }
 
+            val region = mine.getRegion()
             val message = RESET_MESSAGE.format(time, changedBlocks.format()).parse()
-            getAllMembers().forEach { it.sendMessage(message) }
+            getAllOnlineMembers().forEach {
+                val location = it.location
+                val plrVec = location.toVector()
+
+                if (region.contains(plrVec)) {
+                    val teleportLoc = location.clone()
+                    teleportLoc.y = 30.5
+
+                    it.teleport(teleportLoc)
+                }
+
+                it.sendMessage(message)
+            }
         }
     }
 
     override fun increaseMineSize(player: Player, size: Int) {
         mine.expand(size)
 
-        core.launch {
-            async { mine.forceReset(player, this@PrivateMineImpl) }.await()
-        }
+        core.launch { async { mine.forceReset(player, this@PrivateMineImpl) }.await() }
     }
 
     override fun updatePackets(player: Player) = player.sendMultiBlockChange(mine.getBlocks())
@@ -145,7 +158,7 @@ internal constructor(
 
     override fun isInMine(player: Player): Boolean = player.world.name == "pmines"
 
-    override fun isMember(player: Player): Boolean = members.contains(player)
+    override fun isMember(player: OfflinePlayer): Boolean = members.contains(player)
 
-    override fun isOwner(player: Player): Boolean = owner.uniqueId == player.uniqueId
+    override fun isOwner(player: OfflinePlayer): Boolean = owner.uniqueId == player.uniqueId
 }

@@ -45,8 +45,8 @@ interface Mine {
     fun removeBlock(location: Location)
     fun removeBlocks(locations: Set<Location>)
 
-    fun forceReset(player: Player, mine: PrivateMine): Int?
-    fun reset(player: Player, mine: PrivateMine): Int?
+    fun forceReset(player: Player, mine: PrivateMine): Int
+    fun reset(player: Player, mine: PrivateMine): Int
     fun canReset(): Boolean
     fun getResetTimeLeft(): Long
     fun getResetCooldown(): Long

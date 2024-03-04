@@ -52,8 +52,8 @@ class MineImpl internal constructor(
         return num
     }
 
-    override fun reset(player: Player, mine: PrivateMine): Int? {
-        return if (canReset()) forceReset(player, mine) else null
+    override fun reset(player: Player, mine: PrivateMine): Int {
+        return if (canReset()) forceReset(player, mine) else 0
     }
 
     override fun canReset(): Boolean = getResetCooldown() >= RESET_COOLDOWN

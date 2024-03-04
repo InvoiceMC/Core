@@ -2,6 +2,7 @@ package me.outspending.core.pmines
 
 import me.outspending.core.data.getData
 import org.bukkit.Location
+import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 
 interface PrivateMine {
@@ -20,8 +21,8 @@ interface PrivateMine {
 
         fun createMine(
             name: String,
-            owner: Player,
-            members: MutableList<Player>,
+            owner: OfflinePlayer,
+            members: MutableList<OfflinePlayer>,
             spawn: Location,
             mine: Mine
         ): PrivateMine {
@@ -30,14 +31,15 @@ interface PrivateMine {
     }
 
     fun getMineName(): String
-    fun getMineOwner(): Player
-    fun getAllMembers(): MutableList<Player>
-    fun getMineMembers(): MutableList<Player>
+    fun getMineOwner(): OfflinePlayer
+    fun getAllMembers(): List<OfflinePlayer>
+    fun getAllOnlineMembers(): List<Player>
+    fun getMineMembers(): List<OfflinePlayer>
     fun getMineSpawn(): Location
     fun getMine(): Mine
 
     fun addMember(executedPlayer: Player, newMember: Player)
-    fun removeMember(executedPlayer: Player, member: Player)
+    fun removeMember(executedPlayer: Player, member: OfflinePlayer)
 
     fun joinMine(player: Player)
     fun leaveMine(player: Player)
@@ -54,7 +56,7 @@ interface PrivateMine {
     fun updateMine() // This will update the bedrock and mine
 
     fun isInMine(player: Player): Boolean
-    fun isMember(player: Player): Boolean
-    fun isOwner(player: Player): Boolean
+    fun isMember(player: OfflinePlayer): Boolean
+    fun isOwner(player: OfflinePlayer): Boolean
 
 }

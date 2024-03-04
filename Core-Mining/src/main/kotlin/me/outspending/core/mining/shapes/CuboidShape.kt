@@ -21,7 +21,7 @@ class CuboidShape(private val minLocation: Location, private val maxLocation: Lo
     ): Int {
         val mineBlocks: Set<Location> = mine.getMine().getBlocks().keys
         val (blocksChanged, blockDataMap) = runBetween(super.MINE_WORLD, minLocation, maxLocation) {
-            if (mineBlocks.contains(it)) {
+            if (mineBlocks.contains(it)) { // Stupid really
                 perBlock(it, blockData)
                 blockData
             } else {

@@ -7,16 +7,18 @@ import me.outspending.munch.Column
 import me.outspending.munch.ColumnConstraint
 import me.outspending.munch.PrimaryKey
 import me.outspending.munch.Table
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.block.data.BlockData
 import org.bukkit.entity.Player
+import java.util.UUID
 
 fun PrivateMine.toStorable(): StorablePmine {
     val mine = this.getMine()
     return StorablePmine(
         this.getMineName(),
-        this.getMineOwner(),
-        this.getMineMembers(),
+        this.getMineOwner().uniqueId,
+        this.getMineMembers().map { it.uniqueId }.toMutableList(),
         this.getMineSpawn(),
 
         mine.getBottomLocation(),
@@ -29,8 +31,8 @@ fun PrivateMine.toStorable(): StorablePmine {
 @Table("pmine_data")
 data class StorablePmine(
     @PrimaryKey val name: String,
-    @Column(constraints = [ColumnConstraint.NOTNULL]) val owner: Player,
-    @Column(constraints = [ColumnConstraint.NOTNULL]) val members: MutableList<Player>,
+    @Column(constraints = [ColumnConstraint.NOTNULL]) val owner: UUID,
+    @Column(constraints = [ColumnConstraint.NOTNULL]) val members: MutableList<UUID>,
     @Column(constraints = [ColumnConstraint.NOTNULL]) val spawn: Location,
 
     @Column(constraints = [ColumnConstraint.NOTNULL]) val bottom: Location,
@@ -39,6 +41,10 @@ data class StorablePmine(
 ) {
     fun toPmine(): PrivateMine {
         val mine = Mine.createMine(bottom, top, blocks)
+
+        val owner = Bukkit.getOfflinePlayer(owner)
+        val members = members.map { Bukkit.getOfflinePlayer(it) }.toMutableList()
+
         return PrivateMine.createMine(name, owner, members, spawn, mine)
     }
 }

@@ -29,9 +29,7 @@ class AsyncPlayerListeners : Listener {
     @EventHandler
     suspend fun onPlayerLogin(e: PlayerLoginEvent) {
         core.launch {
-            val playerDataDeferred = async(Dispatchers.IO) { playerDataManager.loadData(e.player) }
-
-            val data = playerDataDeferred.await()
+            val data = async(Dispatchers.IO) { playerDataManager.loadData(e.player) }.await()
             val pmineName = data.pmineName ?: ""
 
             async(Dispatchers.IO) { pmineDataManager.loadData(pmineName) }.await()

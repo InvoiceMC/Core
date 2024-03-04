@@ -1,11 +1,12 @@
 package me.outspending.core.misc
 
+import java.io.Serializable
 import java.util.*
 import kotlin.random.Random
 
 val random: Random = Random.Default
 
-class WeightedCollection<T> : Iterable<T> {
+class WeightedCollection<T> : Iterable<T>, Serializable {
     private val items: NavigableMap<Double, T> = TreeMap()
     private var totalWeight: Double = 0.0
 
