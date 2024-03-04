@@ -104,11 +104,28 @@ internal constructor(
     }
 
     override fun teleportToMine(player: Player) {
+        if (player.location.world.name != "testing") {
+            updatePackets(player)
+        }
+
         player.teleport(spawn)
     }
 
     override fun showInfo(player: Player) {
-        TODO("Not yet implemented")
+        val message = listOf(
+            "",
+            "<main><b>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ",
+            " <second><b>|<reset> <gray>Owner: <second>${owner.name}",
+            " <second><b>|<reset> <gray>Members: <second>${getAllMembers().size} / 6",
+            " <second><b>|<reset> <gray>Blocks: <second>${mine.getBlocks().size}",
+            "",
+            "<main><b>ʙʟᴏᴄᴋꜱ",
+            " <second><b>|<reset> <gray>Stone: <second>75%",
+            " <second><b>|<reset> <gray>Cobblestone: <second>25%",
+            ""
+        ).joinToString("\n")
+
+        player.sendMessage(message.parse())
     }
 
     override fun resetMine(player: Player) {

@@ -1,6 +1,7 @@
 package me.outspending.core.pmines
 
 import me.outspending.core.data.getData
+import me.outspending.core.holograms.PacketHologram
 import org.bukkit.Location
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
@@ -16,7 +17,7 @@ interface PrivateMine {
             val data = owner.getData()
             data.pmineName = name
 
-            return PrivateMineImpl(name, owner, mutableListOf(), pmineHome, defaultMine)
+            return createMine(name, owner, mutableListOf(), pmineHome, defaultMine)
         }
 
         fun createMine(
@@ -26,7 +27,8 @@ interface PrivateMine {
             spawn: Location,
             mine: Mine
         ): PrivateMine {
-            return PrivateMineImpl(name, owner, members, spawn, mine)
+            val mine = PrivateMineImpl(name, owner, members, spawn, mine)
+            return mine
         }
     }
 

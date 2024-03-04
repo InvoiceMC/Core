@@ -12,28 +12,37 @@ import org.bukkit.entity.Player
 
 typealias LocalHologram = PacketHologram
 
-class PacketHologram(private val player: Player, location: Location, private var lines: MutableList<Component>) : Hologram {
-    constructor(player: Player, location: Location, lines: Collection<Component>) : this(player, location, lines.toMutableList())
+class PacketHologram(location: Location, private var lines: MutableList<Component>) : Hologram {
+    constructor(location: Location, lines: Collection<Component>) : this(location, lines.toMutableList())
+    constructor(location: Location, vararg lines: String): this(location, lines.map { Component.text(it) })
 
     private val hologramPacket = ClientboundHologramPacket(location, lines)
 
     private val teleportPacket by lazy { ClientboundTeleportEntityPacket(hologramPacket.entity) }
     private val killPacket by lazy { ClientboundRemoveEntitiesPacket(hologramPacket.entity.id) }
 
-    private fun getConnection() = (player as CraftPlayer).handle.connection
+    private fun getConnection(player: Player) = (player as CraftPlayer).handle.connection
 
-    override fun teleport(location: Location) {
+    fun teleport(player: Player, location: Location) {
         hologramPacket.entity.setPos(location.x, location.y, location.z)
 
-        val connection = getConnection()
+        val connection = getConnection(player)
         connection.send(teleportPacket)
     }
 
-    override fun updateLines() {
+    override fun teleport(location: Location) {
+        throw UnsupportedOperationException("Use teleport(player: Player, location: Location) instead")
+    }
+
+    fun updateLines(player: Player) {
         val vanillaComponent = PaperAdventure.asVanilla(Component.join(JoinConfiguration.newlines(), lines))
         hologramPacket.entity.text = vanillaComponent
 
         hologramPacket.updateData(player)
+    }
+
+    override fun updateLines() {
+        throw UnsupportedOperationException("Use updateLines(player: Player) instead")
     }
 
     override fun setLines(lines: List<Component>) {
@@ -58,8 +67,12 @@ class PacketHologram(private val player: Player, location: Location, private var
 
     fun send(player: Player) = hologramPacket.sendPacket(player)
 
-    override fun kill() {
-        val connection = getConnection()
+    fun kill(player: Player) {
+        val connection = getConnection(player)
         connection.send(killPacket)
+    }
+
+    override fun kill() {
+        throw UnsupportedOperationException("Use kill(player: Player) instead")
     }
 }

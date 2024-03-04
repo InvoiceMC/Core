@@ -22,8 +22,8 @@ class JackhammerEnchant : PickaxeEnchant() {
     override fun getEnchantName(): String = "jackhammer"
     override fun getDescription(): String = "Chance to break blocks in a flat radius of 5."
     override fun getEnchantItem(): Material = Material.HOPPER
-    override fun getInitialCost(): Float = 1000.0f
-    override fun getIncreaseProgression(): Float = 0.5f
+    override fun getInitialCost(): Float = 2500.0f
+    override fun getIncreaseProgression(): Float = 1.25f
     override fun getMaxEnchantmentLevel(): Int = 1000
     override fun getEnchantmentChance(enchantmentLevel: Int): Float = DEFAULT_CHANCE * enchantmentLevel
 

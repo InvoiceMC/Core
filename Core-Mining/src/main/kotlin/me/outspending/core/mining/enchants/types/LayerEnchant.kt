@@ -50,7 +50,7 @@ class LayerEnchant : PickaxeEnchant() {
         val moneyAmount: Double = RANDOM.nextDouble(10.0, 25.0) * blockCount
         val coinsAmount: Int = (moneyAmount / 5).toInt()
 
-        CustomSound.Custom(Sound.BLOCK_STONE_STEP, 1f, 1.34f).playSound(player)
+        CustomSound.Custom(Sound.UI_LOOM_TAKE_RESULT, 1f, 1.34f).playSound(player)
         player.sendActionBar(
             "<second>Layer <gray>Has procced and broke <second>${blockCount.regex()} <gray>blocks".parse(true)
         )
@@ -61,13 +61,13 @@ class LayerEnchant : PickaxeEnchant() {
     private fun getMinAndMaxLocations(loc1: Location, loc2: Location): Pair<Location, Location> {
         require(loc1.world == loc2.world) { "Locations must be in the same world" }
 
-        val minX = Math.min(loc1.x, loc2.x)
-        val minY = Math.min(loc1.y, loc2.y)
-        val minZ = Math.min(loc1.z, loc2.z)
+        val minX = loc1.x.coerceAtMost(loc2.x)
+        val minY = loc1.y.coerceAtMost(loc2.y)
+        val minZ = loc1.z.coerceAtMost(loc2.z)
 
-        val maxX = Math.max(loc1.x, loc2.x)
-        val maxY = Math.max(loc1.y, loc2.y)
-        val maxZ = Math.max(loc1.z, loc2.z)
+        val maxX = loc1.x.coerceAtLeast(loc2.x)
+        val maxY = loc1.y.coerceAtLeast(loc2.y)
+        val maxZ = loc1.z.coerceAtLeast(loc2.z)
 
         return Pair(Location(loc1.world, minX, minY, minZ), Location(loc1.world, maxX, maxY, maxZ))
     }

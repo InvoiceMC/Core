@@ -23,7 +23,7 @@ class NukeEnchant : PickaxeEnchant() {
 
     override fun getEnchantName(): String = "nuke"
     override fun getDescription(): String = "Breaks all blocks in a radius of 25"
-    override fun getEnchantItem(): Material = Material.TNT
+    override fun getEnchantItem(): Material = Material.DRAGON_EGG
     override fun getInitialCost(): Float = 500000f
     override fun getIncreaseProgression(): Float = 1.5f
     override fun getMaxEnchantmentLevel(): Int = 1000
