@@ -3,6 +3,7 @@ package me.outspending.core.commands.gameplay
 import com.azuyamat.maestro.common.annotations.Command
 import me.outspending.core.config.messagesConfig
 import me.outspending.core.data.getData
+import me.outspending.core.data.getDataNullable
 import me.outspending.core.data.player.PlayerData
 import org.bukkit.entity.Player
 
@@ -13,7 +14,7 @@ import org.bukkit.entity.Player
 class PrestigeCommand {
 
     fun onCommand(player: Player) {
-        val playerData: PlayerData? = player.getData()
+        val playerData: PlayerData? = player.getDataNullable()
 
         playerData?.let { data ->
             val level = player.level

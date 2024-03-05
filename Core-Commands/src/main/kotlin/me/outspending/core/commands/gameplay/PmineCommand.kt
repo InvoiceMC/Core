@@ -11,20 +11,17 @@ import me.outspending.core.pmines.hasPmine
 import net.kyori.adventure.title.Title
 import org.bukkit.entity.Player
 
-private fun checkPmine(player: Player): Boolean {
-    if (!player.hasPmine()) {
-        player.sendMessage("<red>You don't have a pmine!".parse(true))
-        return false
-    }
-    return true
-}
-
 @Command(
     name = "pmine",
     description = "PMINES!?!?!?",
     aliases = ["p", "pm"]
 )
 class PmineCommand {
+
+    // TODO: This was changed, therefore need to update all the sub commands to fit this, although she works for right now
+    private fun checkPmine(player: Player): Boolean {
+        return player.hasPmine()
+    }
 
     fun onCommand(player: Player) {
         player.sendMessage("Pmines!")

@@ -5,4 +5,5 @@ import me.outspending.core.data.player.playerDataManager
 import org.bukkit.entity.Player
 
 fun Player.getData(): PlayerData = playerDataManager.getData(this)
+fun Player.getDataNullable(): PlayerData? = playerDataManager.getDataNullable(this)
 fun Player.savePlayerData() = playerDataManager.saveData(this)
