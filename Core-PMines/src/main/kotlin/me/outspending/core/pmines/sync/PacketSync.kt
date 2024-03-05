@@ -7,7 +7,7 @@ import org.bukkit.entity.Player
 
 object PacketSync {
     /** Gets the players that can see the location */
-    private fun getPminePlayers(pmine: PrivateMine): List<Player> = pmine.getAllOnlineMembers()
+    private fun getPminePlayers(pmine: PrivateMine): List<Player> = pmine.getMemberCollection().getAllOnlineMembers()
 
     /**
      * Sends the block changes to the player using a list, which is faster cuz its using

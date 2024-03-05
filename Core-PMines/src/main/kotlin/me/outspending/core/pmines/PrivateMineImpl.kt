@@ -6,6 +6,7 @@ import me.outspending.core.CoreHandler.core
 import me.outspending.core.data.getData
 import me.outspending.core.format
 import me.outspending.core.helpers.FormatHelper.Companion.parse
+import me.outspending.core.pmines.members.MemberCollection
 import org.bukkit.Location
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
@@ -27,25 +28,14 @@ private val RESET_MESSAGE: String =
 class PrivateMineImpl
 internal constructor(
     val name: String,
-    private val owner: OfflinePlayer,
-    private val members: MutableList<OfflinePlayer>,
+    private val memberCollection: MemberCollection,
     private val spawn: Location,
     private val mine: Mine
 ) : PrivateMine {
+
+    override fun getMemberCollection(): MemberCollection = memberCollection
+
     override fun getMineName(): String = name
-
-    override fun getMineOwner(): OfflinePlayer = owner
-
-    override fun getAllMembers(): List<OfflinePlayer> {
-        val allMembers = mutableListOf(owner)
-        allMembers.addAll(members)
-
-        return allMembers
-    }
-
-    override fun getAllOnlineMembers(): List<Player> = getAllMembers().filterIsInstance<Player>()
-
-    override fun getMineMembers(): List<OfflinePlayer> = members
 
     override fun getMineSpawn(): Location = spawn
 
@@ -54,7 +44,7 @@ internal constructor(
     private fun hasPmine(player: Player): Boolean = player.getData().pmineName != null
 
     // TODO: Recode this
-    override fun addMember(executedPlayer: Player, newMember: Player) {
+    override fun inviteMember(executedPlayer: Player, newMember: Player) {
         if (!isOwner(executedPlayer)) {
             executedPlayer.sendMessage("<red>You are not the owner of this mine!".parse(true))
             return
@@ -72,35 +62,26 @@ internal constructor(
             return
         }
 
-        members.add(newMember) // TODO: This is temporary
+        memberCollection.inviteMember(this, newMember)
         executedPlayer.sendMessage(
             "<green>${newMember.name} has been added to your mine!".parse(true)
         )
     }
 
+    override fun joinMember(executedPlayer: Player) {
+        memberCollection.addMember(this, executedPlayer)
+    }
+
     override fun removeMember(executedPlayer: Player, member: OfflinePlayer) {
-        TODO("Not yet implemented")
+        memberCollection.removeMember(this, member)
     }
 
-    override fun joinMine(player: Player) {
-        TODO("Not yet implemented")
-    }
-
-    override fun leaveMine(player: Player) {
-        TODO("Not yet implemented")
+    override fun leaveMine(member: Player) {
+        memberCollection.removeMember(this, member)
     }
 
     override fun disbandMine() {
-        getAllOnlineMembers().forEach {
-            val data = it.getData()
-            data.pmineName = null
-
-            //            if (isInMine(it)) {
-            //                // TODO: Teleport player to spawn
-            //            }
-
-            it.sendMessage("<red>Your mine has been disbanded!".parse(true))
-        }
+        memberCollection.disbandMembers()
     }
 
     override fun teleportToMine(player: Player) {
@@ -112,12 +93,16 @@ internal constructor(
     }
 
     override fun showInfo(player: Player) {
+        val ownerName = memberCollection.owner.name
+        val memberCount = memberCollection.getAllMembers().size
+        val blockCount = mine.getBlocks().size
+
         val message = listOf(
             "",
             "<main><b>ɪɴꜰᴏʀᴍᴀᴛɪᴏɴ",
-            " <second><b>|<reset> <gray>Owner: <second>${owner.name}",
-            " <second><b>|<reset> <gray>Members: <second>${getAllMembers().size} / 6",
-            " <second><b>|<reset> <gray>Blocks: <second>${mine.getBlocks().size}",
+            " <second><b>|<reset> <gray>Owner: <second>$ownerName",
+            " <second><b>|<reset> <gray>Members: <second>$memberCount / 6",
+            " <second><b>|<reset> <gray>Blocks: <second>$blockCount",
             "",
             "<main><b>ʙʟᴏᴄᴋꜱ",
             " <second><b>|<reset> <gray>Stone: <second>75%",
@@ -145,7 +130,7 @@ internal constructor(
 
             val region = mine.getRegion()
             val message = RESET_MESSAGE.format(time, changedBlocks.format()).parse()
-            getAllOnlineMembers().forEach {
+            memberCollection.getAllOnlineMembers().forEach {
                 val location = it.location
                 val plrVec = location.toVector()
 
@@ -175,7 +160,7 @@ internal constructor(
 
     override fun isInMine(player: Player): Boolean = player.world.name == "pmines"
 
-    override fun isMember(player: OfflinePlayer): Boolean = members.contains(player)
+    override fun isMember(player: OfflinePlayer): Boolean = memberCollection.members.contains(player)
 
-    override fun isOwner(player: OfflinePlayer): Boolean = owner.uniqueId == player.uniqueId
+    override fun isOwner(player: OfflinePlayer): Boolean = memberCollection.owner.uniqueId == player.uniqueId
 }

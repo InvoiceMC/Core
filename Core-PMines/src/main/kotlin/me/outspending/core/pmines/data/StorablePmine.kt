@@ -15,10 +15,11 @@ import java.util.UUID
 
 fun PrivateMine.toStorable(): StorablePmine {
     val mine = this.getMine()
+    val memberCollection = this.getMemberCollection()
     return StorablePmine(
         this.getMineName(),
-        this.getMineOwner().uniqueId,
-        this.getMineMembers().map { it.uniqueId }.toMutableList(),
+        memberCollection.owner.uniqueId,
+        memberCollection.getAllMembers().map { it.uniqueId }.toMutableList(),
         this.getMineSpawn(),
 
         mine.getBottomLocation(),

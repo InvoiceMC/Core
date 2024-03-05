@@ -2,6 +2,7 @@ package me.outspending.core.pmines
 
 import me.outspending.core.data.getData
 import me.outspending.core.holograms.PacketHologram
+import me.outspending.core.pmines.members.MemberCollection
 import org.bukkit.Location
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
@@ -27,24 +28,30 @@ interface PrivateMine {
             spawn: Location,
             mine: Mine
         ): PrivateMine {
-            val mine = PrivateMineImpl(name, owner, members, spawn, mine)
-            return mine
+            val memberCollection = MemberCollection(owner, members)
+            return createMine(name, memberCollection, spawn, mine)
+        }
+
+        fun createMine(
+            name: String,
+            collection: MemberCollection,
+            spawn: Location,
+            mine: Mine
+        ): PrivateMine {
+            return PrivateMineImpl(name, collection, spawn, mine)
         }
     }
 
+    fun getMemberCollection(): MemberCollection
     fun getMineName(): String
-    fun getMineOwner(): OfflinePlayer
-    fun getAllMembers(): List<OfflinePlayer>
-    fun getAllOnlineMembers(): List<Player>
-    fun getMineMembers(): List<OfflinePlayer>
     fun getMineSpawn(): Location
     fun getMine(): Mine
 
-    fun addMember(executedPlayer: Player, newMember: Player)
+    fun inviteMember(executedPlayer: Player, newMember: Player)
+    fun joinMember(executedPlayer: Player)
     fun removeMember(executedPlayer: Player, member: OfflinePlayer)
 
-    fun joinMine(player: Player)
-    fun leaveMine(player: Player)
+    fun leaveMine(member: Player)
     fun disbandMine()
 
     fun teleportToMine(player: Player)

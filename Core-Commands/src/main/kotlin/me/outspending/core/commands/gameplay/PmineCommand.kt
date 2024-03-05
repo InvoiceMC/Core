@@ -116,4 +116,34 @@ class PmineCommand {
         val pmine = player.getPmine()
         pmine.increaseMineSize(player, amount)
     }
+
+    @SubCommand("invite")
+    fun invite(player: Player, member: Player) {
+        if (!checkPmine(player)) return
+
+        val pmine = player.getPmine()
+        pmine.inviteMember(player, member)
+        player.sendMessage("<green>You have invited ${member.name} to your pmine!".parse())
+    }
+
+    @SubCommand("join")
+    fun join(player: Player, mineName: String) {
+        if (checkPmine(player)) {
+            player.sendMessage("<red>You already have a pmine!".parse(true))
+            return
+        }
+
+        val pmine: PrivateMine? = pmineDataManager.getDataNullable(mineName)
+        if (pmine == null) {
+            player.sendMessage("<red>That pmine doesn't exist!".parse(true))
+        } else {
+            val collection = pmine.getMemberCollection()
+            collection.addMember(pmine, player)
+
+            val owner = collection.owner
+            if (owner.isOnline) {
+                owner.player?.sendMessage("<green>${player.name} has joined your pmine!".parse())
+            }
+        }
+    }
 }

@@ -10,6 +10,7 @@ abstract class DataManager<K : Any, V : Any>(val data: MutableMap<K, V>) {
     abstract fun unloadData(key: K)
     abstract fun saveData(key: K)
     abstract fun getData(key: K): V
+    abstract fun getDataNullable(key: K): V?
 
     fun clear() = data.clear()
 

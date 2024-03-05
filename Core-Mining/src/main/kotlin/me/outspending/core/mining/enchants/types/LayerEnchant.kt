@@ -22,8 +22,8 @@ class LayerEnchant : PickaxeEnchant() {
     override fun getEnchantName(): String = "layer"
     override fun getDescription(): String = "Will break an entire layer in your mine"
     override fun getEnchantItem(): Material = Material.COD
-    override fun getInitialCost(): Float = 5000f
-    override fun getIncreaseProgression(): Float = 1.5f
+    override fun getInitialCost(): Float = 2500f
+    override fun getIncreaseProgression(): Float = 0.5f
     override fun getMaxEnchantmentLevel(): Int = 25000
     override fun getEnchantmentChance(enchantmentLevel: Int): Float = DEFAULT_CHANCE * enchantmentLevel
 

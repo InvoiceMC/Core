@@ -43,7 +43,9 @@ class PmineDataManager : DataManager<String, PrivateMine>() {
         }
     }
 
-    override fun getData(key: String): PrivateMine = data[key]!!
+    override fun getData(key: String): PrivateMine = getDataNullable(key)!!
+
+    override fun getDataNullable(key: String): PrivateMine? = data[key]
 
     override fun saveData(key: String) {
         if (!data.containsKey(key)) return

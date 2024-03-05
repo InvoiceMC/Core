@@ -101,5 +101,7 @@ class PlayerDataManager : DataManager<Player, PlayerData>() {
         }
     }
 
-    override fun getData(key: Player): PlayerData = data[key] ?: PlayerData(key.uniqueId)
+    override fun getData(key: Player): PlayerData = getDataNullable(key)!!
+
+    override fun getDataNullable(key: Player): PlayerData? = data[key]
 }
