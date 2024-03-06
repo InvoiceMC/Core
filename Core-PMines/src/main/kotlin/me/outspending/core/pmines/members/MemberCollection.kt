@@ -3,6 +3,7 @@ package me.outspending.core.pmines.members
 import me.outspending.core.data.getData
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.pmines.PrivateMine
+import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
 import org.bukkit.entity.Player
 import java.util.UUID
@@ -30,7 +31,7 @@ class MemberCollection(val owner: OfflinePlayer, val members: MutableList<Offlin
         val mineName = mine.getMineName()
 
         invites.add(uuid)
-        player.sendMessage("<click:run_command:/pmine join $mineName>You have been invited to join $mineName</click>".parse()) // TODO: Make this clickable
+        player.sendMessage("You have been invited to join <second>$mineName <hover:show_text:'<white>Click to Join'><click:run_command:/pmine join $mineName><dark_gray><b>(</b><white>Click<dark_gray><b>)".parse(true))
     }
 
     fun addMember(mine: PrivateMine, member: Player) {
@@ -45,10 +46,10 @@ class MemberCollection(val owner: OfflinePlayer, val members: MutableList<Offlin
 
         invites.remove(uuid)
         members.add(member)
-        member.sendMessage("<green>You have joined $mineName".parse())
+        member.sendMessage("You have joined <second>$mineName".parse(true))
 
         if (owner.isOnline) {
-            owner.player?.sendMessage("<green>${member.name} has joined your mine".parse())
+            owner.player?.sendMessage("<second>${member.name} <white>has joined your mine".parse())
         }
     }
 
@@ -65,12 +66,13 @@ class MemberCollection(val owner: OfflinePlayer, val members: MutableList<Offlin
     }
 
     fun disbandMembers() {
+        val ownerName = owner.name
         getAllOnlineMembers().forEach { player ->
 //            if (player.world.name == "testing") { // TODO: This is for a testing world, we need to change this later
 //                // Teleport to spawn
 //            }
 
-            player.sendMessage("<red>Your mine has been disbanded".parse())
+            player.sendMessage("<second>$ownerName <white>has disbanded the pmine!".parse(true))
         }
     }
 }

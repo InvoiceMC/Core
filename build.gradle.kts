@@ -37,11 +37,7 @@ allprojects {
         implementation("de.tr7zw:item-nbt-api:2.12.2")
     }
 
-    tasks {
-        kotlin {
-            jvmToolchain(17)
-        }
-    }
+    tasks { kotlin { jvmToolchain(17) } }
 }
 
 dependencies {
@@ -58,12 +54,12 @@ dependencies {
     implementation(project(":Core-Main"))
     implementation(project(":Core-Quests"))
     implementation(project(":Core-Scoreboard"))
-    implementation(project(":Core-PMines"))
 
     // Reobf Modules (These are only modules that contain paperweight)
-    implementation(project(path = ":Core-Mining",    configuration = "reobf"))
+    implementation(project(path = ":Core-Mining", configuration = "reobf"))
     implementation(project(path = ":Core-Holograms", configuration = "reobf"))
-    implementation(project(path = ":Core-Heads",     configuration = "reobf"))
+    implementation(project(path = ":Core-Heads", configuration = "reobf"))
+    implementation(project(path = ":Core-PMines", configuration = "reobf"))
 
     // JMH
     jmh("commons-io:commons-io:2.7")

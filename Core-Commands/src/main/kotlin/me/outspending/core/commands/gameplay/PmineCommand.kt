@@ -119,14 +119,19 @@ class PmineCommand {
         if (!checkPmine(player)) return
 
         val pmine = player.getPmine()
+        if (!pmine.isOwner(player)) {
+            player.sendMessage("You need to be the owner of the pmine to invite members!".parse(true))
+            return
+        }
+
         pmine.inviteMember(player, member)
-        player.sendMessage("<green>You have invited ${member.name} to your pmine!".parse())
+        player.sendMessage("You have invited <second>${member.name} to your pmine!".parse(true))
     }
 
     @SubCommand("join")
     fun join(player: Player, mineName: String) {
         if (checkPmine(player)) {
-            player.sendMessage("<red>You already have a pmine!".parse(true))
+            player.sendMessage("<red>You are currently in a pmine, please leave that before joining another one.".parse(true))
             return
         }
 

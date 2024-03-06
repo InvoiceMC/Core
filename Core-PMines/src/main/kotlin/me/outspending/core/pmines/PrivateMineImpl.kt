@@ -7,8 +7,10 @@ import me.outspending.core.data.getData
 import me.outspending.core.format
 import me.outspending.core.helpers.FormatHelper.Companion.parse
 import me.outspending.core.pmines.members.MemberCollection
+import org.bukkit.Bukkit
 import org.bukkit.Location
 import org.bukkit.OfflinePlayer
+import org.bukkit.craftbukkit.v1_20_R3.entity.CraftPlayer
 import org.bukkit.entity.Player
 import kotlin.time.DurationUnit
 import kotlin.time.measureTime
@@ -64,7 +66,7 @@ internal constructor(
 
         memberCollection.inviteMember(this, newMember)
         executedPlayer.sendMessage(
-            "<green>${newMember.name} has been added to your mine!".parse(true)
+            "<second>${newMember.name} <white>has been invited to your pmine!".parse(true)
         )
     }
 
@@ -85,11 +87,18 @@ internal constructor(
     }
 
     override fun teleportToMine(player: Player) {
-        if (player.location.world.name != "testing") {
-            updatePackets(player)
-        }
-
+        val currentWorld = player.location.world
         player.teleport(spawn)
+
+        Bukkit.broadcast("<white>Updating packets for <second>${player.name}".parse())
+        PlayerHider.hideNonMembers(this)
+        updatePackets(player)
+
+//        if (currentWorld.name != "testing") {
+//            Bukkit.broadcast("<white>Updating packets for <second>${player.name}".parse())
+//            PlayerHider.hideNonMembers(this)
+//            updatePackets(player)
+//        }
     }
 
     override fun showInfo(player: Player) {
